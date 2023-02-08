@@ -1,42 +1,50 @@
-﻿
-.body {
-    margin:0px;
-    padding: 0px;
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+.container {
+    margin: 0;
+    padding: 0;
+    max-width: inherit;
 }
 
-/* Add a black background color to the top navigation */
-.topnav {
-    background-color: #333;
-    overflow: hidden;
-}
-
-/* Style the links inside the navigation bar */
-.topnav a {
-    float: left;
-    display: block;
-    color: #f2f2f2;
+/*Marks management system title*/
+a.navbar-brand {
+    white-space: normal;
     text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
+    word-break: break-all;
 }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-    background-color: #ddd;
-    color: black;
+a {
+    color: #0077cc;
 }
 
-/* Add an active class to highlight the current page */
-.topnav a.active {
-    background-color: #04AA6D;
-    color: white;
+/*.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}*/
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
-/* Hide the link that should open and close the topnav on small screens */
-.topnav .icon {
-    display: none;
+.border-top {
+    border-top: 1px solid #e5e5e5;
 }
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/*.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}*/
+
+/*button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}*/
 
 .footer {
     position: absolute;
@@ -45,33 +53,3 @@
     white-space: nowrap;
     line-height: 60px;
 }
-
-
-/* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
-@media screen and (max-width: 600px) {
-    .topnav a:not(:first-child) {
-        display: none;
-    }
-
-    .topnav a.icon {
-        float: right;
-        display: block;
-    }
-
-    .topnav.responsive {
-        position: relative;
-    }
-
-    .topnav.responsive a.icon {
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
-
-    .topnav.responsive a {
-        float: none;
-        display: block;
-        text-align: left;
-    }
-}
-
