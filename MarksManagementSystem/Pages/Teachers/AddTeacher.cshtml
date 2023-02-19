@@ -19,12 +19,16 @@
                 <span class="alert-danger d-block" asp-validation-for="NewTeacher.LastName"></span>
 
                 <label class="input-label" asp-for="NewTeacher.Email">Email: </label>
-                <input class="input-form" asp-for="NewTeacher.Email" />
+                <input class="input-form" type="email" asp-for="NewTeacher.Email" />
                 <span class="alert-danger d-block" asp-validation-for="NewTeacher.Email"></span>
 
                 <label class="input-label" asp-for="NewTeacher.Password">Password: </label>
-                <input class="input-form" asp-for="NewTeacher.Password" />
+                <input class="input-form" type="password" asp-for="NewTeacher.Password" />
                 <span class="alert-danger d-block" asp-validation-for="NewTeacher.Password"></span>
+
+                <label class="input-label" asp-for="NewTeacher.IsAdmin">Is Admin: </label>
+                <input class="input-form" type="checkbox" asp-for="NewTeacher.IsAdmin" />
+
             </div>
 
             <button class="add-button">Add Teacher</button>
