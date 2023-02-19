@@ -1,0 +1,33 @@
+﻿@page
+@model MarksManagementSystem.Pages.Teachers.AddTeacherModel
+@{
+    ViewData["Title"] = "Add Teacher";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div>
+    <div>
+        <form method="post">
+            <div class="form-group">
+                <label class="input-label" asp-for="NewTeacher.Name">Name: </label>
+                <input class="input-form" asp-for="NewTeacher.Name" />
+                <span class="alert-danger d-block" asp-validation-for="NewTeacher.Name"></span>
+
+                <label class="input-label" asp-for="NewTeacher.LastName">Last Name: </label>
+                <input class="input-form" asp-for="NewTeacher.LastName" />
+                <span class="alert-danger d-block" asp-validation-for="NewTeacher.LastName"></span>
+
+                <label class="input-label" asp-for="NewTeacher.Email">Email: </label>
+                <input class="input-form" asp-for="NewTeacher.Email" />
+                <span class="alert-danger d-block" asp-validation-for="NewTeacher.Email"></span>
+
+                <label class="input-label" asp-for="NewTeacher.Password">Password: </label>
+                <input class="input-form" asp-for="NewTeacher.Password" />
+                <span class="alert-danger d-block" asp-validation-for="NewTeacher.Password"></span>
+            </div>
+
+            <button class="add-button">Add Teacher</button>
+        </form>
+    </div>
+</div>
