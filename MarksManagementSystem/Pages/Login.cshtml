@@ -1,0 +1,22 @@
+﻿@page
+@model MarksManagementSystem.Pages.LoginModel
+@{
+    ViewData["Title"] = "LogIn";
+    Layout = null;
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+</head>
+
+
+<div class="login-container">
+    <form method="post">
+        <div class="form-group d-block">
+            <h1>Login</h1>
+            <input class ="email-input" type="email" name="email" placeholder="Email..."/>
+            <input class="password-input" type="password" name="password" placeholder="Password..."/>
+            <button class="login-button" type="submit">Log In</button>
+        </div>
+    </form>
+</div>

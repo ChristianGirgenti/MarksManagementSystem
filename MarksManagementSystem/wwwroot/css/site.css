@@ -20,3 +20,32 @@ body {
 main {
   padding-left: 10.5px;
 }
+
+.add-button {
+    background-color: green;
+    color: whitesmoke;
+    padding: 5px;
+    border-radius: 4px;
+    margin-left: 170px;
+    margin-top: 50px;
+}
+
+.input-label {
+    font-size: 22px;
+    font-weight: bold;
+    width: 140px;
+}
+
+.input-form  {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    width: 195px;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 70px;
+    text-align: center;
+}
