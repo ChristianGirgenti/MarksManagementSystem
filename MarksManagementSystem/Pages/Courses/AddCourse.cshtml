@@ -1,0 +1,25 @@
+﻿@page
+@model MarksManagementSystem.Pages.Courses.AddCourseModel
+@{
+}
+<head>
+    <link rel="stylesheet" href="~/css/addCourse.css" asp-append-version="true" />
+</head>
+
+
+<h1>Add Course</h1>
+<hr />
+
+<div>
+    <div>
+        <form method="post">
+            <div class="form-group">
+                <label class="name-label" asp-for="NewCourse.Name">Name: </label>
+                <input class="name-form" asp-for="NewCourse.Name" />
+                <span class="alert-danger d-block" asp-validation-for="NewCourse.Name"></span>
+            </div>
+
+            <button class="add-course-button">Add Course</button>
+        </form>
+    </div>
+</div>

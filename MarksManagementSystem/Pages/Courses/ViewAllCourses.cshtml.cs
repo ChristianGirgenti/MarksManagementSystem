@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MarksManagementSystem.Pages.Course
+namespace MarksManagementSystem.Pages.Courses
 {
     public class ViewAllCoursesModel : PageModel
     {

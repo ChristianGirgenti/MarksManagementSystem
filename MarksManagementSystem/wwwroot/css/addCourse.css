@@ -1,0 +1,26 @@
+﻿.add-course-button {
+    background-color: green;
+    color: whitesmoke;
+    padding: 5px;
+    border-radius: 4px;
+    margin-left: 190px;
+    margin-top: 50px;
+}
+
+.name-label {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.name-form {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    width: 195px;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-left: 70px;
+    text-align: center;
+}
