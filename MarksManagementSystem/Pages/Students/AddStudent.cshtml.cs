@@ -1,4 +1,4 @@
-using MarksManagementSystem.Data;
+using MarksManagementSystem.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

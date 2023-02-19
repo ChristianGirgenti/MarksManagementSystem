@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MarksManagementSystem.Data
+namespace MarksManagementSystem.Data.Models
 {
     public class Student
     {

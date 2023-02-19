@@ -1,8 +1,12 @@
+using MarksManagementSystem.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddDbContext<MarksManagementContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem"))); 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

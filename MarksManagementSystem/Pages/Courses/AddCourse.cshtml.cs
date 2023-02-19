@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MarksManagementSystem.Data;
 using Microsoft.AspNetCore.Mvc;
+using MarksManagementSystem.Data.Models;
 
 namespace MarksManagementSystem.Pages.Courses
 {

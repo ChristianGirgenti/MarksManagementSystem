@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MarksManagementSystem.Data
+namespace MarksManagementSystem.Data.Models
 {
     public class Course
     {

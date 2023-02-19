@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace MarksManagementSystem.Data
+namespace MarksManagementSystem.Data.Models
 {
     public class Teacher
     {
@@ -15,7 +16,6 @@ namespace MarksManagementSystem.Data
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
-
         public bool IsAdmin { get; set; }
     }
 }

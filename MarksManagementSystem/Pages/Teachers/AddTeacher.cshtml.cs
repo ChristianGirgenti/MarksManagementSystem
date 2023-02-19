@@ -1,4 +1,5 @@
 using MarksManagementSystem.Data;
+using MarksManagementSystem.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,6 +7,13 @@ namespace MarksManagementSystem.Pages.Teachers
 {
     public class AddTeacherModel : PageModel
     {
+        private MarksManagementContext marksManagementContext;
+
+        public AddTeacherModel(MarksManagementContext context) 
+        {
+            marksManagementContext = context;
+        }
+
         [BindProperty]
         public Teacher NewTeacher { get; set; }
         public void OnGet()
@@ -14,17 +22,10 @@ namespace MarksManagementSystem.Pages.Teachers
 
         public IActionResult OnPost()
         {
-            // SAVE PRODUCT TO DATABASE
-            if (ModelState.IsValid)
-            {
-                var teacherName = NewTeacher.Name;
-                var teacherLastName = NewTeacher.LastName;
-                var teacherEmail = NewTeacher.Email;
-                var teacherPassoord = NewTeacher.Password;
-
-                return RedirectToPage("ViewAllTeachers");
-            }
-            return Page();
+            if (!ModelState.IsValid) return Page();
+            marksManagementContext.Teachers.Add(NewTeacher);
+            var changes = marksManagementContext.SaveChanges();
+            return RedirectToPage("ViewAllTeachers");  
         }
     }
 }
