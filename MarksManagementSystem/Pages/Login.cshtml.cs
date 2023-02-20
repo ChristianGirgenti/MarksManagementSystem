@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MarksManagementSystem.Pages
 {
@@ -30,7 +33,18 @@ namespace MarksManagementSystem.Pages
 
             if (teacher != null && teacher.Password == Credential.Password)
             {
-                return RedirectToPage("/Teachers/AddTeacher");
+                //Create claims for the user
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Email, teacher.Email),
+                    new Claim(ClaimTypes.Role, teacher.IsAdmin ? "Admin" : "Teacher")
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, "MyAuthCookie");
+                ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                await HttpContext.SignInAsync("MyAuthCookie", claimsPrincipal);
+                return RedirectToPage("/Index");
             }
             else
             {

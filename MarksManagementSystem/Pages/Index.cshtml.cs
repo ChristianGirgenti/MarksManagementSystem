@@ -14,7 +14,8 @@ namespace MarksManagementSystem.Pages
 
         public void OnGet()
         {
-
+            var x = HttpContext.User;
+            
         }
     }
 }

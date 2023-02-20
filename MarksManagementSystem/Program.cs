@@ -1,4 +1,7 @@
 using MarksManagementSystem.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +9,26 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MarksManagementContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem"))); 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem")));
+
+//Configure Authorization and Authentication
+builder.Services.AddAuthentication("MyAuthCookie")
+    .AddCookie("MyAuthCookie", options =>
+    {
+        options.Cookie.Name = "MyAuthCookie";
+        options.ExpireTimeSpan = TimeSpan.FromSeconds(60);
+    });
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("AdminOnly", policy =>
+//    {
+//        policy.RequireRole("Admin");
+//    });
+//});
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,7 +43,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
