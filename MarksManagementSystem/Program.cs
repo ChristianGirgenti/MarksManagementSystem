@@ -12,13 +12,13 @@ builder.Services.AddDbContext<MarksManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem")));
 
 //Configure Authorization and Authentication
-builder.Services.AddAuthentication("MyAuthCookie")
-    .AddCookie("MyAuthCookie", options =>
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
     {
-        options.Cookie.Name = "MyAuthCookie";
-        options.ExpireTimeSpan = TimeSpan.FromSeconds(60);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.AccessDeniedPath = "/Forbidden/";
     });
-
 //builder.Services.AddAuthorization(options =>
 //{
 //    options.AddPolicy("AdminOnly", policy =>

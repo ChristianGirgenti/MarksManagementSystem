@@ -36,14 +36,21 @@ namespace MarksManagementSystem.Pages
                 //Create claims for the user
                 var claims = new List<Claim>
                 {
+                    new Claim(ClaimTypes.Name, teacher.Name),
                     new Claim(ClaimTypes.Email, teacher.Email),
                     new Claim(ClaimTypes.Role, teacher.IsAdmin ? "Admin" : "Teacher")
                 };
 
-                var claimsIdentity = new ClaimsIdentity(claims, "MyAuthCookie");
-                ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-                await HttpContext.SignInAsync("MyAuthCookie", claimsPrincipal);
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true
+                };
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
                 return RedirectToPage("/Index");
             }
             else
