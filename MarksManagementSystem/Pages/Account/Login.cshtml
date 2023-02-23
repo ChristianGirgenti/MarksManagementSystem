@@ -14,14 +14,13 @@
     <form method="post">
         <div class="form-group d-block">
             <h1>@ViewData["Title"]</h1>
-            @if (Model.ErrorMessage != null)
-            {
-                <div class="alert alert-danger"> @Model.ErrorMessage</div>
-            }
-
             <input class ="email-input" type="email" name="email" placeholder="Email..." asp-for="Credential.Email"/>
             <input class="password-input" type="password" name="password" placeholder="Password..." asp-for="Credential.Password"/>
             <button class="login-button" type="submit">Log In</button>
+            @if (Model.ErrorMessage != null)
+            {
+                <div class="error-message"> @Model.ErrorMessage</div>
+            }
         </div>
     </form>
 </div>

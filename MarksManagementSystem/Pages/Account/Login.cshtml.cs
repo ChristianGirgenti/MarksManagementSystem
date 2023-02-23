@@ -28,7 +28,11 @@ namespace MarksManagementSystem.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid) return Page();
+            if (!ModelState.IsValid)
+            {
+                ErrorMessage = "Email and password can not be empty";
+                return Page();
+            }
             var teacher = await _marksManagementContext.Teachers.FirstOrDefaultAsync(x => x.Email == Credential.Email);
 
             if (teacher != null && teacher.Password == Credential.Password)
@@ -55,7 +59,7 @@ namespace MarksManagementSystem.Pages
             }
             else
             {
-                ErrorMessage = "Invalid ursername or password";
+                ErrorMessage = "Invalid email or password";
                 return Page();
             }
         }

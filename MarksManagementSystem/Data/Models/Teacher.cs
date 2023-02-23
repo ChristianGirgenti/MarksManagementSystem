@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Components;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarksManagementSystem.Data.Models
@@ -7,14 +8,15 @@ namespace MarksManagementSystem.Data.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Name can not be empty")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Last name can not be empty")]
         public string LastName { get; set; }
         [EmailAddress]
-        [Required]
+        [Required(ErrorMessage = "Insert a valid email")]
         public string Email { get; set; }
-        [Required]
+        [PasswordPropertyText]
+        [Required(ErrorMessage = "Insert a valid password")]
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
     }
