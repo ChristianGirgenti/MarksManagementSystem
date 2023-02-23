@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using System.Runtime.CompilerServices;
 
 namespace MarksManagementSystem.Pages
 {
@@ -21,6 +22,9 @@ namespace MarksManagementSystem.Pages
 
         [BindProperty]
         public Credential Credential { get; set; }
+
+        [BindProperty]
+        public string UserType { get; set; }
         public string ErrorMessage { get; set; }
         public void OnGet()
         {
@@ -30,20 +34,45 @@ namespace MarksManagementSystem.Pages
         {
             if (!ModelState.IsValid)
             {
+                if (UserType == null)
+                {
+                    ErrorMessage = "You need to select what type of user you are to login";
+                    return Page();
+                }
                 ErrorMessage = "Email and password can not be empty";
                 return Page();
             }
-            var teacher = await _marksManagementContext.Teachers.FirstOrDefaultAsync(x => x.Email == Credential.Email);
 
+            var isLoginSuccessfull = false;
+            if (UserType == "teacher")
+            {
+                isLoginSuccessfull = await LogInTeacherIsSuccess();
+            }
+            else
+            {
+                //Log In Student
+            }
+            
+            if (!isLoginSuccessfull)
+            {
+                ErrorMessage = "Invalid email or password";
+                return Page();
+            }
+            return RedirectToPage("/Index");
+        }
+
+        private async Task<bool> LogInTeacherIsSuccess()
+        {
+            var teacher = await _marksManagementContext.Teachers.FirstOrDefaultAsync(x => x.Email == Credential.Email);
             if (teacher != null && teacher.Password == Credential.Password)
             {
-                //Create claims for the user
+                //Login is success so create claims for the user
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, teacher.Name),
-                    new Claim(ClaimTypes.Email, teacher.Email),
-                    new Claim(ClaimTypes.Role, teacher.IsAdmin ? "Admin" : "Teacher")
-                };
+                                {
+                                    new Claim(ClaimTypes.Name, teacher.Name),
+                                    new Claim(ClaimTypes.Email, teacher.Email),
+                                    new Claim(ClaimTypes.Role, teacher.IsAdmin ? "Admin" : "Teacher")
+                                };
 
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -55,13 +84,9 @@ namespace MarksManagementSystem.Pages
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
-                return RedirectToPage("/Index");
+                return true;
             }
-            else
-            {
-                ErrorMessage = "Invalid email or password";
-                return Page();
-            }
+            return false;
         }
     }
 }

@@ -32,6 +32,16 @@ input {
     margin-bottom: 30px;
 }
 
+.radio-button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.radio-button-group input {
+    width:15%;
+}
+
 .login-button {
     display: block;
     margin: 0 auto;

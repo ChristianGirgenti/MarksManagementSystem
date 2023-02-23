@@ -11,5 +11,6 @@ namespace MarksManagementSystem.Data.Models
         [DataType(DataType.Password)]
         [Required]
         public string Password { get; set; }
+        
     }
 }
