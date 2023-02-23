@@ -16,3 +16,34 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+main {
+  padding-left: 10.5px;
+}
+
+.add-button {
+    background-color: green;
+    color: whitesmoke;
+    padding: 5px;
+    border-radius: 4px;
+    margin-left: 170px;
+    margin-top: 50px;
+}
+
+.input-label {
+    font-size: 22px;
+    font-weight: bold;
+    width: 140px;
+}
+
+.input-form  {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.error-message {
+    color: #d61a54;
+    font-weight: 700;
+    margin-top: 3px;
+    margin-bottom: 15px;
+}

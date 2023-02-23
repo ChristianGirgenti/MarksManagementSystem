@@ -1,0 +1,70 @@
+﻿.login-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    height:100%;
+}
+
+h1 {
+    margin: 20%;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    background-color: #F5F5F1;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+input {
+    width: 75%;
+    align-self: center;
+    padding: 10px;
+    border-radius: 4px;
+    border-width: thick;
+    margin-bottom: 30px;
+}
+
+.radio-button-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.radio-button-group input {
+    width:15%;
+}
+
+.login-button {
+    display: block;
+    margin: 0 auto;
+    width: 35%;
+    height: 8%;
+    border-color: red;
+    background-color: red;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.error-message {
+    border-style: solid;
+    border-width: 0 0 0 3px;
+    background-color: #ffedf3;
+    color: #d61a54;
+    font-weight: 400;
+    padding: 10px 5px 10px 35px;
+    background-image: url("/images/error-icon.svg");
+    background-position: 5px;
+    background-repeat: no-repeat;
+    margin-top: 20px;
+    background-size: 20px 20px;
+}
+

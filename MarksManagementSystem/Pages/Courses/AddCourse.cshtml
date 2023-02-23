@@ -1,0 +1,27 @@
+﻿@page
+@model MarksManagementSystem.Pages.Courses.AddCourseModel
+@{
+    ViewData["Title"] = "Add Course";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/addCourse.css" asp-append-version="true" />
+</head>
+
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div>
+    <div>
+        <form method="post">
+            <div class="form-group">
+                <label class="input-label" asp-for="NewCourse.Name">Name: </label>
+                <input class="input-form" asp-for="NewCourse.Name" />
+                <span class="alert-danger d-block" asp-validation-for="NewCourse.Name"></span>
+            </div>
+
+            <button class="add-button">Add Course</button>
+        </form>
+    </div>
+</div>

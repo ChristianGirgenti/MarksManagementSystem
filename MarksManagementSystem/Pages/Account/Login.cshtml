@@ -1,0 +1,30 @@
+﻿@page
+@model MarksManagementSystem.Pages.LoginModel
+@{
+    ViewData["Title"] = "LogIn";
+    Layout = null;
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+</head>
+
+
+<div class="login-container">
+    <form method="post">
+        <div class="form-group d-block">
+            <h1>@ViewData["Title"]</h1>
+            <input class ="email-input" type="email" name="email" placeholder="Email..." asp-for="Credential.Email"/>
+            <input class="password-input" type="password" name="password" placeholder="Password..." asp-for="Credential.Password"/>
+            <div class="radio-button-group">
+                <label><input asp-for="UserType" type="radio" name="userType" value="teacher" runat="server"/>Teacher</label>
+                <label><input asp-for="UserType" type="radio" name="userType" value="student" runat="server"/>Student</label>
+            </div>
+            <button class="login-button" type="submit">Log In</button>
+            @if (Model.ErrorMessage != null)
+            {
+                <div class="error-message"> @Model.ErrorMessage</div>
+            }
+        </div>
+    </form>
+</div>

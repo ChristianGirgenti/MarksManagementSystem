@@ -1,0 +1,33 @@
+﻿@page
+@model MarksManagementSystem.Pages.Students.AddStudentModel
+@{
+    ViewData["Title"] = "Add Student";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div>
+    <div>
+        <form method="post">
+            <div class="form-group">
+                <label class="input-label" asp-for="NewStudent.Name">Name: </label>
+                <input class="input-form" asp-for="NewStudent.Name" />
+                <span class="alert-danger d-block" asp-validation-for="NewStudent.Name"></span>
+
+                <label class="input-label" asp-for="NewStudent.LastName">Last Name: </label>
+                <input class="input-form" asp-for="NewStudent.LastName" />
+                <span class="alert-danger d-block" asp-validation-for="NewStudent.LastName"></span>
+
+                <label class="input-label" asp-for="NewStudent.Email">Email: </label>
+                <input type="email" class="input-form" asp-for="NewStudent.Email" />
+                <span class="alert-danger d-block" asp-validation-for="NewStudent.Email"></span>
+
+                <label class="input-label" asp-for="NewStudent.Password">Password: </label>
+                <input type="password" class="input-form" asp-for="NewStudent.Password" />
+                <span class="alert-danger d-block" asp-validation-for="NewStudent.Password"></span>
+            </div>
+
+            <button class="add-button">Add Student</button>
+        </form>
+    </div>
+</div>
