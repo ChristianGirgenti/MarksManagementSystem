@@ -21,14 +21,13 @@
                         <a asp-page="/Privacy" class="navbar-brand float-right">Marks Management System</a>
                         <div>
                         <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Courses
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item">View All Courses</a></li>
-                                </ul>
-                            </li>
+                                    @{
+                                        var httpContext = Context.Request.HttpContext;
+                                        if (httpContext.User.Claims.FirstOrDefault(x => x.Value == "Admin") != null)
+                                        {
+                                            <a asp-page="/Courses/ViewAllCourses" class="nav-link dropdown">View all courses</a>
+                                        }
+                                     }
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Students
@@ -38,7 +37,6 @@
                                 </ul>
                             </li>
                                 @{
-                                    var httpContext = Context.Request.HttpContext;
                                     if (httpContext.User.Claims.FirstOrDefault(x=>x.Value == "Admin") != null)
                                     {
                                         <li id="adminList" runat="server" class="nav-item dropdown" display="none">
