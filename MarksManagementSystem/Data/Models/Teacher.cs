@@ -20,5 +20,7 @@ namespace MarksManagementSystem.Data.Models
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
         public int CourseLedId { get; set; }
+
+        public Course CourseLed { get; set; }
     }
 }

@@ -13,6 +13,11 @@ namespace MarksManagementSystem.Data
         {
             modelBuilder.Entity<Course>().HasIndex(c => c.Name).IsUnique();
             modelBuilder.Entity<Teacher>().HasIndex(c => c.Email).IsUnique();
+
+            modelBuilder.Entity<Teacher>()
+                .HasOne<Course>(t => t.CourseLed)
+                .WithOne(c => c.HeadTeacher)
+                .HasForeignKey<Course>(c => c.HeadTeacherId);
         }
     }
 }
