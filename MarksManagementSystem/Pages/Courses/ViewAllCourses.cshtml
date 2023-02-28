@@ -5,3 +5,24 @@
 
 <h1>All Courses</h1>
 <hr />
+
+
+<table class="table table-boardered table-striped">
+    <thead>
+        <tr>
+            <th>Course Name</th>
+            <th>Credits</th>
+            <th>Head Teacher</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model.AllCoursesWithTeacher)
+        {
+            <tr>
+                <td>@course.CourseName</td>
+                <td>@course.CourseCredits</td>
+                <td>@course.HeadTeacherName</td>
+            </tr>
+        }
+    </tbody>
+</table>

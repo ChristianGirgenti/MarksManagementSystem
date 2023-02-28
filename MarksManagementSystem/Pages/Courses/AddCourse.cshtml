@@ -18,10 +18,19 @@
             <div class="form-group">
                 <label class="input-label" asp-for="NewCourse.Name">Name: </label>
                 <input class="input-form" asp-for="NewCourse.Name" />
-                <span class="alert-danger d-block" asp-validation-for="NewCourse.Name"></span>
+                <span class="error-message d-block" asp-validation-for="NewCourse.Name"></span>
+
+                <label class="input-label" asp-for="NewCourse.Credits">Credits: </label>
+                <input class="input-form" asp-for="NewCourse.Credits" />
+                <span class="error-message d-block" asp-validation-for="NewCourse.Credits"></span>
+
+                <select class="input-form" asp-items="Model.OptionsTeachers" asp-for="NewCourse.HeadTeacherId"></select>
+                <span class="error-message d-block" asp-validation-for="NewCourse.HeadTeacherId"></span>
+
             </div>
 
             <button class="add-button">Add Course</button>
+
         </form>
     </div>
 </div>
