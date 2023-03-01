@@ -10,11 +10,5 @@ namespace MarksManagementSystem.Data.Models
         public Course Course { get; set; }
         public Teacher Teacher { get; set;}
         public bool IsHeadTeacher { get; set; }
-
-        public CourseTeacher()
-        {
-            Course = new Course();
-            Teacher = new Teacher();    
-        }
     }
 }

@@ -1,6 +1,6 @@
 using MarksManagementSystem.Data;
-using MarksManagementSystem.Data.Models;
 using MarksManagementSystem.Helpers;
+using MarksManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MarksManagementSystem.Pages.Courses
@@ -8,7 +8,7 @@ namespace MarksManagementSystem.Pages.Courses
     public class ViewAllCoursesModel : PageModel
     {
         private readonly MarksManagementContext marksManagementContext;
-        public List<CourseView>? AllCoursesWithTeacher { get; set; }
+        public List<ViewModel.ViewAllCoursesModel>? AllCoursesWithTeacher { get; set; }
 
         public ViewAllCoursesModel(MarksManagementContext context)
         {
@@ -18,7 +18,7 @@ namespace MarksManagementSystem.Pages.Courses
         public void OnGet()
         {
             AllCoursesWithTeacher = marksManagementContext.Courses
-                .Select(c => new CourseView
+                .Select(c => new ViewAllCoursesModel
                 {
                     CourseName = c.Name,
                     CourseCredits = c.Credits,

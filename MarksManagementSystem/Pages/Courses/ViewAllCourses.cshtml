@@ -17,14 +17,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var course in Model.AllCoursesWithTeacher)
+        @if (Model.AllCoursesWithTeacher != null)
         {
-            <tr>
-                <td>@course.CourseName</td>
-                <td>@course.CourseCredits</td>
-                <td>@course.HeadTeacher</td>
-                <td>@course.OtherTeachers</td>
-            </tr>
-        }
+            foreach (var course in Model.AllCoursesWithTeacher)
+            {
+                <tr>
+                    <td>@course.CourseName</td>
+                    <td>@course.CourseCredits</td>
+                    <td>@course.HeadTeacher</td>
+                    <td>@course.OtherTeachers</td>
+                </tr>
+            }
+        } 
     </tbody>
 </table>

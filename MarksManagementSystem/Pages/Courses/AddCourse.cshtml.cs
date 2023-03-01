@@ -5,6 +5,7 @@ using MarksManagementSystem.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using MarksManagementSystem.Helpers;
+using MarksManagementSystem.ViewModel;
 
 namespace MarksManagementSystem.Pages.Courses
 {
@@ -21,6 +22,7 @@ namespace MarksManagementSystem.Pages.Courses
         }
 
         [BindProperty]
+        public AddCourseViewModel NewCourseViewModel { get; set; }
         public Course NewCourse { get; set; }
         public List<SelectListItem> OptionsTeachers { get; set; } = new List<SelectListItem>();
         public void OnGet()
@@ -43,9 +45,10 @@ namespace MarksManagementSystem.Pages.Courses
             try
             {
                 FormatNewCourseValues();
+                NewCourse = new Course(NewCourseViewModel.Name, NewCourseViewModel.Credits);
                 marksManagementContext.Courses.Add(NewCourse);
                 var changes = marksManagementContext.SaveChanges();
-                var headTeacher = marksManagementContext.Teachers.SingleOrDefault(t => t.Id == NewCourse.HeadTeacherId);
+                var headTeacher = marksManagementContext.Teachers.SingleOrDefault(t => t.Id == NewCourseViewModel.HeadTeacherId);
                 if (headTeacher != null)
                 {
                     var courseTeacher = new CourseTeacher { Course = NewCourse, Teacher = headTeacher, IsHeadTeacher = true };
@@ -77,24 +80,12 @@ namespace MarksManagementSystem.Pages.Courses
                 .ToList();
 
             OptionsTeachers = nonHeadTeachers;
-            //OptionsTeachers = marksManagementContext.CourseTeachers
-            //    .Where(ct => !ct.IsHeadTeacher)
-            //    .Select(ct => ct.Teacher)
-            //    .Distinct()
-            //    .Select(t =>
-            //        new SelectListItem
-            //        { 
-            //            Value = t.Id.ToString(),
-            //            Text = t.Name + " " + t.LastName
-            //        }).ToList();
-
-
             OptionsTeachers.Insert(0, new SelectListItem { Value = "", Text = "Select one head teacher for this course..." });
         }
 
         public void FormatNewCourseValues()
         {
-            NewCourse.Name = StringUtilities.Capitalise(NewCourse.Name);
+            NewCourseViewModel.Name = StringUtilities.Capitalise(NewCourseViewModel.Name);
         }
     }
 }

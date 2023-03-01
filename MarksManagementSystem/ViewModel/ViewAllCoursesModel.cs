@@ -1,6 +1,6 @@
-﻿namespace MarksManagementSystem.Data.Models
+﻿namespace MarksManagementSystem.ViewModel
 {
-    public class CourseView
+    public class ViewAllCoursesModel
     {
         public string? CourseName { get; set; }
         public int CourseCredits { get; set; }

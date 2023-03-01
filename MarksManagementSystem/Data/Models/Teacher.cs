@@ -19,7 +19,7 @@ namespace MarksManagementSystem.Data.Models
         [Required(ErrorMessage = "Insert a valid password")]
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
-        public ICollection<CourseTeacher> CourseTeachers { get; set; }
+        public ICollection<CourseTeacher>? CourseTeachers { get; set; }
 
         public override string ToString()
         {

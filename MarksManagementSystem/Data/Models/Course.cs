@@ -6,7 +6,6 @@ namespace MarksManagementSystem.Data.Models
 {
     public class Course
     {
-        [ForeignKey("Teacher")]
         public int Id { get; set; }
 
         [MaxLength(50, ErrorMessage = "The name of the course can be max 50 characters")]
@@ -14,11 +13,13 @@ namespace MarksManagementSystem.Data.Models
         public string Name { get; set; }
         [Required]
         [Range(1,50, ErrorMessage = "Credits must be between 1 and 50")]
-        public int Credits { get; set; }
-        [Required]
-        public int HeadTeacherId { get; set; }
-        
+        public int Credits { get; set; }        
         public ICollection<CourseTeacher>? CourseTeachers { get; set; }
 
+        public Course(string name, int credits)
+        {
+            Name = name;
+            Credits = credits;
+        }
     }
 }
