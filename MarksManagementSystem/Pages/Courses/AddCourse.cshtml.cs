@@ -30,14 +30,27 @@ namespace MarksManagementSystem.Pages.Courses
 
         public IActionResult OnPost()
         {
-            if (!ModelState.IsValid) return Page();
+            if (!ModelState.IsValid)
+            {
+
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                return Page();
+            }
+
             try
             {
                 FormatNewCourseValues();
                 marksManagementContext.Courses.Add(NewCourse);
                 var changes = marksManagementContext.SaveChanges();
                 var headTeacher = marksManagementContext.Teachers.SingleOrDefault(t => t.Id == NewCourse.HeadTeacherId);
-                if (headTeacher != null) headTeacher.CourseLedId = NewCourse.Id;
+                if (headTeacher != null)
+                {
+                    var courseTeacher = new CourseTeacher { Course = NewCourse, Teacher = headTeacher, IsHeadTeacher = true };
+                    marksManagementContext.CourseTeachers.Add(courseTeacher);
+                }
                 changes = marksManagementContext.SaveChanges();
                 return RedirectToPage("ViewAllCourses");
             }
@@ -53,13 +66,29 @@ namespace MarksManagementSystem.Pages.Courses
 
         public void ShowTeachersInSelectionList()
         {
-            OptionsTeachers = marksManagementContext.Teachers.Where(t => t.CourseLedId <= 0)
-                .Select(t =>
-                new SelectListItem
-                {
-                    Value = t.Id.ToString(),
-                    Text = t.Name + " " + t.LastName
-                }).ToList();
+
+            var headTeachers = marksManagementContext.CourseTeachers
+                .Where(ct => ct.IsHeadTeacher)
+                .Select(ct => ct.Teacher);
+
+            var nonHeadTeachers = marksManagementContext.Teachers
+                .Where(t => !headTeachers.Contains(t))
+                .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Name + " " + t.LastName })
+                .ToList();
+
+            OptionsTeachers = nonHeadTeachers;
+            //OptionsTeachers = marksManagementContext.CourseTeachers
+            //    .Where(ct => !ct.IsHeadTeacher)
+            //    .Select(ct => ct.Teacher)
+            //    .Distinct()
+            //    .Select(t =>
+            //        new SelectListItem
+            //        { 
+            //            Value = t.Id.ToString(),
+            //            Text = t.Name + " " + t.LastName
+            //        }).ToList();
+
+
             OptionsTeachers.Insert(0, new SelectListItem { Value = "", Text = "Select one head teacher for this course..." });
         }
 

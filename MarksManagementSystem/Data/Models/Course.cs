@@ -17,7 +17,7 @@ namespace MarksManagementSystem.Data.Models
         public int Credits { get; set; }
         [Required]
         public int HeadTeacherId { get; set; }
-
-        public Teacher HeadTeacher { get; set; }
+        
+        public ICollection<CourseTeacher>? CourseTeachers { get; set; }
     }
 }
