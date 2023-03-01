@@ -7,8 +7,8 @@ namespace MarksManagementSystem.Pages.Courses
 {
     public class ViewAllCoursesModel : PageModel
     {
-        private MarksManagementContext marksManagementContext;
-        public List<CourseView> AllCoursesWithTeacher { get; set; }
+        private readonly MarksManagementContext marksManagementContext;
+        public List<CourseView>? AllCoursesWithTeacher { get; set; }
 
         public ViewAllCoursesModel(MarksManagementContext context)
         {
@@ -17,15 +17,24 @@ namespace MarksManagementSystem.Pages.Courses
 
         public void OnGet()
         {
-            AllCoursesWithTeacher = marksManagementContext.Courses.Join(marksManagementContext.Teachers,
-                c => c.HeadTeacherId,
-                t => t.Id,
-                (c, t) => new CourseView
+            AllCoursesWithTeacher = marksManagementContext.Courses
+                .Select(c => new CourseView
                 {
                     CourseName = c.Name,
                     CourseCredits = c.Credits,
-                    HeadTeacherName = t.Name + " " + t.LastName
-                }).ToList();
+                    HeadTeacher = marksManagementContext.CourseTeachers
+                        .Where(ct => ct.CourseId == c.Id && ct.IsHeadTeacher == true)
+                        .Select(ct => ct.Teacher.ToString())
+                        .SingleOrDefault(),
+
+                    OtherTeachers = string.Join(", ", marksManagementContext.CourseTeachers
+                        .Where(ct => ct.CourseId == c.Id && ct.IsHeadTeacher == false)     
+                        .Select(ct => ct.Teacher.ToString())
+                        .ToList())
+                })
+                .ToList();
         }
+
+       
     }
 }

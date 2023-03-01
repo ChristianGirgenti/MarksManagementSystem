@@ -19,5 +19,6 @@ namespace MarksManagementSystem.Data.Models
         public int HeadTeacherId { get; set; }
         
         public ICollection<CourseTeacher>? CourseTeachers { get; set; }
+
     }
 }
