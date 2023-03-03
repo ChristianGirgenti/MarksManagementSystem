@@ -23,14 +23,6 @@
                         <ul class="navbar-nav me-auto mb-2 mb-md-0">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Courses
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item">View All Courses</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Students
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -49,10 +41,20 @@
                                                 <li><a asp-page="/Courses/AddCourse" class="dropdown-item">Add New Course</a></li>
                                                 <li><a asp-page="/Students/AddStudent" class="dropdown-item">Add Student</a></li>
                                                 <li><a asp-page="/Teachers/AddTeacher" class="dropdown-item">Add Teacher</a></li>
+                                                <li><a asp-page="/Courses/ViewAllCourses" class="dropdown-item">View all courses</a></li>
+                                                <li><a asp-page="/Teachers/ViewAllTeachers" class="dropdown-item">View all teachers</a></li>
                                             </ul>
                                         </li>
                                     }
                                 }
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    My Account
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                        <li><a asp-page="/Account/Logout" class="dropdown-item">Logout</a></li>
+                                </ul>
+                            </li>
                         </ul>
                         </div>
                     </div>

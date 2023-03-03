@@ -5,3 +5,29 @@
 
 <h1>All Courses</h1>
 <hr />
+
+
+<table class="table table-boardered table-striped">
+    <thead>
+        <tr>
+            <th>Course Name</th>
+            <th>Credits</th>
+            <th>Head Teacher</th>
+            <th>Other Teachers</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.AllCoursesWithTeacher != null)
+        {
+            foreach (var course in Model.AllCoursesWithTeacher)
+            {
+                <tr>
+                    <td>@course.CourseName</td>
+                    <td>@course.CourseCredits</td>
+                    <td>@course.HeadTeacher</td>
+                    <td>@course.OtherTeachers</td>
+                </tr>
+            }
+        } 
+    </tbody>
+</table>

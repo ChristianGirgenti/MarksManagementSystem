@@ -1,6 +1,6 @@
 using MarksManagementSystem.Data;
 using MarksManagementSystem.Data.Models;
-using Microsoft.AspNetCore.Authorization;
+using MarksManagementSystem.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -24,9 +24,17 @@ namespace MarksManagementSystem.Pages.Teachers
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid) return Page();
+            FormatNewTeacherValues();
             marksManagementContext.Teachers.Add(NewTeacher);
             var changes = marksManagementContext.SaveChanges();
             return RedirectToPage("ViewAllTeachers");  
+        }
+
+        public void FormatNewTeacherValues()
+        {
+            NewTeacher.Email = NewTeacher.Email.ToLower();
+            NewTeacher.Name = StringUtilities.Capitalise(NewTeacher.Name);
+            NewTeacher.LastName = StringUtilities.Capitalise(NewTeacher.LastName);
         }
     }
 }

@@ -70,6 +70,7 @@ namespace MarksManagementSystem.Pages
                 var claims = new List<Claim>
                                 {
                                     new Claim(ClaimTypes.Name, teacher.Name),
+                                    new Claim(ClaimTypes.Surname, teacher.LastName),
                                     new Claim(ClaimTypes.Email, teacher.Email),
                                     new Claim(ClaimTypes.Role, teacher.IsAdmin ? "Admin" : "Teacher")
                                 };

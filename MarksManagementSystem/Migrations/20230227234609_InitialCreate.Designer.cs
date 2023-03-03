@@ -3,6 +3,7 @@ using MarksManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarksManagementSystem.Migrations
 {
     [DbContext(typeof(MarksManagementContext))]
-    partial class MarksManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20230227234609_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,6 +35,9 @@ namespace MarksManagementSystem.Migrations
                     b.Property<int>("Credits")
                         .HasColumnType("int");
 
+                    b.Property<int>("HeadTeacherId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -39,36 +45,7 @@ namespace MarksManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("MarksManagementSystem.Data.Models.CourseTeacher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsHeadTeacher")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("CourseTeachers");
                 });
 
             modelBuilder.Entity("MarksManagementSystem.Data.Models.Teacher", b =>
@@ -81,7 +58,7 @@ namespace MarksManagementSystem.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
@@ -100,39 +77,7 @@ namespace MarksManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.ToTable("Teachers");
-                });
-
-            modelBuilder.Entity("MarksManagementSystem.Data.Models.CourseTeacher", b =>
-                {
-                    b.HasOne("MarksManagementSystem.Data.Models.Course", "Course")
-                        .WithMany("CourseTeachers")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MarksManagementSystem.Data.Models.Teacher", "Teacher")
-                        .WithMany("CourseTeachers")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("MarksManagementSystem.Data.Models.Course", b =>
-                {
-                    b.Navigation("CourseTeachers");
-                });
-
-            modelBuilder.Entity("MarksManagementSystem.Data.Models.Teacher", b =>
-                {
-                    b.Navigation("CourseTeachers");
                 });
 #pragma warning restore 612, 618
         }

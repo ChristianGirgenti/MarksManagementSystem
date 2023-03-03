@@ -16,12 +16,21 @@
     <div>
         <form method="post">
             <div class="form-group">
-                <label class="input-label" asp-for="NewCourse.Name">Name: </label>
-                <input class="input-form" asp-for="NewCourse.Name" />
-                <span class="alert-danger d-block" asp-validation-for="NewCourse.Name"></span>
+                <label class="input-label" asp-for="NewCourseViewModel.Name">Name: </label>
+                <input class="input-form" asp-for="NewCourseViewModel.Name" />
+                <span class="error-message d-block" asp-validation-for="NewCourse.Name"></span>
+
+                <label class="input-label" asp-for="NewCourseViewModel.Credits">Credits: </label>
+                <input class="input-form" asp-for="NewCourseViewModel.Credits" />
+                <span class="error-message d-block" asp-validation-for="NewCourseViewModel.Credits"></span>
+
+                <select class="input-form" asp-items="Model.OptionsTeachers" asp-for="NewCourseViewModel.HeadTeacherId"></select>
+                <span class="error-message d-block" asp-validation-for="NewCourseViewModel.HeadTeacherId"></span>
+
             </div>
 
             <button class="add-button">Add Course</button>
+
         </form>
     </div>
 </div>

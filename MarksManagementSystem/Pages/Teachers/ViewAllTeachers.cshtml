@@ -5,3 +5,28 @@
 
 <h1>All Teachers</h1>
 <hr />
+
+<table class="table table-boardered table-striped">
+    <thead>
+        <tr>
+            <th>Teacher Full Name</th>
+            <th>Teacher Email</th>
+            <th>Course Led</th>
+            <th>Other Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.AllTeachersViewModel != null)
+        {
+            foreach (var teacher in Model.AllTeachersViewModel)
+            {
+                <tr>
+                    <td>@teacher.TeacherFullName</td>
+                    <td>@teacher.TeacherEmail</td>
+                    <td>@teacher.CourseLed</td>
+                    <td>@teacher.OtherCourses</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

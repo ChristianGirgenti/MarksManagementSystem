@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarksManagementSystem.Migrations
 {
     [DbContext(typeof(MarksManagementContext))]
-    [Migration("20230219192604_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230228003049_UpdateTeachersTable")]
+    partial class UpdateTeachersTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,30 @@ namespace MarksManagementSystem.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MarksManagementSystem.Data.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Credits")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HeadTeacherId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Courses");
+                });
+
             modelBuilder.Entity("MarksManagementSystem.Data.Models.Teacher", b =>
                 {
                     b.Property<int>("Id")
@@ -31,6 +55,9 @@ namespace MarksManagementSystem.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseLedId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
