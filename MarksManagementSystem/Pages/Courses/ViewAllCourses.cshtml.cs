@@ -8,7 +8,7 @@ namespace MarksManagementSystem.Pages.Courses
     public class ViewAllCoursesModel : PageModel
     {
         private readonly MarksManagementContext marksManagementContext;
-        public List<ViewModel.ViewAllCoursesModel>? AllCoursesWithTeacher { get; set; }
+        public List<ViewAllCoursesViewModel>? AllCoursesWithTeacher { get; set; }
 
         public ViewAllCoursesModel(MarksManagementContext context)
         {
@@ -18,7 +18,7 @@ namespace MarksManagementSystem.Pages.Courses
         public void OnGet()
         {
             AllCoursesWithTeacher = marksManagementContext.Courses
-                .Select(c => new ViewAllCoursesModel
+                .Select(c => new ViewAllCoursesViewModel
                 {
                     CourseName = c.Name,
                     CourseCredits = c.Credits,
