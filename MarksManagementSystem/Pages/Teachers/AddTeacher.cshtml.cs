@@ -1,5 +1,6 @@
 using MarksManagementSystem.Data;
 using MarksManagementSystem.Data.Models;
+using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,15 +9,15 @@ namespace MarksManagementSystem.Pages.Teachers
 {
     public class AddTeacherModel : PageModel
     {
-        private MarksManagementContext marksManagementContext;
+        private readonly ITeacherRepository teacherRepository;
 
-        public AddTeacherModel(MarksManagementContext context) 
+        public AddTeacherModel(ITeacherRepository teacherRepository)
         {
-            marksManagementContext = context;
+            this.teacherRepository = teacherRepository;
         }
 
         [BindProperty]
-        public Teacher NewTeacher { get; set; }
+        public Teacher? NewTeacher { get; set; }
         public void OnGet()
         {
         }
@@ -24,9 +25,11 @@ namespace MarksManagementSystem.Pages.Teachers
         public IActionResult OnPost()
         {
             if (!ModelState.IsValid) return Page();
-            FormatNewTeacherValues();
-            marksManagementContext.Teachers.Add(NewTeacher);
-            var changes = marksManagementContext.SaveChanges();
+            if (NewTeacher != null)
+            {
+                FormatNewTeacherValues();
+                teacherRepository.Add(NewTeacher);
+            }
             return RedirectToPage("ViewAllTeachers");  
         }
 

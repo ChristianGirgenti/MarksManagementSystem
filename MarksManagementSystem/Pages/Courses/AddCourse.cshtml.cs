@@ -6,24 +6,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using MarksManagementSystem.Helpers;
 using MarksManagementSystem.ViewModel;
+using MarksManagementSystem.Data.Repositories;
 
 namespace MarksManagementSystem.Pages.Courses
 {
     public class AddCourseModel : PageModel
     {
-        private MarksManagementContext marksManagementContext;
+        private readonly ICourseRepository courseRepository;
+        private readonly ITeacherRepository teacherRepository;
+        private readonly ICourseTeacherRepository courseTeacherRepository;
         private const int SQL_UNIQUE_CONSTRAINT_EX = 2601;
         private const int SQL_UNIQUE_CONSTRAINT_EX2 = 2627;
 
 
-        public AddCourseModel(MarksManagementContext context)
+        public AddCourseModel(ICourseRepository courseRepository, ITeacherRepository teacherRepository, ICourseTeacherRepository courseTeacherRepository)
         {
-            marksManagementContext = context;
+            this.courseRepository = courseRepository;
+            this.teacherRepository = teacherRepository;
+            this.courseTeacherRepository = courseTeacherRepository; 
         }
 
         [BindProperty]
-        public AddCourseViewModel NewCourseViewModel { get; set; }
-        public Course NewCourse { get; set; }
+        public AddCourseViewModel? NewCourseViewModel { get; set; }
+        public Course? NewCourse { get; set; }
         public List<SelectListItem> OptionsTeachers { get; set; } = new List<SelectListItem>();
         public void OnGet()
         {
@@ -46,15 +51,13 @@ namespace MarksManagementSystem.Pages.Courses
             {
                 FormatNewCourseValues();
                 NewCourse = new Course(NewCourseViewModel.Name, NewCourseViewModel.Credits);
-                marksManagementContext.Courses.Add(NewCourse);
-                var changes = marksManagementContext.SaveChanges();
-                var headTeacher = marksManagementContext.Teachers.SingleOrDefault(t => t.Id == NewCourseViewModel.HeadTeacherId);
+                courseRepository.Add(NewCourse);
+                var headTeacher = teacherRepository.GetAll().SingleOrDefault(t => t.Id == NewCourseViewModel.HeadTeacherId);
                 if (headTeacher != null)
                 {
                     var courseTeacher = new CourseTeacher { Course = NewCourse, Teacher = headTeacher, IsHeadTeacher = true };
-                    marksManagementContext.CourseTeachers.Add(courseTeacher);
+                    courseTeacherRepository.Add(courseTeacher);
                 }
-                changes = marksManagementContext.SaveChanges();
                 return RedirectToPage("ViewAllCourses");
             }
             catch (Exception ex) {
@@ -70,11 +73,11 @@ namespace MarksManagementSystem.Pages.Courses
         public void ShowTeachersInSelectionList()
         {
 
-            var headTeachers = marksManagementContext.CourseTeachers
+            var headTeachers = courseTeacherRepository.GetAll()
                 .Where(ct => ct.IsHeadTeacher)
                 .Select(ct => ct.Teacher);
 
-            var nonHeadTeachers = marksManagementContext.Teachers
+            var nonHeadTeachers = teacherRepository.GetAll()
                 .Where(t => !headTeachers.Contains(t))
                 .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Name + " " + t.LastName })
                 .ToList();
