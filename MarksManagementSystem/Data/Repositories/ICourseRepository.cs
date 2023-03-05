@@ -6,7 +6,7 @@ namespace MarksManagementSystem.Data.Repositories
     {
         public void Add(Course course);
         public void Update(Course course);
-        public void GetById(int id);
+        public Course GetById(int id);
         public void Delete(int id);
         public List<Course> GetAll();
 

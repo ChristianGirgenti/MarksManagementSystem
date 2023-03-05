@@ -1,7 +1,9 @@
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Helpers;
 using MarksManagementSystem.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace MarksManagementSystem.Pages.Courses
 {
@@ -10,7 +12,6 @@ namespace MarksManagementSystem.Pages.Courses
         private readonly ICourseRepository courseRepository;
         private readonly ICourseTeacherRepository courseTeacherRepository;
         public List<ViewAllCoursesViewModel>? AllCoursesWithTeacher { get; set; }
-
         public ViewAllCoursesModel(ICourseRepository courseRepository, ICourseTeacherRepository courseTeacherRepository)
         {
             this.courseRepository = courseRepository;
@@ -23,6 +24,7 @@ namespace MarksManagementSystem.Pages.Courses
             AllCoursesWithTeacher = courseRepository.GetAll()
                 .Select(c => new ViewAllCoursesViewModel
                 {
+                    CourseId = c.Id,
                     CourseName = c.Name,
                     CourseCredits = c.Credits,
                     HeadTeacher = courseTeacherRepository.GetAll()
@@ -36,6 +38,21 @@ namespace MarksManagementSystem.Pages.Courses
                         .ToList())
                 })
                 .ToList();
+        }
+
+        public IActionResult OnPostDelete(int id)
+        {
+            try
+            {
+                courseRepository.Delete(id);
+                TempData["SuccessMessage"] = "The course has been deleted successfully.";
+                return RedirectToPage("ViewAllCourses"); 
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while deleting the course: " + ex.Message;
+                return RedirectToPage("ViewAllCourses");
+            }
         }
 
        

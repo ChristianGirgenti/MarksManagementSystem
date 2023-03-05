@@ -26,8 +26,21 @@
                     <td>@course.CourseCredits</td>
                     <td>@course.HeadTeacher</td>
                     <td>@course.OtherTeachers</td>
+                    <td>
+                        <form asp-page-handler="delete" method="post" asp-route-id="@course.CourseId">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             }
         } 
+        @if (TempData["SuccessMessage"] != null)
+        {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
     </tbody>
 </table>

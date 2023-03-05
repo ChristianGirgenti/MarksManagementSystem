@@ -37,16 +37,8 @@ namespace MarksManagementSystem.Pages.Courses
 
         public IActionResult OnPost()
         {
-            if (!ModelState.IsValid)
-            {
-
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-                return Page();
-            }
-
+            if (!ModelState.IsValid) return Page();
+            
             try
             {
                 FormatNewCourseValues();

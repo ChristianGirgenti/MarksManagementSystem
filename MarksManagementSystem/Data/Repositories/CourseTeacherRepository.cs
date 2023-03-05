@@ -30,9 +30,9 @@ namespace MarksManagementSystem.Data.Repositories
                 .ToList();  
         }
 
-        public void GetById(int id)
+        public CourseTeacher GetById(int id)
         {
-            throw new NotImplementedException();
+            return marksManagementContext.CourseTeachers.FirstOrDefault(ct => ct.Id == id); 
         }
 
         public void Update(CourseTeacher course)

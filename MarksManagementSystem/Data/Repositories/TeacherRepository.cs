@@ -19,7 +19,11 @@ namespace MarksManagementSystem.Data.Repositories
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var deleteTeacher = marksManagementContext.Teachers.FirstOrDefault(c => c.Id == id);
+            if (deleteTeacher == null) throw new ArgumentNullException(nameof(id));
+
+            marksManagementContext.Teachers.Remove(deleteTeacher);
+            marksManagementContext.SaveChanges();
         }
 
         public List<Teacher> GetAll()
@@ -27,9 +31,10 @@ namespace MarksManagementSystem.Data.Repositories
             return marksManagementContext.Teachers.ToList();
         }
 
-        public void GetById(int id)
+        public Teacher GetById(int id)
         {
-            throw new NotImplementedException();
+            
+            return marksManagementContext.Teachers.FirstOrDefault(t => t.Id == id); 
         }
 
         public void Update(Teacher course)
