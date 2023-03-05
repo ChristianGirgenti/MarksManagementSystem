@@ -55,6 +55,12 @@ namespace MarksManagementSystem.Pages.Courses
             }
         }
 
-       
+        public IActionResult OnPostEdit(int Id)
+        {
+
+            return RedirectToPage("EditCourse", new { Id });
+        }
+
+
     }
 }

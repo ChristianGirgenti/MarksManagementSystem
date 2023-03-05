@@ -40,7 +40,8 @@ namespace MarksManagementSystem.Data.Repositories
 
         public void Update(Course course)
         {
-            throw new NotImplementedException();
+            marksManagementContext.Entry(course).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            marksManagementContext.SaveChanges();
         }
     }
 }

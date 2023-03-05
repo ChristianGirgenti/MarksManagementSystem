@@ -35,9 +35,10 @@ namespace MarksManagementSystem.Data.Repositories
             return marksManagementContext.CourseTeachers.FirstOrDefault(ct => ct.Id == id); 
         }
 
-        public void Update(CourseTeacher course)
+        public void Update(CourseTeacher courseTeacher)
         {
-            throw new NotImplementedException();
+            marksManagementContext.Entry(courseTeacher).State = EntityState.Modified;
+            marksManagementContext.SaveChanges();
         }
     }
 }

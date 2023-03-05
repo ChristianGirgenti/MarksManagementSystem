@@ -2,6 +2,7 @@ using MarksManagementSystem.Data;
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Migrations;
 using MarksManagementSystem.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
@@ -72,6 +73,12 @@ namespace MarksManagementSystem.Pages.Teachers
                     return RedirectToPage("ViewAllTeachers");
                 }
             }     
+        }
+
+        public IActionResult OnPostEdit(int Id)
+        {
+            
+            return RedirectToPage("EditTeacher", new { Id });
         }
     }
 }
