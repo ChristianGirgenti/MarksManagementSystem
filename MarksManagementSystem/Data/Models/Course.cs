@@ -15,11 +15,5 @@ namespace MarksManagementSystem.Data.Models
         [Range(1,50, ErrorMessage = "Credits must be between 1 and 50")]
         public int Credits { get; set; }        
         public ICollection<CourseTeacher>? CourseTeachers { get; set; }
-
-        public Course(string name, int credits)
-        {
-            Name = name;
-            Credits = credits;
-        }
     }
 }

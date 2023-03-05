@@ -27,8 +27,9 @@ namespace MarksManagementSystem.Pages.Courses
         }
 
         [BindProperty]
-        public AddCourseViewModel? NewCourseViewModel { get; set; }
-        public Course? NewCourse { get; set; }
+        public AddEditCourseViewModel? NewCourseViewModel { get; set; }
+        
+        public Course? NewCourse;
         public List<SelectListItem> OptionsTeachers { get; set; } = new List<SelectListItem>();
         public void OnGet()
         {
@@ -41,15 +42,11 @@ namespace MarksManagementSystem.Pages.Courses
             
             try
             {
-                FormatNewCourseValues();
-                NewCourse = new Course(NewCourseViewModel.Name, NewCourseViewModel.Credits);
-                courseRepository.Add(NewCourse);
-                var headTeacher = teacherRepository.GetAll().SingleOrDefault(t => t.Id == NewCourseViewModel.HeadTeacherId);
-                if (headTeacher != null)
-                {
-                    var courseTeacher = new CourseTeacher { Course = NewCourse, Teacher = headTeacher, IsHeadTeacher = true };
-                    courseTeacherRepository.Add(courseTeacher);
-                }
+                if (NewCourseViewModel == null) throw new ArgumentNullException(nameof(NewCourseViewModel));
+                
+                NewCourse = AddCourse(NewCourseViewModel);
+                AddHeadTeacherLinkToCourse(NewCourseViewModel, NewCourse);
+                
                 return RedirectToPage("ViewAllCourses");
             }
             catch (Exception ex) {
@@ -77,10 +74,34 @@ namespace MarksManagementSystem.Pages.Courses
             OptionsTeachers = nonHeadTeachers;
             OptionsTeachers.Insert(0, new SelectListItem { Value = "", Text = "Select one head teacher for this course..." });
         }
-
-        public void FormatNewCourseValues()
+        public void FormatNewCourseValues(Course newCourse)
         {
-            NewCourseViewModel.Name = StringUtilities.Capitalise(NewCourseViewModel.Name);
+            if (newCourse == null) throw new ArgumentNullException(nameof(newCourse));
+            newCourse.Name = StringUtilities.Capitalise(newCourse.Name);
+        }
+        public Course AddCourse(AddEditCourseViewModel newCourseViewModel)
+        {
+            if (newCourseViewModel == null) throw new ArgumentNullException(nameof(newCourseViewModel));
+            NewCourse = new Course
+            {
+                Name = newCourseViewModel.Name,
+                Credits = newCourseViewModel.Credits
+            };
+            FormatNewCourseValues(NewCourse);
+            courseRepository.Add(NewCourse);
+            return NewCourse;
+        }
+        public void AddHeadTeacherLinkToCourse(AddEditCourseViewModel newCourseViewModel, Course newCourse)
+        {
+            if (newCourseViewModel == null) throw new ArgumentNullException(nameof(newCourseViewModel));
+            if (newCourse == null) throw new ArgumentNullException(nameof(newCourse));
+
+            var headTeacher = teacherRepository.GetAll().SingleOrDefault(t => t.Id == newCourseViewModel.HeadTeacherId);
+            if (headTeacher != null)
+            {
+                var courseTeacher = new CourseTeacher { Course = newCourse, Teacher = headTeacher, IsHeadTeacher = true };
+                courseTeacherRepository.Add(courseTeacher);
+            }
         }
     }
 }

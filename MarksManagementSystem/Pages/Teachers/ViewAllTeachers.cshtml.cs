@@ -12,29 +12,29 @@ namespace MarksManagementSystem.Pages.Teachers
 {
     public class ViewAllTeachersModel : PageModel
     {
-        private readonly ITeacherRepository teacherRepository;
-        private readonly ICourseTeacherRepository courseTeacherRepository;
+        private readonly ITeacherRepository _teacherRepository;
+        private readonly ICourseTeacherRepository _courseTeacherRepository;
         public List<ViewAllTeachersViewModel>? AllTeachersViewModel { get; set; }
 
         public ViewAllTeachersModel(ITeacherRepository teacherRepository, ICourseTeacherRepository courseTeacherRepository)
         {
-            this.teacherRepository = teacherRepository;
-            this.courseTeacherRepository = courseTeacherRepository;
+            _teacherRepository = teacherRepository;
+            _courseTeacherRepository = courseTeacherRepository;
         }
         public void OnGet()
         {
-            AllTeachersViewModel = teacherRepository.GetAll()
+            AllTeachersViewModel = _teacherRepository.GetAll()
                .Select(t => new ViewAllTeachersViewModel
                {
                    TeacherId = t.Id,
                    TeacherFullName = t.Name + " " + t.LastName,
                    TeacherEmail = t.Email,
-                   CourseLed = courseTeacherRepository.GetAll()
+                   CourseLed = _courseTeacherRepository.GetAll()
                        .Where(ct => ct.TeacherId == t.Id && ct.IsHeadTeacher == true)
                        .Select(ct => ct.Course.Name)
                        .SingleOrDefault(),
 
-                   OtherCourses = string.Join(", ", courseTeacherRepository.GetAll()
+                   OtherCourses = string.Join(", ", _courseTeacherRepository.GetAll()
                        .Where(ct => ct.TeacherId == t.Id && ct.IsHeadTeacher == false)
                        .Select(ct => ct.Course.Name)
                        .ToList())
@@ -44,7 +44,7 @@ namespace MarksManagementSystem.Pages.Teachers
 
         public IActionResult OnPostDelete(int id)
         {
-            if (courseTeacherRepository.GetAll().Where(ct => ct.TeacherId==id && ct.IsHeadTeacher==true).Any())
+            if (_courseTeacherRepository.GetAll().Where(ct => ct.TeacherId==id && ct.IsHeadTeacher==true).Any())
             {
                 {
                     TempData["ErrorMessage"] = "You cannot delete this teacher because he is head teacher of a course. Remove the link between head teacher and course.";
@@ -55,9 +55,9 @@ namespace MarksManagementSystem.Pages.Teachers
             {
                 try
                 {
-                    if (teacherRepository.GetById(id).Email != (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value))
+                    if (_teacherRepository.GetById(id).Email != (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value))
                     {
-                        teacherRepository.Delete(id);
+                        _teacherRepository.Delete(id);
                         TempData["SuccessMessage"] = "Teacher has been deleted successfully.";
                         return RedirectToPage("ViewAllTeachers");
                     }

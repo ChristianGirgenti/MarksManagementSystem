@@ -9,30 +9,29 @@ namespace MarksManagementSystem.Pages.Courses
 {
     public class ViewAllCoursesModel : PageModel
     {
-        private readonly ICourseRepository courseRepository;
-        private readonly ICourseTeacherRepository courseTeacherRepository;
+        private readonly ICourseRepository _courseRepository;
+        private readonly ICourseTeacherRepository _courseTeacherRepository;
         public List<ViewAllCoursesViewModel>? AllCoursesWithTeacher { get; set; }
         public ViewAllCoursesModel(ICourseRepository courseRepository, ICourseTeacherRepository courseTeacherRepository)
         {
-            this.courseRepository = courseRepository;
-            this.courseTeacherRepository = courseTeacherRepository; 
+            _courseRepository = courseRepository;
+            _courseTeacherRepository = courseTeacherRepository; 
         }
 
         public void OnGet()
         {
-            var x = courseTeacherRepository.GetAll();
-            AllCoursesWithTeacher = courseRepository.GetAll()
+            AllCoursesWithTeacher = _courseRepository.GetAll()
                 .Select(c => new ViewAllCoursesViewModel
                 {
                     CourseId = c.Id,
                     CourseName = c.Name,
                     CourseCredits = c.Credits,
-                    HeadTeacher = courseTeacherRepository.GetAll()
+                    HeadTeacher = _courseTeacherRepository.GetAll()
                         .Where(ct => ct.CourseId == c.Id && ct.IsHeadTeacher == true)
                         .Select(ct => ct.Teacher.ToString())
                         .SingleOrDefault(),
 
-                    OtherTeachers = string.Join(", ", courseTeacherRepository.GetAll()
+                    OtherTeachers = string.Join(", ", _courseTeacherRepository.GetAll()
                         .Where(ct => ct.CourseId == c.Id && ct.IsHeadTeacher == false)     
                         .Select(ct => ct.Teacher.ToString())
                         .ToList())
@@ -42,9 +41,10 @@ namespace MarksManagementSystem.Pages.Courses
 
         public IActionResult OnPostDelete(int id)
         {
+            if (id <= 0) throw new ArgumentNullException(nameof(id));
             try
             {
-                courseRepository.Delete(id);
+                _courseRepository.Delete(id);
                 TempData["SuccessMessage"] = "The course has been deleted successfully.";
                 return RedirectToPage("ViewAllCourses"); 
             }
@@ -57,7 +57,7 @@ namespace MarksManagementSystem.Pages.Courses
 
         public IActionResult OnPostEdit(int Id)
         {
-
+            if (Id <= 0) throw new ArgumentNullException(nameof(Id));
             return RedirectToPage("EditCourse", new { Id });
         }
 

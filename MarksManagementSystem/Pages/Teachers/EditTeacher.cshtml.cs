@@ -9,7 +9,7 @@ namespace MarksManagementSystem.Pages.Teachers
 {
     public class EditTeacherModel : PageModel
     {
-        private ITeacherRepository _teacherRepository;
+        private readonly ITeacherRepository _teacherRepository;
         private const int SQL_UNIQUE_CONSTRAINT_EX = 2601;
         private const int SQL_UNIQUE_CONSTRAINT_EX2 = 2627;
 
@@ -31,45 +31,38 @@ namespace MarksManagementSystem.Pages.Teachers
 
         public IActionResult OnPost()
         {
-            if (!ModelState.IsValid)
-            {
-                foreach (var entry in ModelState.Values)
-                {
-                    foreach (var error in entry.Errors)
-                    {
-                        var x = error.ErrorMessage;
-                    }
-                }
-
-                return Page();
-            }
-
+            if (!ModelState.IsValid) return Page();
+            
             try
             {
-                if (EditTeacher != null)
-                {
-                    FormatNewTeacherValues();
-                    EditTeacher.Id = Id;
-                    _teacherRepository.Update(EditTeacher);
-                }
+                if (EditTeacher == null) throw new ArgumentNullException(nameof(EditTeacher));
+                UpdateTeacher(EditTeacher);
                 return RedirectToPage("ViewAllTeachers");
             }
             catch (Exception ex)
             {
                 if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX || sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
-                {
                     ModelState.AddModelError("EditTeacher.Email", "A teacher with the same email address already exists.");
-                }
+                
                 return Page();
             }
 
         }
 
-        public void FormatNewTeacherValues()
+        public void FormatEditTeacherValues(Teacher editTeacher)
         {
-            EditTeacher.Email = EditTeacher.Email.ToLower();
-            EditTeacher.Name = StringUtilities.Capitalise(EditTeacher.Name);
-            EditTeacher.LastName = StringUtilities.Capitalise(EditTeacher.LastName);
+            editTeacher.Email = editTeacher.Email.ToLower();
+            var nameLower = editTeacher.Name.ToLower();
+            var lastNameLower = editTeacher.LastName.ToLower();
+            editTeacher.Name = StringUtilities.Capitalise(nameLower);
+            editTeacher.LastName = StringUtilities.Capitalise(lastNameLower);
+        }
+
+        public void UpdateTeacher(Teacher teacher)
+        {
+            FormatEditTeacherValues(teacher);
+            teacher.Id = Id;
+            _teacherRepository.Update(teacher);
         }
     }
 }

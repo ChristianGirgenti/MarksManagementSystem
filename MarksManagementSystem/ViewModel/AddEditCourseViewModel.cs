@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MarksManagementSystem.ViewModel
 {
-    public class AddCourseViewModel
+    public class AddEditCourseViewModel
     {
         [MaxLength(50, ErrorMessage = "The name of the course can be max 50 characters")]
         [Required]
