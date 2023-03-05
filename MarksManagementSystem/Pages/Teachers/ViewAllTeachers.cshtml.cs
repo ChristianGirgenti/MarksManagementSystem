@@ -43,26 +43,35 @@ namespace MarksManagementSystem.Pages.Teachers
 
         public IActionResult OnPostDelete(int id)
         {
-            try
+            if (courseTeacherRepository.GetAll().Where(ct => ct.TeacherId==id && ct.IsHeadTeacher==true).Any())
             {
-                if (teacherRepository.GetById(id).Email != (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value))
                 {
-                    teacherRepository.Delete(id);
-                    TempData["SuccessMessage"] = "Teacher has been deleted successfully.";
+                    TempData["ErrorMessage"] = "You cannot delete this teacher because he is head teacher of a course. Remove the link between head teacher and course.";
                     return RedirectToPage("ViewAllTeachers");
                 }
-                else
-                {
-                    TempData["ErrorMessage"] = "You cannot delete your own account.";
-                    return RedirectToPage("ViewAllTeachers");
-                }          
             }
-            catch (Exception ex)
+            else
             {
-                TempData["ErrorMessage"] = "An error occurred while deleting the teacher: " + ex.Message;
-                return RedirectToPage("ViewAllTeachers");
-            }       
-          
+                try
+                {
+                    if (teacherRepository.GetById(id).Email != (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value))
+                    {
+                        teacherRepository.Delete(id);
+                        TempData["SuccessMessage"] = "Teacher has been deleted successfully.";
+                        return RedirectToPage("ViewAllTeachers");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "You cannot delete your own account.";
+                        return RedirectToPage("ViewAllTeachers");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "An error occurred while deleting the teacher: " + ex.Message;
+                    return RedirectToPage("ViewAllTeachers");
+                }
+            }     
         }
     }
 }
