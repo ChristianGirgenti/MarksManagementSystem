@@ -38,16 +38,16 @@ namespace MarksManagementSystem.Pages.Courses
             var courseToEdit = courseRepository.GetById(Id);
             courseToEdit.CourseTeachers = courseTeacherRepository.GetAll().Where(ct => ct.CourseId == Id).ToList();
             
-            int headTeacherId = courseToEdit.CourseTeachers.FirstOrDefault(ct => ct.CourseId == Id && ct.IsHeadTeacher).TeacherId;
+            int unitLeaderId = courseToEdit.CourseTeachers.FirstOrDefault(ct => ct.CourseId == Id && ct.IsUnitLeader).TeacherId;
 
 
             EditCourseViewModel = new AddEditCourseViewModel
             {
                 Name = courseToEdit.Name,
                 Credits = courseToEdit.Credits,
-                HeadTeacherId = headTeacherId
+                UnitLeaderId = unitLeaderId
             };
-            ShowTeachersInSelectionList(EditCourseViewModel.HeadTeacherId);
+            ShowTeachersInSelectionList(EditCourseViewModel.UnitLeaderId);
         }
 
         public IActionResult OnPost()
@@ -60,7 +60,7 @@ namespace MarksManagementSystem.Pages.Courses
 
                 FormatNewCourseValues(EditCourseViewModel);
                 EditedCourse = EditCourse(Id, EditCourseViewModel);
-                EditHeadTeacher(EditCourseViewModel, EditedCourse);                
+                ChangeUnitLeader(EditCourseViewModel, EditedCourse);                
                 return RedirectToPage("ViewAllCourses");
             }
             catch (Exception ex)
@@ -70,28 +70,28 @@ namespace MarksManagementSystem.Pages.Courses
                     ModelState.AddModelError("NewCourse.Name", "A course with the same name already exists.");
                     
                     if (EditCourseViewModel == null) throw new ArgumentNullException(nameof(EditCourseViewModel));
-                    ShowTeachersInSelectionList(EditCourseViewModel.HeadTeacherId);
+                    ShowTeachersInSelectionList(EditCourseViewModel.UnitLeaderId);
                 }
                 return Page();
             }
         }
 
-        public void ShowTeachersInSelectionList(int headTeacherId)
+        public void ShowTeachersInSelectionList(int unitLeaderId)
         {
-            if (headTeacherId <= 0) throw new ArgumentNullException(nameof(headTeacherId));
+            if (unitLeaderId <= 0) throw new ArgumentNullException(nameof(unitLeaderId));
             
-            var headTeachers = courseTeacherRepository.GetAll()
-                .Where(ct => ct.IsHeadTeacher)
+            var unitLeaders = courseTeacherRepository.GetAll()
+                .Where(ct => ct.IsUnitLeader)
                 .Select(ct => ct.Teacher);
 
-            var nonHeadTeachers = teacherRepository.GetAll()
-                .Where(t => !headTeachers.Contains(t))
+            var nonUnitLeaders = teacherRepository.GetAll()
+                .Where(t => !unitLeaders.Contains(t))
                 .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Name + " " + t.LastName })
                 .ToList();
 
-            OptionsTeachers = nonHeadTeachers;
-            var currentHeadTeacher = headTeachers.Where(ht => ht.Id == headTeacherId).FirstOrDefault();
-            OptionsTeachers.Insert(0, new SelectListItem { Value = currentHeadTeacher.Id.ToString(), Text = currentHeadTeacher.Name + " " + currentHeadTeacher.LastName });
+            OptionsTeachers = nonUnitLeaders;
+            var currentUnitLeader = unitLeaders.Where(ht => ht.Id == unitLeaderId).FirstOrDefault();
+            OptionsTeachers.Insert(0, new SelectListItem { Value = currentUnitLeader.Id.ToString(), Text = currentUnitLeader.Name + " " + currentUnitLeader.LastName });
         }
         
         public void FormatNewCourseValues(AddEditCourseViewModel editCourseViewModel)
@@ -116,21 +116,21 @@ namespace MarksManagementSystem.Pages.Courses
             return courseEdited;
         }
 
-        public void EditHeadTeacher(AddEditCourseViewModel editCourseViewModel, Course courseEdited)
+        public void ChangeUnitLeader(AddEditCourseViewModel editCourseViewModel, Course courseEdited)
         {
             if (editCourseViewModel == null) throw new ArgumentNullException(nameof(editCourseViewModel));
             if (courseEdited == null) throw new ArgumentNullException(nameof(courseEdited)); 
 
-            var newHeadTeacher = teacherRepository.GetAll().SingleOrDefault(t => t.Id == editCourseViewModel.HeadTeacherId);
-            if (newHeadTeacher != null)
+            var newUnitLeader = teacherRepository.GetAll().SingleOrDefault(t => t.Id == editCourseViewModel.UnitLeaderId);
+            if (newUnitLeader != null)
             {
                 var currentCourseTeacher = courseTeacherRepository.GetAll()
-                    .Where(ct => ct.CourseId == courseEdited.Id && ct.IsHeadTeacher == true)
+                    .Where(ct => ct.CourseId == courseEdited.Id && ct.IsUnitLeader == true)
                     .FirstOrDefault();
                 if (currentCourseTeacher != null)
                 {
                     currentCourseTeacher.Course = courseEdited;
-                    currentCourseTeacher.Teacher = newHeadTeacher;
+                    currentCourseTeacher.Teacher = newUnitLeader;
                     courseTeacherRepository.Update(currentCourseTeacher);
                 }
             }

@@ -9,6 +9,6 @@ namespace MarksManagementSystem.Data.Models
         public int TeacherId { get;set; }
         public Course Course { get; set; }
         public Teacher Teacher { get; set;}
-        public bool IsHeadTeacher { get; set; }
+        public bool IsUnitLeader { get; set; }
     }
 }

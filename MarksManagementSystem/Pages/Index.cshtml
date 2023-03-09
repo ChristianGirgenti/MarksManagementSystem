@@ -6,7 +6,7 @@
 
 <div class="text-center">
    @* @{
-        if (HttpContext.User.Claims.FirstOrDefault(x => x.Value == "Admin") != null && Model.HasCoursesWithoutHeadTeacher)
+        if (HttpContext.User.Claims.FirstOrDefault(x => x.Value == "Admin") != null && Model.HasCoursesWithoutUnitLeader)
         {
             <div class="alert alert-danger">
               <h4>Attention!</h4>

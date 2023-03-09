@@ -30,12 +30,12 @@ namespace MarksManagementSystem.Pages.Teachers
                    TeacherFullName = t.Name + " " + t.LastName,
                    TeacherEmail = t.Email,
                    CourseLed = _courseTeacherRepository.GetAll()
-                       .Where(ct => ct.TeacherId == t.Id && ct.IsHeadTeacher == true)
+                       .Where(ct => ct.TeacherId == t.Id && ct.IsUnitLeader == true)
                        .Select(ct => ct.Course.Name)
                        .SingleOrDefault(),
 
                    OtherCourses = string.Join(", ", _courseTeacherRepository.GetAll()
-                       .Where(ct => ct.TeacherId == t.Id && ct.IsHeadTeacher == false)
+                       .Where(ct => ct.TeacherId == t.Id && ct.IsUnitLeader == false)
                        .Select(ct => ct.Course.Name)
                        .ToList())
                })
@@ -44,10 +44,10 @@ namespace MarksManagementSystem.Pages.Teachers
 
         public IActionResult OnPostDelete(int id)
         {
-            if (_courseTeacherRepository.GetAll().Where(ct => ct.TeacherId==id && ct.IsHeadTeacher==true).Any())
+            if (_courseTeacherRepository.GetAll().Where(ct => ct.TeacherId==id && ct.IsUnitLeader==true).Any())
             {
                 {
-                    TempData["ErrorMessage"] = "You cannot delete this teacher because he is head teacher of a course. Remove the link between head teacher and course.";
+                    TempData["ErrorMessage"] = "You cannot delete this teacher because is unit leader of a course. Remove the link between unit leader and course.";
                     return RedirectToPage("ViewAllTeachers");
                 }
             }

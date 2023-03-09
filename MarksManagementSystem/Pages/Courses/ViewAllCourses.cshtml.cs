@@ -26,13 +26,13 @@ namespace MarksManagementSystem.Pages.Courses
                     CourseId = c.Id,
                     CourseName = c.Name,
                     CourseCredits = c.Credits,
-                    HeadTeacher = _courseTeacherRepository.GetAll()
-                        .Where(ct => ct.CourseId == c.Id && ct.IsHeadTeacher == true)
+                    UnitLeader = _courseTeacherRepository.GetAll()
+                        .Where(ct => ct.CourseId == c.Id && ct.IsUnitLeader == true)
                         .Select(ct => ct.Teacher.ToString())
                         .SingleOrDefault(),
 
                     OtherTeachers = string.Join(", ", _courseTeacherRepository.GetAll()
-                        .Where(ct => ct.CourseId == c.Id && ct.IsHeadTeacher == false)     
+                        .Where(ct => ct.CourseId == c.Id && ct.IsUnitLeader == false)     
                         .Select(ct => ct.Teacher.ToString())
                         .ToList())
                 })

@@ -12,8 +12,8 @@ namespace MarksManagementSystem.Pages
         private readonly ICourseRepository _courseRepository;
         private readonly ICourseTeacherRepository _courseTeacherRepository;
 
-        public bool HasCoursesWithoutHeadTeacher { get; set; } 
-        public IQueryable<Course> CoursesWithoutHeadTeacher { get;set; }
+        public bool HasCoursesWithoutUnitLeader { get; set; } 
+        public IQueryable<Course> CoursesWithoutUnitLeader { get;set; }
         public IQueryable<Course> CourseWithoutTeachers { get; set; }
 
         public IndexModel(ICourseRepository courseRepository, ICourseTeacherRepository courseTeacherRepository)

@@ -45,7 +45,7 @@ namespace MarksManagementSystem.Pages.Courses
                 if (NewCourseViewModel == null) throw new ArgumentNullException(nameof(NewCourseViewModel));
                 
                 NewCourse = AddCourse(NewCourseViewModel);
-                AddHeadTeacherLinkToCourse(NewCourseViewModel, NewCourse);
+                AddUnitLeaderLinkToCourse(NewCourseViewModel, NewCourse);
                 
                 return RedirectToPage("ViewAllCourses");
             }
@@ -62,17 +62,17 @@ namespace MarksManagementSystem.Pages.Courses
         public void ShowTeachersInSelectionList()
         {
 
-            var headTeachers = courseTeacherRepository.GetAll()
-                .Where(ct => ct.IsHeadTeacher)
+            var unitLeaders = courseTeacherRepository.GetAll()
+                .Where(ct => ct.IsUnitLeader)
                 .Select(ct => ct.Teacher);
 
-            var nonHeadTeachers = teacherRepository.GetAll()
-                .Where(t => !headTeachers.Contains(t))
+            var nonUnitLeaders = teacherRepository.GetAll()
+                .Where(t => !unitLeaders.Contains(t))
                 .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Name + " " + t.LastName })
                 .ToList();
 
-            OptionsTeachers = nonHeadTeachers;
-            OptionsTeachers.Insert(0, new SelectListItem { Value = "", Text = "Select one head teacher for this course..." });
+            OptionsTeachers = nonUnitLeaders;
+            OptionsTeachers.Insert(0, new SelectListItem { Value = "", Text = "Select one unit leader for this course..." });
         }
         public void FormatNewCourseValues(Course newCourse)
         {
@@ -91,15 +91,15 @@ namespace MarksManagementSystem.Pages.Courses
             courseRepository.Add(NewCourse);
             return NewCourse;
         }
-        public void AddHeadTeacherLinkToCourse(AddEditCourseViewModel newCourseViewModel, Course newCourse)
+        public void AddUnitLeaderLinkToCourse(AddEditCourseViewModel newCourseViewModel, Course newCourse)
         {
             if (newCourseViewModel == null) throw new ArgumentNullException(nameof(newCourseViewModel));
             if (newCourse == null) throw new ArgumentNullException(nameof(newCourse));
 
-            var headTeacher = teacherRepository.GetAll().SingleOrDefault(t => t.Id == newCourseViewModel.HeadTeacherId);
-            if (headTeacher != null)
+            var unitLeader = teacherRepository.GetAll().SingleOrDefault(t => t.Id == newCourseViewModel.UnitLeaderId);
+            if (unitLeader != null)
             {
-                var courseTeacher = new CourseTeacher { Course = newCourse, Teacher = headTeacher, IsHeadTeacher = true };
+                var courseTeacher = new CourseTeacher { Course = newCourse, Teacher = unitLeader, IsUnitLeader = true };
                 courseTeacherRepository.Add(courseTeacher);
             }
         }

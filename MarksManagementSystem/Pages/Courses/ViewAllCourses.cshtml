@@ -12,7 +12,7 @@
         <tr>
             <th>Course Name</th>
             <th>Credits</th>
-            <th>Head Teacher</th>
+            <th>Unit Leader</th>
             <th>Other Teachers</th>
         </tr>
     </thead>
@@ -24,7 +24,7 @@
                 <tr>
                     <td>@course.CourseName</td>
                     <td>@course.CourseCredits</td>
-                    <td>@course.HeadTeacher</td>
+                    <td>@course.UnitLeader</td>
                     <td>@course.OtherTeachers</td>
                     <td>
                         <form asp-page-handler="delete" method="post" asp-route-id="@course.CourseId">
