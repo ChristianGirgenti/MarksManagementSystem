@@ -1,0 +1,37 @@
+﻿@page
+@model MarksManagementSystem.Pages.Tutors.AddTutorModel
+@{
+    ViewData["Title"] = "Add Tutor";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div>
+    <div>
+        <form method="post">
+            <div class="form-group">
+                <label class="input-label" asp-for="NewTutor.Name">Name: </label>
+                <input class="input-form" asp-for="NewTutor.Name" />
+                <span class="error-message d-block" asp-validation-for="NewTutor.Name"></span>
+
+
+                <label class="input-label" asp-for="NewTutor.LastName">Last Name: </label>
+                <input class="input-form" asp-for="NewTutor.LastName" />               
+                <span class="error-message d-block" asp-validation-for="NewTutor.LastName"></span>
+
+                <label class="input-label" asp-for="NewTutor.Email">Email: </label>
+                <input class="input-form" type="email" asp-for="NewTutor.Email" />
+                <span class="error-message d-block" asp-validation-for="NewTutor.Email"></span>
+
+                <label class="input-label" asp-for="NewTutor.Password">Password: </label>
+                <input class="input-form" type="password" asp-for="NewTutor.Password" />
+                <span class="error-message d-block" asp-validation-for="NewTutor.Password"></span>
+
+                <label class="input-label" asp-for="NewTutor.IsAdmin">Is Admin: </label>
+                <input class="input-form" type="checkbox" asp-for="NewTutor.IsAdmin" />
+            </div>
+
+            <button type="submit" class="add-button">Add Tutor</button>
+        </form>
+    </div>
+</div>

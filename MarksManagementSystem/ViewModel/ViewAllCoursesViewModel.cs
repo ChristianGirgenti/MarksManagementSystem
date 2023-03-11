@@ -6,6 +6,6 @@
         public string? CourseName { get; set; }
         public int CourseCredits { get; set; }
         public string? UnitLeader { get; set; }
-        public string? OtherTeachers { get; set; }
+        public string? OtherTutors { get; set; }
     }
 }

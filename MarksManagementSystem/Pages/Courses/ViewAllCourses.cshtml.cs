@@ -10,30 +10,30 @@ namespace MarksManagementSystem.Pages.Courses
     public class ViewAllCoursesModel : PageModel
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly ICourseTeacherRepository _courseTeacherRepository;
-        public List<ViewAllCoursesViewModel>? AllCoursesWithTeacher { get; set; }
-        public ViewAllCoursesModel(ICourseRepository courseRepository, ICourseTeacherRepository courseTeacherRepository)
+        private readonly ICourseTutorRepository _courseTutorRepository;
+        public List<ViewAllCoursesViewModel>? AllCoursesWithTutor { get; set; }
+        public ViewAllCoursesModel(ICourseRepository courseRepository, ICourseTutorRepository courseTutorRepository)
         {
             _courseRepository = courseRepository;
-            _courseTeacherRepository = courseTeacherRepository; 
+            _courseTutorRepository = courseTutorRepository; 
         }
 
         public void OnGet()
         {
-            AllCoursesWithTeacher = _courseRepository.GetAll()
+            AllCoursesWithTutor = _courseRepository.GetAll()
                 .Select(c => new ViewAllCoursesViewModel
                 {
                     CourseId = c.Id,
                     CourseName = c.Name,
                     CourseCredits = c.Credits,
-                    UnitLeader = _courseTeacherRepository.GetAll()
+                    UnitLeader = _courseTutorRepository.GetAll()
                         .Where(ct => ct.CourseId == c.Id && ct.IsUnitLeader == true)
-                        .Select(ct => ct.Teacher.ToString())
+                        .Select(ct => ct.Tutor.ToString())
                         .SingleOrDefault(),
 
-                    OtherTeachers = string.Join(", ", _courseTeacherRepository.GetAll()
+                    OtherTutors = string.Join(", ", _courseTutorRepository.GetAll()
                         .Where(ct => ct.CourseId == c.Id && ct.IsUnitLeader == false)     
-                        .Select(ct => ct.Teacher.ToString())
+                        .Select(ct => ct.Tutor.ToString())
                         .ToList())
                 })
                 .ToList();

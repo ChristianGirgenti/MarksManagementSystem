@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarksManagementSystem.Migrations
 {
     [DbContext(typeof(MarksManagementContext))]
-    [Migration("20230309223643_ChangingIsHeadTeacherColumnNameToIsUnitLeader")]
-    partial class ChangingIsHeadTeacherColumnNameToIsUnitLeader
+    [Migration("20230311133227_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,7 +48,7 @@ namespace MarksManagementSystem.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("MarksManagementSystem.Data.Models.CourseTeacher", b =>
+            modelBuilder.Entity("MarksManagementSystem.Data.Models.CourseTutor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,19 +62,19 @@ namespace MarksManagementSystem.Migrations
                     b.Property<bool>("IsUnitLeader")
                         .HasColumnType("bit");
 
-                    b.Property<int>("TeacherId")
+                    b.Property<int>("TutorId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("TutorId");
 
-                    b.ToTable("CourseTeachers");
+                    b.ToTable("CourseTutors");
                 });
 
-            modelBuilder.Entity("MarksManagementSystem.Data.Models.Teacher", b =>
+            modelBuilder.Entity("MarksManagementSystem.Data.Models.Tutor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,36 +106,36 @@ namespace MarksManagementSystem.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Tutors");
                 });
 
-            modelBuilder.Entity("MarksManagementSystem.Data.Models.CourseTeacher", b =>
+            modelBuilder.Entity("MarksManagementSystem.Data.Models.CourseTutor", b =>
                 {
                     b.HasOne("MarksManagementSystem.Data.Models.Course", "Course")
-                        .WithMany("CourseTeachers")
+                        .WithMany("CourseTutors")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MarksManagementSystem.Data.Models.Teacher", "Teacher")
-                        .WithMany("CourseTeachers")
-                        .HasForeignKey("TeacherId")
+                    b.HasOne("MarksManagementSystem.Data.Models.Tutor", "Tutor")
+                        .WithMany("CourseTutors")
+                        .HasForeignKey("TutorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Course");
 
-                    b.Navigation("Teacher");
+                    b.Navigation("Tutor");
                 });
 
             modelBuilder.Entity("MarksManagementSystem.Data.Models.Course", b =>
                 {
-                    b.Navigation("CourseTeachers");
+                    b.Navigation("CourseTutors");
                 });
 
-            modelBuilder.Entity("MarksManagementSystem.Data.Models.Teacher", b =>
+            modelBuilder.Entity("MarksManagementSystem.Data.Models.Tutor", b =>
                 {
-                    b.Navigation("CourseTeachers");
+                    b.Navigation("CourseTutors");
                 });
 #pragma warning restore 612, 618
         }

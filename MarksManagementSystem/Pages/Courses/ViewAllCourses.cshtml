@@ -13,19 +13,19 @@
             <th>Course Name</th>
             <th>Credits</th>
             <th>Unit Leader</th>
-            <th>Other Teachers</th>
+            <th>Other Tutors</th>
         </tr>
     </thead>
     <tbody>
-        @if (Model.AllCoursesWithTeacher != null)
+        @if (Model.AllCoursesWithTutor != null)
         {
-            foreach (var course in Model.AllCoursesWithTeacher)
+            foreach (var course in Model.AllCoursesWithTutor)
             {
                 <tr>
                     <td>@course.CourseName</td>
                     <td>@course.CourseCredits</td>
                     <td>@course.UnitLeader</td>
-                    <td>@course.OtherTeachers</td>
+                    <td>@course.OtherTutors</td>
                     <td>
                         <form asp-page-handler="delete" method="post" asp-route-id="@course.CourseId">
                             <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>

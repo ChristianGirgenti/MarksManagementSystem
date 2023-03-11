@@ -10,16 +10,16 @@ namespace MarksManagementSystem.Pages
     public class IndexModel : PageModel
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly ICourseTeacherRepository _courseTeacherRepository;
+        private readonly ICourseTutorRepository _courseTutorRepository;
 
         public bool HasCoursesWithoutUnitLeader { get; set; } 
         public IQueryable<Course> CoursesWithoutUnitLeader { get;set; }
-        public IQueryable<Course> CourseWithoutTeachers { get; set; }
+        public IQueryable<Course> CourseWithoutTutors { get; set; }
 
-        public IndexModel(ICourseRepository courseRepository, ICourseTeacherRepository courseTeacherRepository)
+        public IndexModel(ICourseRepository courseRepository, ICourseTutorRepository courseTutorRepository)
         {
             _courseRepository = courseRepository;
-            _courseTeacherRepository = courseTeacherRepository; 
+            _courseTutorRepository = courseTutorRepository; 
         }
 
         public void OnGet()

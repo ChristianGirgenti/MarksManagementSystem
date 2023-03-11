@@ -11,8 +11,8 @@ builder.Services.AddDbContext<MarksManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem")));
 
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
-builder.Services.AddScoped<ICourseTeacherRepository, CourseTeacherRepository>();
+builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+builder.Services.AddScoped<ICourseTutorRepository, CourseTutorRepository>();
 
 //Configure Authorization and Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

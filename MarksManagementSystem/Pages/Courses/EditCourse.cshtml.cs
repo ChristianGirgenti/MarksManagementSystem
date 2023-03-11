@@ -12,33 +12,33 @@ namespace MarksManagementSystem.Pages.Courses
     public class EditCourseModel : PageModel
     {
         private readonly ICourseRepository courseRepository;
-        private readonly ITeacherRepository teacherRepository;
-        private readonly ICourseTeacherRepository courseTeacherRepository;
+        private readonly ITutorRepository tutorRepository;
+        private readonly ICourseTutorRepository courseTutorRepository;
         private const int SQL_UNIQUE_CONSTRAINT_EX = 2601;
         private const int SQL_UNIQUE_CONSTRAINT_EX2 = 2627;
 
         [BindProperty]
         public AddEditCourseViewModel? EditCourseViewModel { get; set; }
         public Course? EditedCourse { get; set; }
-        public List<SelectListItem> OptionsTeachers { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> OptionsTutors { get; set; } = new List<SelectListItem>();
         
         [FromQuery(Name = "Id")]
         public int Id { get; set; }
 
-        public EditCourseModel(ICourseRepository courseRepository, ITeacherRepository teacherRepository, ICourseTeacherRepository courseTeacherRepository)
+        public EditCourseModel(ICourseRepository courseRepository, ITutorRepository tutorRepository, ICourseTutorRepository courseTutorRepository)
         {
             this.courseRepository = courseRepository;
-            this.teacherRepository = teacherRepository;
-            this.courseTeacherRepository = courseTeacherRepository;
+            this.tutorRepository = tutorRepository;
+            this.courseTutorRepository = courseTutorRepository;
         }
 
        
         public void OnGet()
         {
             var courseToEdit = courseRepository.GetById(Id);
-            courseToEdit.CourseTeachers = courseTeacherRepository.GetAll().Where(ct => ct.CourseId == Id).ToList();
+            courseToEdit.CourseTutors = courseTutorRepository.GetAll().Where(ct => ct.CourseId == Id).ToList();
             
-            int unitLeaderId = courseToEdit.CourseTeachers.FirstOrDefault(ct => ct.CourseId == Id && ct.IsUnitLeader).TeacherId;
+            int unitLeaderId = courseToEdit.CourseTutors.FirstOrDefault(ct => ct.CourseId == Id && ct.IsUnitLeader).TutorId;
 
 
             EditCourseViewModel = new AddEditCourseViewModel
@@ -47,7 +47,7 @@ namespace MarksManagementSystem.Pages.Courses
                 Credits = courseToEdit.Credits,
                 UnitLeaderId = unitLeaderId
             };
-            ShowTeachersInSelectionList(EditCourseViewModel.UnitLeaderId);
+            ShowTutorsInSelectionList(EditCourseViewModel.UnitLeaderId);
         }
 
         public IActionResult OnPost()
@@ -70,28 +70,28 @@ namespace MarksManagementSystem.Pages.Courses
                     ModelState.AddModelError("NewCourse.Name", "A course with the same name already exists.");
                     
                     if (EditCourseViewModel == null) throw new ArgumentNullException(nameof(EditCourseViewModel));
-                    ShowTeachersInSelectionList(EditCourseViewModel.UnitLeaderId);
+                    ShowTutorsInSelectionList(EditCourseViewModel.UnitLeaderId);
                 }
                 return Page();
             }
         }
 
-        public void ShowTeachersInSelectionList(int unitLeaderId)
+        public void ShowTutorsInSelectionList(int unitLeaderId)
         {
             if (unitLeaderId <= 0) throw new ArgumentNullException(nameof(unitLeaderId));
             
-            var unitLeaders = courseTeacherRepository.GetAll()
+            var unitLeaders = courseTutorRepository.GetAll()
                 .Where(ct => ct.IsUnitLeader)
-                .Select(ct => ct.Teacher);
+                .Select(ct => ct.Tutor);
 
-            var nonUnitLeaders = teacherRepository.GetAll()
+            var nonUnitLeaders = tutorRepository.GetAll()
                 .Where(t => !unitLeaders.Contains(t))
                 .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Name + " " + t.LastName })
                 .ToList();
 
-            OptionsTeachers = nonUnitLeaders;
+            OptionsTutors = nonUnitLeaders;
             var currentUnitLeader = unitLeaders.Where(ht => ht.Id == unitLeaderId).FirstOrDefault();
-            OptionsTeachers.Insert(0, new SelectListItem { Value = currentUnitLeader.Id.ToString(), Text = currentUnitLeader.Name + " " + currentUnitLeader.LastName });
+            OptionsTutors.Insert(0, new SelectListItem { Value = currentUnitLeader.Id.ToString(), Text = currentUnitLeader.Name + " " + currentUnitLeader.LastName });
         }
         
         public void FormatNewCourseValues(AddEditCourseViewModel editCourseViewModel)
@@ -121,17 +121,17 @@ namespace MarksManagementSystem.Pages.Courses
             if (editCourseViewModel == null) throw new ArgumentNullException(nameof(editCourseViewModel));
             if (courseEdited == null) throw new ArgumentNullException(nameof(courseEdited)); 
 
-            var newUnitLeader = teacherRepository.GetAll().SingleOrDefault(t => t.Id == editCourseViewModel.UnitLeaderId);
+            var newUnitLeader = tutorRepository.GetAll().SingleOrDefault(t => t.Id == editCourseViewModel.UnitLeaderId);
             if (newUnitLeader != null)
             {
-                var currentCourseTeacher = courseTeacherRepository.GetAll()
+                var currentCourseTutor = courseTutorRepository.GetAll()
                     .Where(ct => ct.CourseId == courseEdited.Id && ct.IsUnitLeader == true)
                     .FirstOrDefault();
-                if (currentCourseTeacher != null)
+                if (currentCourseTutor != null)
                 {
-                    currentCourseTeacher.Course = courseEdited;
-                    currentCourseTeacher.Teacher = newUnitLeader;
-                    courseTeacherRepository.Update(currentCourseTeacher);
+                    currentCourseTutor.Course = courseEdited;
+                    currentCourseTutor.Tutor = newUnitLeader;
+                    courseTutorRepository.Update(currentCourseTutor);
                 }
             }
         }
