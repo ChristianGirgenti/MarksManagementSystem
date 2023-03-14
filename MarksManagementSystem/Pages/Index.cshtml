@@ -5,6 +5,20 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+   @* @{
+        if (HttpContext.User.Claims.FirstOrDefault(x => x.Value == "Admin") != null && Model.HasCoursesWithoutUnitLeader)
+        {
+            <div class="alert alert-danger">
+              <h4>Attention!</h4>
+              <p>The following courses do not have a unit leader assigned: </p>
+              <ul>
+                @foreach (var course in Model.CourseWithoutTutors)
+                {
+                     <li>@course.Name</li>   
+                }
+              </ul>
+              <p>It is recommended to assign a unit leader to every course.</p>
+            </div>
+        }
+    }*@
 </div>

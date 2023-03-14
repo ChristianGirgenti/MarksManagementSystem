@@ -1,0 +1,15 @@
+﻿.other-tutors-components {
+    display: flex;
+}
+
+.dropdown-other-tutors-container {
+    padding: 0px;
+}
+
+.other-tutors-table {
+    margin: 0px;
+}
+
+.other-tutors-button {
+    margin-left: 6px;
+}

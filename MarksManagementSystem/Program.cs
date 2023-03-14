@@ -1,4 +1,5 @@
 using MarksManagementSystem.Data;
+using MarksManagementSystem.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MarksManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem")));
+
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+builder.Services.AddScoped<ICourseTutorRepository, CourseTutorRepository>();
 
 //Configure Authorization and Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

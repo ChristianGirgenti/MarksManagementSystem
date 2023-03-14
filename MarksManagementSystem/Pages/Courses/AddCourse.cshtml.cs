@@ -6,86 +6,102 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using MarksManagementSystem.Helpers;
 using MarksManagementSystem.ViewModel;
+using MarksManagementSystem.Data.Repositories;
 
 namespace MarksManagementSystem.Pages.Courses
 {
     public class AddCourseModel : PageModel
     {
-        private MarksManagementContext marksManagementContext;
+        private readonly ICourseRepository courseRepository;
+        private readonly ITutorRepository tutorRepository;
+        private readonly ICourseTutorRepository courseTutorRepository;
         private const int SQL_UNIQUE_CONSTRAINT_EX = 2601;
         private const int SQL_UNIQUE_CONSTRAINT_EX2 = 2627;
 
 
-        public AddCourseModel(MarksManagementContext context)
+        public AddCourseModel(ICourseRepository courseRepository, ITutorRepository tutorRepository, ICourseTutorRepository courseTutorRepository)
         {
-            marksManagementContext = context;
+            this.courseRepository = courseRepository;
+            this.tutorRepository = tutorRepository;
+            this.courseTutorRepository = courseTutorRepository; 
         }
 
         [BindProperty]
-        public AddCourseViewModel NewCourseViewModel { get; set; }
-        public Course NewCourse { get; set; }
-        public List<SelectListItem> OptionsTeachers { get; set; } = new List<SelectListItem>();
+        public AddEditCourseViewModel? NewCourseViewModel { get; set; }
+        
+        public Course? NewCourse;
+        public List<SelectListItem> OptionsTutors { get; set; } = new List<SelectListItem>();
         public void OnGet()
         {
-            ShowTeachersInSelectionList();
+            ShowTutorsInSelectionList();
         }
 
         public IActionResult OnPost()
         {
-            if (!ModelState.IsValid)
-            {
-
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-                return Page();
-            }
-
+            if (!ModelState.IsValid) return Page();
+            
             try
             {
-                FormatNewCourseValues();
-                NewCourse = new Course(NewCourseViewModel.Name, NewCourseViewModel.Credits);
-                marksManagementContext.Courses.Add(NewCourse);
-                var changes = marksManagementContext.SaveChanges();
-                var headTeacher = marksManagementContext.Teachers.SingleOrDefault(t => t.Id == NewCourseViewModel.HeadTeacherId);
-                if (headTeacher != null)
-                {
-                    var courseTeacher = new CourseTeacher { Course = NewCourse, Teacher = headTeacher, IsHeadTeacher = true };
-                    marksManagementContext.CourseTeachers.Add(courseTeacher);
-                }
-                changes = marksManagementContext.SaveChanges();
+                if (NewCourseViewModel == null) throw new ArgumentNullException(nameof(NewCourseViewModel));
+                
+                NewCourse = AddCourse(NewCourseViewModel);
+                AddUnitLeaderLinkToCourse(NewCourseViewModel, NewCourse);
+                
                 return RedirectToPage("ViewAllCourses");
             }
             catch (Exception ex) {
                 if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX || sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
                 {
                     ModelState.AddModelError("NewCourse.Name", "A course with the same name already exists.");
-                    ShowTeachersInSelectionList();
+                    ShowTutorsInSelectionList();
                 }
                 return Page();
             }  
         }
 
-        public void ShowTeachersInSelectionList()
+        public void ShowTutorsInSelectionList()
         {
 
-            var headTeachers = marksManagementContext.CourseTeachers
-                .Where(ct => ct.IsHeadTeacher)
-                .Select(ct => ct.Teacher);
+            var unitLeaders = courseTutorRepository.GetAll()
+                .Where(ct => ct.IsUnitLeader)
+                .Select(ct => ct.Tutor);
 
-            var nonHeadTeachers = marksManagementContext.Teachers
-                .Where(t => !headTeachers.Contains(t))
+            var nonUnitLeaders = tutorRepository.GetAll()
+                .Where(t => !unitLeaders.Contains(t))
                 .Select(t => new SelectListItem { Value = t.Id.ToString(), Text = t.Name + " " + t.LastName })
                 .ToList();
 
-            OptionsTeachers = nonHeadTeachers;
-            OptionsTeachers.Insert(0, new SelectListItem { Value = "", Text = "Select one head teacher for this course..." });
+            OptionsTutors = nonUnitLeaders;
+            OptionsTutors.Insert(0, new SelectListItem { Value = "", Text = "Select one unit leader for this course..." });
         }
-
-        public void FormatNewCourseValues()
+        public void FormatNewCourseValues(Course newCourse)
         {
-            NewCourseViewModel.Name = StringUtilities.Capitalise(NewCourseViewModel.Name);
+            if (newCourse == null) throw new ArgumentNullException(nameof(newCourse));
+            newCourse.Name = StringUtilities.Capitalise(newCourse.Name);
+        }
+        public Course AddCourse(AddEditCourseViewModel newCourseViewModel)
+        {
+            if (newCourseViewModel == null) throw new ArgumentNullException(nameof(newCourseViewModel));
+            NewCourse = new Course
+            {
+                Name = newCourseViewModel.Name,
+                Credits = newCourseViewModel.Credits
+            };
+            FormatNewCourseValues(NewCourse);
+            courseRepository.Add(NewCourse);
+            return NewCourse;
+        }
+        public void AddUnitLeaderLinkToCourse(AddEditCourseViewModel newCourseViewModel, Course newCourse)
+        {
+            if (newCourseViewModel == null) throw new ArgumentNullException(nameof(newCourseViewModel));
+            if (newCourse == null) throw new ArgumentNullException(nameof(newCourse));
+
+            var unitLeader = tutorRepository.GetAll().SingleOrDefault(t => t.Id == newCourseViewModel.UnitLeaderId);
+            if (unitLeader != null)
+            {
+                var courseTutor = new CourseTutor { Course = newCourse, Tutor = unitLeader, IsUnitLeader = true };
+                courseTutorRepository.Add(courseTutor);
+            }
         }
     }
 }

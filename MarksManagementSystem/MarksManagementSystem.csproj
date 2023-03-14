@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\css\addCourse.css" />
+    <None Remove="Pages\Courses\ViewAllCourses.cshtml.cs~RFd0d7881.TMP" />
   </ItemGroup>
 
   <ItemGroup>

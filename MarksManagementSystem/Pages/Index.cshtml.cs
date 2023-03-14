@@ -1,23 +1,30 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using MarksManagementSystem.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MarksManagementSystem.Data.Models;
+
 
 namespace MarksManagementSystem.Pages
 {
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ICourseRepository _courseRepository;
+        private readonly ICourseTutorRepository _courseTutorRepository;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public bool HasCoursesWithoutUnitLeader { get; set; } 
+        public IQueryable<Course> CoursesWithoutUnitLeader { get;set; }
+        public IQueryable<Course> CourseWithoutTutors { get; set; }
+
+        public IndexModel(ICourseRepository courseRepository, ICourseTutorRepository courseTutorRepository)
         {
-            _logger = logger;
+            _courseRepository = courseRepository;
+            _courseTutorRepository = courseTutorRepository; 
         }
 
         public void OnGet()
         {
-            var x = HttpContext.User;
-            
+
         }
     }
 }

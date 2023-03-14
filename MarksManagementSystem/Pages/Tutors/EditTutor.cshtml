@@ -1,0 +1,35 @@
+﻿@page
+@model MarksManagementSystem.Pages.Tutors.EditTutorModel
+@{
+    ViewData["Title"] = "Edit Tutor";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div>
+    <div>
+        <form method="post">
+            <div class="form-group">
+                <label class="input-label" asp-for="EditTutor.Name">Name: </label>
+                <input class="input-form" asp-for="EditTutor.Name" />
+                <span class="error-message d-block" asp-validation-for="EditTutor.Name"></span>
+
+
+                <label class="input-label" asp-for="EditTutor.LastName">Last Name: </label>
+                <input class="input-form" asp-for="EditTutor.LastName" />               
+                <span class="error-message d-block" asp-validation-for="EditTutor.LastName"></span>
+
+                <label class="input-label" asp-for="EditTutor.Email">Email: </label>
+                <input class="input-form" type="email" asp-for="EditTutor.Email" />
+                <span class="error-message d-block" asp-validation-for="EditTutor.Email"></span>
+
+                <input class="input-form" type="hidden" asp-for="EditTutor.Password" />
+
+                <label class="input-label" asp-for="EditTutor.IsAdmin">Is Admin: </label>
+                <input class="input-form" type="checkbox" asp-for="EditTutor.IsAdmin" />
+            </div>
+
+            <button type="submit" class="btn btn-success">Save Changes</button>
+        </form>
+    </div>
+</div>

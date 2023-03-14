@@ -44,9 +44,9 @@ namespace MarksManagementSystem.Pages
             }
 
             var isLoginSuccessfull = false;
-            if (UserType == "teacher")
+            if (UserType == "tutor")
             {
-                isLoginSuccessfull = await LogInTeacherIsSuccess();
+                isLoginSuccessfull = await LogInTutorIsSuccess();
             }
             else
             {
@@ -61,18 +61,18 @@ namespace MarksManagementSystem.Pages
             return RedirectToPage("/Index");
         }
 
-        private async Task<bool> LogInTeacherIsSuccess()
+        private async Task<bool> LogInTutorIsSuccess()
         {
-            var teacher = await _marksManagementContext.Teachers.FirstOrDefaultAsync(x => x.Email == Credential.Email);
-            if (teacher != null && teacher.Password == Credential.Password)
+            var tutor = await _marksManagementContext.Tutors.FirstOrDefaultAsync(x => x.Email == Credential.Email);
+            if (tutor != null && tutor.Password == Credential.Password)
             {
                 //Login is success so create claims for the user
                 var claims = new List<Claim>
                                 {
-                                    new Claim(ClaimTypes.Name, teacher.Name),
-                                    new Claim(ClaimTypes.Surname, teacher.LastName),
-                                    new Claim(ClaimTypes.Email, teacher.Email),
-                                    new Claim(ClaimTypes.Role, teacher.IsAdmin ? "Admin" : "Teacher")
+                                    new Claim(ClaimTypes.Name, tutor.Name),
+                                    new Claim(ClaimTypes.Surname, tutor.LastName),
+                                    new Claim(ClaimTypes.Email, tutor.Email),
+                                    new Claim(ClaimTypes.Role, tutor.IsAdmin ? "Admin" : "Tutor")
                                 };
 
 
