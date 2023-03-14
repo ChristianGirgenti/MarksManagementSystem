@@ -21,15 +21,6 @@ main {
   padding-left: 10.5px;
 }
 
-.add-button {
-    background-color: green;
-    color: whitesmoke;
-    padding: 5px;
-    border-radius: 4px;
-    margin-left: 170px;
-    margin-top: 50px;
-}
-
 .input-label {
     font-size: 22px;
     font-weight: bold;
