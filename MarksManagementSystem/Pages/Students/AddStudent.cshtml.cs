@@ -18,10 +18,10 @@ namespace MarksManagementSystem.Pages.Students
             // SAVE PRODUCT TO DATABASE
             if (ModelState.IsValid)
             {
-                var studentName = NewStudent.Name;
-                var studentLastName = NewStudent.LastName;
-                var studentEmail = NewStudent.Email;
-                var studentPassoord = NewStudent.Password;
+                var studentName = NewStudent.StudentFirstName;
+                var studentLastName = NewStudent.StudentLastName;
+                var studentEmail = NewStudent.StudentEmail;
+                var studentPassoord = NewStudent.StudentPassword;
 
                 return RedirectToPage("ViewAllStudents");
             }

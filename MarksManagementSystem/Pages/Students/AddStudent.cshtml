@@ -10,21 +10,21 @@
     <div>
         <form method="post">
             <div class="form-group">
-                <label class="input-label" asp-for="NewStudent.Name">Name: </label>
-                <input class="input-form" asp-for="NewStudent.Name" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.Name"></span>
+                <label class="input-label" asp-for="NewStudent.StudentFirstName">First Name: </label>
+                <input class="input-form" asp-for="NewStudent.StudentFirstName" />
+                <span class="alert-danger d-block" asp-validation-for="NewStudent.StudentFirstName"></span>
 
-                <label class="input-label" asp-for="NewStudent.LastName">Last Name: </label>
-                <input class="input-form" asp-for="NewStudent.LastName" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.LastName"></span>
+                <label class="input-label" asp-for="NewStudent.StudentLastName">Last Name: </label>
+                <input class="input-form" asp-for="NewStudent.StudentLastName" />
+                <span class="alert-danger d-block" asp-validation-for="NewStudent.StudentLastName"></span>
 
-                <label class="input-label" asp-for="NewStudent.Email">Email: </label>
-                <input type="email" class="input-form" asp-for="NewStudent.Email" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.Email"></span>
+                <label class="input-label" asp-for="NewStudent.StudentEmail">Email: </label>
+                <input type="email" class="input-form" asp-for="NewStudent.StudentEmail" />
+                <span class="alert-danger d-block" asp-validation-for="NewStudent.StudentEmail"></span>
 
-                <label class="input-label" asp-for="NewStudent.Password">Password: </label>
-                <input type="password" class="input-form" asp-for="NewStudent.Password" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.Password"></span>
+                <label class="input-label" asp-for="NewStudent.StudentPassword">Password: </label>
+                <input type="password" class="input-form" asp-for="NewStudent.StudentPassword" />
+                <span class="alert-danger d-block" asp-validation-for="NewStudent.StudentPassword"></span>
             </div>
 
             <button class="btn btn-success">Add Student</button>

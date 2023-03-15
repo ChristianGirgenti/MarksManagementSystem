@@ -25,25 +25,25 @@ namespace MarksManagementSystem.Pages.Tutors
             AllTutorsViewModel = _tutorRepository.GetAll()
                .Select(t => new ViewAllTutorsViewModel
                {
-                   TutorId = t.Id,
-                   TutorFullName = t.Name + " " + t.LastName,
-                   TutorEmail = t.Email,
+                   TutorId = t.TutorId,
+                   TutorFullName = t.TutorFirstName + " " + t.TutorLastName,
+                   TutorEmail = t.TutorEmail,
                    CourseLed = _courseTutorRepository.GetAll()
-                       .Where(ct => ct.TutorId == t.Id && ct.IsUnitLeader == true)
-                       .Select(ct => ct.Course.Name)
+                       .Where(ct => ct.TutorId == t.TutorId && ct.IsUnitLeader == true)
+                       .Select(ct => ct.Course.CourseName)
                        .SingleOrDefault(),
 
                    OtherCourses = string.Join(", ", _courseTutorRepository.GetAll()
-                       .Where(ct => ct.TutorId == t.Id && ct.IsUnitLeader == false)
-                       .Select(ct => ct.Course.Name)
+                       .Where(ct => ct.TutorId == t.TutorId && ct.IsUnitLeader == false)
+                       .Select(ct => ct.Course.CourseName)
                        .ToList())
                })
                .ToList();
         }
 
-        public IActionResult OnPostDelete(int id)
+        public IActionResult OnPostDelete(int tutorId)
         {
-            if (_courseTutorRepository.GetAll().Where(ct => ct.TutorId==id && ct.IsUnitLeader==true).Any())
+            if (_courseTutorRepository.GetAll().Where(ct => ct.TutorId == tutorId && ct.IsUnitLeader==true).Any())
             {
                 {
                     TempData["ErrorMessage"] = "You cannot delete this tutor because is unit leader of a course. Remove the link between unit leader and course.";
@@ -54,9 +54,9 @@ namespace MarksManagementSystem.Pages.Tutors
             {
                 try
                 {
-                    if (_tutorRepository.GetById(id).Email != (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value))
+                    if (_tutorRepository.GetById(tutorId).TutorEmail != (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value))
                     {
-                        _tutorRepository.Delete(id);
+                        _tutorRepository.Delete(tutorId);
                         TempData["SuccessMessage"] = "The tutor has been deleted successfully.";
                         return RedirectToPage("ViewAllTutors");
                     }
@@ -74,10 +74,10 @@ namespace MarksManagementSystem.Pages.Tutors
             }     
         }
 
-        public IActionResult OnPostEdit(int Id)
+        public IActionResult OnPostEdit(int tutorId)
         {
             
-            return RedirectToPage("EditTutor", new { Id });
+            return RedirectToPage("EditTutor", new { tutorId });
         }
     }
 }

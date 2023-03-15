@@ -13,13 +13,13 @@ namespace MarksManagementSystem.Pages.Tutors
         private const int SQL_UNIQUE_CONSTRAINT_EX = 2601;
         private const int SQL_UNIQUE_CONSTRAINT_EX2 = 2627;
 
+        [BindProperty]
+        public Tutor NewTutor { get; set; } = new Tutor();
+
         public AddTutorModel(ITutorRepository tutorRepository)
         {
             _tutorRepository = tutorRepository;
         }
-
-        [BindProperty]
-        public Tutor? NewTutor { get; set; }
 
         public IActionResult OnPost()
         {
@@ -33,7 +33,7 @@ namespace MarksManagementSystem.Pages.Tutors
             catch (Exception ex)
             {
                 if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX || sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
-                    ModelState.AddModelError("NewTutor.Email", "A tutor with the same email address already exists.");
+                    ModelState.AddModelError("NewTutor.StudentEmail", "A tutor with the same email address already exists.");
                 return Page();
             }
             
@@ -42,11 +42,11 @@ namespace MarksManagementSystem.Pages.Tutors
         public void FormatNewTutorValues(Tutor newTutor)
         {
             if (newTutor == null) throw new ArgumentNullException(nameof(newTutor));
-            newTutor.Email = newTutor.Email.ToLower();
-            var nameLower = newTutor.Name.ToLower();
-            var lastNameLower = newTutor.LastName.ToLower();
-            newTutor.Name = StringUtilities.Capitalise(nameLower);
-            newTutor.LastName = StringUtilities.Capitalise(lastNameLower);
+            newTutor.TutorEmail = newTutor.TutorEmail.ToLower();
+            var nameLower = newTutor.TutorFirstName.ToLower();
+            var lastNameLower = newTutor.TutorLastName.ToLower();
+            newTutor.TutorFirstName = StringUtilities.Capitalise(nameLower);
+            newTutor.TutorLastName = StringUtilities.Capitalise(lastNameLower);
         }
 
         public void AddTutor(Tutor newTutor)

@@ -12,13 +12,13 @@
     <div>
         <form method="post">
             <div class="form-group">
-                <label class="input-label" asp-for="NewCourseViewModel.Name">Name: </label>
-                <input class="input-form" asp-for="NewCourseViewModel.Name" />
-                <span class="error-message d-block" asp-validation-for="NewCourse.Name"></span>
+                <label class="input-label" asp-for="NewCourseViewModel.CourseName">Course Name: </label>
+                <input class="input-form" asp-for="NewCourseViewModel.CourseName" />
+                <span class="error-message d-block" asp-validation-for="NewCourse.CourseName"></span>
 
-                <label class="input-label" asp-for="NewCourseViewModel.Credits">Credits: </label>
-                <input class="input-form" asp-for="NewCourseViewModel.Credits" />
-                <span class="error-message d-block" asp-validation-for="NewCourseViewModel.Credits"></span>
+                <label class="input-label" asp-for="NewCourseViewModel.CourseCredits">Credits: </label>
+                <input class="input-form" asp-for="NewCourseViewModel.CourseCredits" />
+                <span class="error-message d-block" asp-validation-for="NewCourseViewModel.CourseCredits"></span>
 
                 <select class="input-form" asp-items="Model.OptionsTutors" asp-for="NewCourseViewModel.UnitLeaderId"></select>
                 <span class="error-message d-block" asp-validation-for="NewCourseViewModel.UnitLeaderId"></span>

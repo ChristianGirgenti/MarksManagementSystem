@@ -13,11 +13,11 @@ namespace MarksManagementSystem.Pages.Tutors
         private const int SQL_UNIQUE_CONSTRAINT_EX = 2601;
         private const int SQL_UNIQUE_CONSTRAINT_EX2 = 2627;
 
-        [FromQuery(Name = "Id")]
-        public int Id { get; set; }
+        [FromQuery(Name = "CourseId")]
+        public int TutorId { get; set; }
 
         [BindProperty]
-        public Tutor? EditTutor { get; set; }
+        public Tutor EditTutor { get; set; } = new Tutor();
 
         public EditTutorModel(ITutorRepository tutorRepository) 
         {
@@ -26,7 +26,7 @@ namespace MarksManagementSystem.Pages.Tutors
 
         public void OnGet()
         {
-            EditTutor = _tutorRepository.GetById(Id);
+            EditTutor = _tutorRepository.GetById(TutorId);
         }
 
         public IActionResult OnPost()
@@ -42,7 +42,7 @@ namespace MarksManagementSystem.Pages.Tutors
             catch (Exception ex)
             {
                 if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX || sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
-                    ModelState.AddModelError("EditTutor.Email", "A tutor with the same email address already exists.");
+                    ModelState.AddModelError("EditTutor.StudentEmail", "A tutor with the same email address already exists.");
                 
                 return Page();
             }
@@ -51,17 +51,17 @@ namespace MarksManagementSystem.Pages.Tutors
 
         public void FormatEditTutorValues(Tutor editTutor)
         {
-            editTutor.Email = editTutor.Email.ToLower();
-            var nameLower = editTutor.Name.ToLower();
-            var lastNameLower = editTutor.LastName.ToLower();
-            editTutor.Name = StringUtilities.Capitalise(nameLower);
-            editTutor.LastName = StringUtilities.Capitalise(lastNameLower);
+            editTutor.TutorEmail = editTutor.TutorEmail.ToLower();
+            var nameLower = editTutor.TutorFirstName.ToLower();
+            var lastNameLower = editTutor.TutorLastName.ToLower();
+            editTutor.TutorFirstName = StringUtilities.Capitalise(nameLower);
+            editTutor.TutorLastName = StringUtilities.Capitalise(lastNameLower);
         }
 
         public void UpdateTutor(Tutor tutor)
         {
             FormatEditTutorValues(tutor);
-            tutor.Id = Id;
+            tutor.TutorId = TutorId;
             _tutorRepository.Update(tutor);
         }
     }

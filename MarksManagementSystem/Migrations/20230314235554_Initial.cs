@@ -11,83 +11,76 @@ namespace MarksManagementSystem.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Courses",
+                name: "Course",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Credits = table.Column<int>(type: "int", nullable: false)
+                    CourseName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CourseCredits = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.PrimaryKey("PK_Course", x => x.CourseId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tutors",
+                name: "Tutor",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    TutorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TutorFirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    TutorLastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    TutorEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TutorPassword = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tutors", x => x.Id);
+                    table.PrimaryKey("PK_Tutor", x => x.TutorId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseTutors",
+                name: "CourseTutor",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     CourseId = table.Column<int>(type: "int", nullable: false),
                     TutorId = table.Column<int>(type: "int", nullable: false),
                     IsUnitLeader = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseTutors", x => x.Id);
+                    table.PrimaryKey("PK_CourseTutor", x => new { x.CourseId, x.TutorId });
                     table.ForeignKey(
-                        name: "FK_CourseTutors_Courses_CourseId",
+                        name: "FK_CourseTutor_Course_CourseId",
                         column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
+                        principalTable: "Course",
+                        principalColumn: "CourseId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseTutors_Tutors_TutorId",
+                        name: "FK_CourseTutor_Tutor_TutorId",
                         column: x => x.TutorId,
-                        principalTable: "Tutors",
-                        principalColumn: "Id",
+                        principalTable: "Tutor",
+                        principalColumn: "TutorId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_Name",
-                table: "Courses",
-                column: "Name",
+                name: "IX_Course_CourseName",
+                table: "Course",
+                column: "CourseName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseTutors_CourseId",
-                table: "CourseTutors",
-                column: "CourseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CourseTutors_TutorId",
-                table: "CourseTutors",
+                name: "IX_CourseTutor_TutorId",
+                table: "CourseTutor",
                 column: "TutorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tutors_Email",
-                table: "Tutors",
-                column: "Email",
+                name: "IX_Tutor_TutorEmail",
+                table: "Tutor",
+                column: "TutorEmail",
                 unique: true);
         }
 
@@ -95,13 +88,13 @@ namespace MarksManagementSystem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CourseTutors");
+                name: "CourseTutor");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "Course");
 
             migrationBuilder.DropTable(
-                name: "Tutors");
+                name: "Tutor");
         }
     }
 }

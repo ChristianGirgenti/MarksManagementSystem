@@ -6,15 +6,18 @@ namespace MarksManagementSystem.Data
     public class MarksManagementContext : DbContext
     {
         public MarksManagementContext(DbContextOptions<MarksManagementContext> options) : base(options) { }
-        public DbSet<Tutor> Tutors { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<CourseTutor> CourseTutors { get; set; }
+        public DbSet<Tutor> Tutor { get; set; }
+        public DbSet<Course> Course { get; set; }
+        public DbSet<CourseTutor> CourseTutor { get; set; }
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Course>().HasIndex(c => c.Name).IsUnique();
-            modelBuilder.Entity<Tutor>().HasIndex(c => c.Email).IsUnique();
+            modelBuilder.Entity<Course>().HasIndex(c => c.CourseName).IsUnique();
+            modelBuilder.Entity<Tutor>().HasIndex(c => c.TutorEmail).IsUnique();
 
+            modelBuilder.Entity<CourseTutor>()
+                .HasKey(c => new { c.CourseId, c.TutorId });
+            
             modelBuilder.Entity<CourseTutor>()
                 .HasOne(ct => ct.Course)
                 .WithMany(c => c.CourseTutors)

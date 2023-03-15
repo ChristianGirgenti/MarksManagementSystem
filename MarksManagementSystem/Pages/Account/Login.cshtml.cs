@@ -39,7 +39,7 @@ namespace MarksManagementSystem.Pages
                     ErrorMessage = "You need to select what type of user you are to login";
                     return Page();
                 }
-                ErrorMessage = "Email and password can not be empty";
+                ErrorMessage = "Student email and password can not be empty";
                 return Page();
             }
 
@@ -63,15 +63,15 @@ namespace MarksManagementSystem.Pages
 
         private async Task<bool> LogInTutorIsSuccess()
         {
-            var tutor = await _marksManagementContext.Tutors.FirstOrDefaultAsync(x => x.Email == Credential.Email);
-            if (tutor != null && tutor.Password == Credential.Password)
+            var tutor = await _marksManagementContext.Tutor.FirstOrDefaultAsync(x => x.TutorEmail == Credential.Email);
+            if (tutor != null && tutor.TutorPassword == Credential.Password)
             {
                 //Login is success so create claims for the user
                 var claims = new List<Claim>
                                 {
-                                    new Claim(ClaimTypes.Name, tutor.Name),
-                                    new Claim(ClaimTypes.Surname, tutor.LastName),
-                                    new Claim(ClaimTypes.Email, tutor.Email),
+                                    new Claim(ClaimTypes.Name, tutor.TutorFirstName),
+                                    new Claim(ClaimTypes.Surname, tutor.TutorLastName),
+                                    new Claim(ClaimTypes.Email, tutor.TutorEmail),
                                     new Claim(ClaimTypes.Role, tutor.IsAdmin ? "Admin" : "Tutor")
                                 };
 
