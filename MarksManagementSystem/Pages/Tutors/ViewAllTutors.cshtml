@@ -26,7 +26,7 @@
                     <td>@tutor.CourseLed</td>
                     <td>@tutor.OtherCourses</td>
                     <td>
-                        <form asp-page-handler="delete" method="post" asp-route-id="@tutor.TutorId">
+                        <form asp-page-handler="delete" method="post" asp-route-tutorId="@tutor.TutorId">
                             <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
                         </form>
                     </td>
