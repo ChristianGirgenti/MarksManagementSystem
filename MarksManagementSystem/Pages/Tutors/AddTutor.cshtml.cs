@@ -38,6 +38,7 @@ namespace MarksManagementSystem.Pages.Tutors
             var lastNameLower = newTutor.TutorLastName.ToLower();
             newTutor.TutorFirstName = StringUtilities.Capitalise(nameLower);
             newTutor.TutorLastName = StringUtilities.Capitalise(lastNameLower);
+            newTutor.TutorPassword = newTutor.TutorFirstName.Substring(0,1) + lastNameLower.Substring(0,1) + newTutor.TutorDateOfBirth.ToString("ddMMyy") + ".";
             newTutor.TutorEmail = nameLower + "." + lastNameLower + "@myUniversity.co.uk";
         }
 

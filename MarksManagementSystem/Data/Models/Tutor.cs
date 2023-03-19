@@ -18,10 +18,6 @@ namespace MarksManagementSystem.Data.Models
 
         public string TutorEmail { get; set; } = string.Empty;
 
-        [PasswordPropertyText]
-        [MaxLength(30, ErrorMessage = "The password must be between 8 and 30 characters")]
-        [MinLength(8, ErrorMessage = "The password must be between 8 and 30 characters")]
-        [Required(ErrorMessage = "Insert a valid password")]
         public string TutorPassword { get; set; } = string.Empty;
 
         [Required]

@@ -19,13 +19,9 @@
                 <input class="input-form" asp-for="NewTutor.TutorLastName" />               
                 <span class="error-message d-block" asp-validation-for="NewTutor.TutorLastName"></span>
 
-                <label class="input-label" asp-for="NewTutor.TutorPassword">Password: </label>
-                <input class="input-form" type="password" asp-for="NewTutor.TutorPassword" />
-                <span class="error-message d-block" asp-validation-for="NewTutor.TutorPassword"></span>
-
                 <label class="input-label" asp-for="NewTutor.TutorDateOfBirth">Date of Birth: </label>
                 <input class="input-form" type="date" asp-for="NewTutor.TutorDateOfBirth" value="@DateTime.Now.ToString()" />
-                <span class="error-message d-block" asp-validation-for="NewTutor.TutorPassword"></span>
+                <span class="error-message d-block" asp-validation-for="NewTutor.TutorDateOfBirth"></span>
 
                 <label class="input-label" asp-for="NewTutor.IsAdmin">Is Admin: </label>
                 <input class="input-form" type="checkbox" asp-for="NewTutor.IsAdmin" />
