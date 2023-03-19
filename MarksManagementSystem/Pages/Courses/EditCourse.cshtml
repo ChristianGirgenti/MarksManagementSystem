@@ -17,20 +17,20 @@
           
             <div class="form-group">
             
-            <label class="input-label" asp-for="EditCourseViewModel.CourseName">Course Name: </label>
+            <label class="input-label mr-5" asp-for="EditCourseViewModel.CourseName">Course Name: </label>
             <input class="input-form" asp-for="EditCourseViewModel.CourseName" />
             <span class="error-message d-block" asp-validation-for="EditCourseViewModel.CourseName"></span>
 
-            <label class="input-label" asp-for="EditCourseViewModel.CourseCredits">Credits: </label>
+            <label class="input-label mr-5" asp-for="EditCourseViewModel.CourseCredits">Credits: </label>
             <input class="input-form" asp-for="EditCourseViewModel.CourseCredits" />
             <span class="error-message d-block" asp-validation-for="EditCourseViewModel.CourseCredits"></span>
 
-            <label class="input-label" asp-for="EditCourseViewModel.UnitLeaderId">Unit Leader: </label>
+            <label class="input-label mr-5" asp-for="EditCourseViewModel.UnitLeaderId">Unit Leader: </label>
             <select class="input-form" asp-items="Model.OptionsTutors" asp-for="EditCourseViewModel.UnitLeaderId"></select>
             <span class="error-message d-block" asp-validation-for="EditCourseViewModel.UnitLeaderId"></span>
 
             <div class="other-tutors-components">
-                <label class="input-label" asp-for="EditCourseViewModel.TutorIds">Other Tutors:</label>
+                <label class="input-label mr-5" asp-for="EditCourseViewModel.TutorIds">Other Tutors:</label>
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle other-tutors-button" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
                         Select Tutors

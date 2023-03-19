@@ -20,6 +20,7 @@
                 <input class="input-form" asp-for="NewCourseViewModel.CourseCredits" />
                 <span class="error-message d-block" asp-validation-for="NewCourseViewModel.CourseCredits"></span>
 
+                <label class="input-label" asp-for="NewCourseViewModel.UnitLeaderId">Unit Leader: </label>
                 <select class="input-form" asp-items="Model.OptionsTutors" asp-for="NewCourseViewModel.UnitLeaderId"></select>
                 <span class="error-message d-block" asp-validation-for="NewCourseViewModel.UnitLeaderId"></span>
 
