@@ -8,27 +8,38 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Runtime.CompilerServices;
+using MarksManagementSystem.Helpers;
+using System.Dynamic;
 
 namespace MarksManagementSystem.Pages
 {
     public class LoginModel : PageModel
     {
-        private MarksManagementContext _marksManagementContext;
+        private readonly MarksManagementContext _marksManagementContext;
+        private readonly IPasswordCreator _passwordCreator;
 
-        public LoginModel(MarksManagementContext context)
+        [BindProperty]
+        public Credential Credential { get; set; } = new();
+
+        [BindProperty]
+        public string UserType { get; set; } = string.Empty;
+
+        public string ErrorMessage { get; set; } = string.Empty;
+
+
+        public LoginModel(MarksManagementContext context, IPasswordCreator passwordCreator)
         {
             _marksManagementContext = context;
+            _passwordCreator = passwordCreator;
         }
 
-        [BindProperty]
-        public Credential Credential { get; set; }
-
-        [BindProperty]
-        public string UserType { get; set; }
-        public string ErrorMessage { get; set; }
         public void OnGet()
         {
+            var err = ModelState.ErrorCount;
+            
         }
+
+
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -63,8 +74,13 @@ namespace MarksManagementSystem.Pages
 
         private async Task<bool> LogInTutorIsSuccess()
         {
+
             var tutor = await _marksManagementContext.Tutor.FirstOrDefaultAsync(x => x.TutorEmail == Credential.Email);
-            if (tutor != null && tutor.TutorPassword == Credential.Password)
+            
+            if (tutor == null) throw new ArgumentNullException(nameof(tutor));
+            if (tutor.PasswordSalt == null) throw new ArgumentNullException(nameof(tutor.PasswordSalt));
+            var hashedPassword = _passwordCreator.GenerateHashedPassword(tutor.PasswordSalt, Credential.Password);
+            if (tutor.TutorPassword == hashedPassword)
             {
                 //Login is success so create claims for the user
                 var claims = new List<Claim>

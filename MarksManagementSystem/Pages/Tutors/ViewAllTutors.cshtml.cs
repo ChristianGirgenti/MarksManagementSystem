@@ -27,7 +27,7 @@ namespace MarksManagementSystem.Pages.Tutors
                    TutorEmail = t.TutorEmail,
                    TutorDateOfBirth = t.TutorDateOfBirth.Date.ToString("d"),
                    CourseLed = _courseTutorRepository.GetAll()
-                       .Where(ct => ct.TutorId == t.TutorId && ct.IsUnitLeader == true)
+                       .Where(ct => ct.TutorId == t.TutorId && ct.IsUnitLeader)
                        .Select(ct => ct.Course.CourseName)
                        .SingleOrDefault(),
 

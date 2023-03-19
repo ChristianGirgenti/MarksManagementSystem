@@ -20,6 +20,8 @@ namespace MarksManagementSystem.Data.Models
 
         public string TutorPassword { get; set; } = string.Empty;
 
+        public byte[]? PasswordSalt { get; set; }
+
         [Required(ErrorMessage = "The date of birth is required")]
         public DateTime TutorDateOfBirth { get; set; }
 

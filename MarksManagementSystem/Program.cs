@@ -1,5 +1,6 @@
 using MarksManagementSystem.Data;
 using MarksManagementSystem.Data.Repositories;
+using MarksManagementSystem.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<MarksManagementContext>(options =>
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
 builder.Services.AddScoped<ICourseTutorRepository, CourseTutorRepository>();
+builder.Services.AddScoped<IPasswordCreator, PasswordCreator>();
 
 //Configure Authorization and Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

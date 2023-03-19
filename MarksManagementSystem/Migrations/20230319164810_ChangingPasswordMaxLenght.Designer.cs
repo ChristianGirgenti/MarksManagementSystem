@@ -4,6 +4,7 @@ using MarksManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarksManagementSystem.Migrations
 {
     [DbContext(typeof(MarksManagementContext))]
-    partial class MarksManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20230319164810_ChangingPasswordMaxLenght")]
+    partial class ChangingPasswordMaxLenght
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,9 +77,6 @@ namespace MarksManagementSystem.Migrations
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<DateTime>("TutorDateOfBirth")
                         .HasColumnType("datetime2");

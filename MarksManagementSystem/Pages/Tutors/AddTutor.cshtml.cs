@@ -1,9 +1,12 @@
 using MarksManagementSystem.Data.Models;
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Helpers;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
+using System.Security.Cryptography;
+using System;
 
 namespace MarksManagementSystem.Pages.Tutors
 {
@@ -13,13 +16,15 @@ namespace MarksManagementSystem.Pages.Tutors
         private const int SQL_UNIQUE_CONSTRAINT_EX = 2601;
         private const int SQL_UNIQUE_CONSTRAINT_EX2 = 2627;
         private bool EmailNeedsChange = false;
+        private readonly IPasswordCreator _passwordCreator;
 
         [BindProperty]
         public Tutor NewTutor { get; set; } = new Tutor();
 
-        public AddTutorModel(ITutorRepository tutorRepository)
+        public AddTutorModel(ITutorRepository tutorRepository, IPasswordCreator passwordCreator)
         {
-            _tutorRepository = tutorRepository;
+            _tutorRepository = tutorRepository ?? throw new ArgumentNullException(nameof(tutorRepository));
+            _passwordCreator = passwordCreator ?? throw new ArgumentNullException(nameof(passwordCreator));
         }
 
         public IActionResult OnPost()
@@ -38,8 +43,13 @@ namespace MarksManagementSystem.Pages.Tutors
             var lastNameLower = newTutor.TutorLastName.ToLower();
             newTutor.TutorFirstName = StringUtilities.Capitalise(nameLower);
             newTutor.TutorLastName = StringUtilities.Capitalise(lastNameLower);
-            newTutor.TutorPassword = newTutor.TutorFirstName.Substring(0,1) + lastNameLower.Substring(0,1) + newTutor.TutorDateOfBirth.ToString("ddMMyy") + ".";
-            newTutor.TutorEmail = nameLower + "." + lastNameLower + "@myUniversity.co.uk";
+            
+            var password = string.Concat(newTutor.TutorFirstName.AsSpan(0, 1), lastNameLower.AsSpan(0, 1), newTutor.TutorDateOfBirth.ToString("ddMMyy"), ".");
+            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
+            newTutor.PasswordSalt = salt;
+            newTutor.TutorPassword = _passwordCreator.GenerateHashedPassword(salt, password);
+           
+            newTutor.TutorEmail = nameLower + "." + lastNameLower + "@myuniversity.co.uk";
         }
 
         public void AddTutor(Tutor newTutor)
@@ -65,6 +75,7 @@ namespace MarksManagementSystem.Pages.Tutors
                     EmailNeedsChange = true;
                     AddTutor(newTutor);
                 }
+
             }
         }
     }
