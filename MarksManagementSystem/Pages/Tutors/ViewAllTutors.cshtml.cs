@@ -1,10 +1,7 @@
-using MarksManagementSystem.Data;
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.ViewModel;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using System.Security.Claims;
 
 namespace MarksManagementSystem.Pages.Tutors
@@ -28,6 +25,7 @@ namespace MarksManagementSystem.Pages.Tutors
                    TutorId = t.TutorId,
                    TutorFullName = t.TutorFirstName + " " + t.TutorLastName,
                    TutorEmail = t.TutorEmail,
+                   TutorDateOfBirth = t.TutorDateOfBirth.Date.ToString("d"),
                    CourseLed = _courseTutorRepository.GetAll()
                        .Where(ct => ct.TutorId == t.TutorId && ct.IsUnitLeader == true)
                        .Select(ct => ct.Course.CourseName)

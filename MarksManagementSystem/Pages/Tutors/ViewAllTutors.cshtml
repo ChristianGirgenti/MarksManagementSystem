@@ -11,11 +11,12 @@
         <tr>
             <th>Tutor Full Name</th>
             <th>Tutor Email</th>
+            <th>Tutor Date Of Birth</th>
             <th>Course Led</th>
             <th>Other Courses</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody> 
         @if (Model.AllTutorsViewModel != null)
         {
             foreach (var tutor in Model.AllTutorsViewModel)
@@ -23,6 +24,7 @@
                 <tr>
                     <td>@tutor.TutorFullName</td>
                     <td>@tutor.TutorEmail</td>
+                    <td>@tutor.TutorDateOfBirth</td>
                     <td>@tutor.CourseLed</td>
                     <td>@tutor.OtherCourses</td>
                     <td>

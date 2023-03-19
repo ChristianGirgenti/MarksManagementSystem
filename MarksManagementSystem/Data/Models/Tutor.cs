@@ -24,6 +24,9 @@ namespace MarksManagementSystem.Data.Models
         [Required(ErrorMessage = "Insert a valid password")]
         public string TutorPassword { get; set; } = string.Empty;
 
+        [Required]
+        public DateTime TutorDateOfBirth { get; set; }
+
         public bool IsAdmin { get; set; }
         public ICollection<CourseTutor> CourseTutors { get; set; } = new List<CourseTutor>();
 
