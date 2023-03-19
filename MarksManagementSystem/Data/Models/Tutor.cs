@@ -16,8 +16,6 @@ namespace MarksManagementSystem.Data.Models
         [Required(ErrorMessage = "Last name can not be empty")]
         public string TutorLastName { get; set; } = string.Empty;
 
-        [EmailAddress]
-        [Required(ErrorMessage = "Insert a valid email")]
         public string TutorEmail { get; set; } = string.Empty;
 
         [PasswordPropertyText]

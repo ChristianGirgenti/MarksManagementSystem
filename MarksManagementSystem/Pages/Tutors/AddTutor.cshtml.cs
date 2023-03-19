@@ -12,6 +12,7 @@ namespace MarksManagementSystem.Pages.Tutors
         private readonly ITutorRepository _tutorRepository;
         private const int SQL_UNIQUE_CONSTRAINT_EX = 2601;
         private const int SQL_UNIQUE_CONSTRAINT_EX2 = 2627;
+        private bool EmailNeedsChange = false;
 
         [BindProperty]
         public Tutor NewTutor { get; set; } = new Tutor();
@@ -23,23 +24,13 @@ namespace MarksManagementSystem.Pages.Tutors
 
         public IActionResult OnPost()
         {
-            if (!ModelState.IsValid) return Page();
-            try
-            {
-                if (NewTutor == null) throw new ArgumentNullException(nameof(NewTutor));
-                AddTutor(NewTutor);
-                return RedirectToPage("ViewAllTutors");   
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX || sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
-                    ModelState.AddModelError("NewTutor.StudentEmail", "A tutor with the same email address already exists.");
-                return Page();
-            }
-            
+            if (!ModelState.IsValid) return Page();      
+            if (NewTutor == null) throw new ArgumentNullException(nameof(NewTutor));
+            AddTutor(NewTutor);
+            return RedirectToPage("ViewAllTutors");         
         }
 
-        public void FormatNewTutorValues(Tutor newTutor)
+        public void SetNewTutorValues(Tutor newTutor)
         {
             if (newTutor == null) throw new ArgumentNullException(nameof(newTutor));
             newTutor.TutorEmail = newTutor.TutorEmail.ToLower();
@@ -47,14 +38,33 @@ namespace MarksManagementSystem.Pages.Tutors
             var lastNameLower = newTutor.TutorLastName.ToLower();
             newTutor.TutorFirstName = StringUtilities.Capitalise(nameLower);
             newTutor.TutorLastName = StringUtilities.Capitalise(lastNameLower);
+            newTutor.TutorEmail = nameLower + "." + lastNameLower + "@myUniversity.co.uk";
         }
 
         public void AddTutor(Tutor newTutor)
         {
             if (newTutor == null) throw new ArgumentNullException(nameof(newTutor));
 
-            FormatNewTutorValues(newTutor);
-            _tutorRepository.Add(newTutor);          
+            if (!EmailNeedsChange) SetNewTutorValues(newTutor);
+
+            try
+            {
+                _tutorRepository.Add(newTutor);
+            }
+            catch (Exception ex)
+            {
+                //When a tutor with a same first name and last name of an already existing tutor is added,
+                //the system will add a random number between 1 and 99 to the email.
+                if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX || sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
+                {
+                    Random random = new();
+                    var randomNumber = random.Next(1, 100).ToString();
+                    int indexOfAt = newTutor.TutorEmail.IndexOf("@");
+                    newTutor.TutorEmail = newTutor.TutorEmail.Insert(indexOfAt, randomNumber);
+                    EmailNeedsChange = true;
+                    AddTutor(newTutor);
+                }
+            }
         }
     }
 }
