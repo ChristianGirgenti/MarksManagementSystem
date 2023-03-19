@@ -20,7 +20,7 @@ namespace MarksManagementSystem.Data.Models
 
         public string TutorPassword { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "The date of birth is required")]
         public DateTime TutorDateOfBirth { get; set; }
 
         public bool IsAdmin { get; set; }

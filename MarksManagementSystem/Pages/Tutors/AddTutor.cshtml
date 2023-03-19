@@ -21,13 +21,13 @@
 
                 <label class="input-label" asp-for="NewTutor.TutorDateOfBirth">Date of Birth: </label>
                 <input class="input-form" type="date" asp-for="NewTutor.TutorDateOfBirth" value="@DateTime.Now.ToString()" />
-                <span class="error-message d-block" asp-validation-for="NewTutor.TutorDateOfBirth"></span>
+                <span class="error-message d-block mt-1" asp-validation-for="NewTutor.TutorDateOfBirth"></span>
 
                 <label class="input-label" asp-for="NewTutor.IsAdmin">Is Admin: </label>
                 <input class="input-form" type="checkbox" asp-for="NewTutor.IsAdmin" />
             </div>
 
-            <button type="submit" class="btn btn-success">Add Tutor</button>
+            <button type="submit" class="btn btn-success mt-4">Add Tutor</button>
         </form>
     </div>
 </div>
