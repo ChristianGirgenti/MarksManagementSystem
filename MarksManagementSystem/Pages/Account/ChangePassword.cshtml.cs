@@ -31,9 +31,9 @@ namespace MarksManagementSystem.Pages.Account
         [BindProperty]
         public string NewPassword { get; set; } = string.Empty;
 
-        private IPasswordCreator _passwordCreator { get; set; }
-        private ITutorRepository _tutorRepository { get; set; }
+        private readonly IPasswordCreator _passwordCreator;
 
+        private readonly ITutorRepository _tutorRepository;
         public ChangePasswordModel(IPasswordCreator passwordCreator, ITutorRepository tutorRepository)
         {
             _passwordCreator = passwordCreator;
@@ -49,21 +49,17 @@ namespace MarksManagementSystem.Pages.Account
             }
             else
             {
-                var claims = HttpContext.User.Claims.ToList();
-                var encodedSalt = claims.FirstOrDefault(c => c.Type == "Salt")?.Value;
-                if (encodedSalt == null) throw new ArgumentNullException(nameof(encodedSalt));
-                var salt = Convert.FromBase64String(encodedSalt);
-                var hashedCurrentPasswordForm = _passwordCreator.GenerateHashedPassword(salt, CurrentPassword);
-                var tutorId = claims.FirstOrDefault(c => c.Type == "TutorId")?.Value;
-                var hashedCurrentPasswordClaim = claims.FirstOrDefault(c => c.Type == "Password")?.Value;
-                if (hashedCurrentPasswordForm == hashedCurrentPasswordClaim)
+                var accountClaims = new AccountClaims(HttpContext.User.Claims.ToList());
+
+                var hashedCurrentPasswordForm = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, CurrentPassword);
+                if (hashedCurrentPasswordForm == accountClaims.AccountPassword)
                 {
-                    if (claims.FirstOrDefault(c => c.Type == "TutorId") != null)
+                    if (accountClaims.AccountIsTutor)
                     {
                         try
                         {
-                            var newHashedPassword = _passwordCreator.GenerateHashedPassword(salt, NewPassword);
-                            _tutorRepository.UpdatePasswordByTutorId(Convert.ToInt32(tutorId), newHashedPassword);
+                            var newHashedPassword = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, NewPassword);
+                            _tutorRepository.UpdatePasswordByTutorId(Convert.ToInt32(accountClaims.AccountId), newHashedPassword);
                             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                             TempData["SuccessUpdate"] = "Password has been changed successfully";
                             return RedirectToPage("/Account/Login");
@@ -73,13 +69,9 @@ namespace MarksManagementSystem.Pages.Account
                             TempData["ErrorMessage"] = "An error occurred while changing the password: " + ex.Message;
                         }
                     }
-                    else if (claims.FirstOrDefault(c => c.Type == "StudentId") != null)
+                    else 
                     {
 
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("NewPassword", "Something went wrong while trying to change password. If the error persist, contact us through the help page.");
                     }
                 }
                 else

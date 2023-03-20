@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using MarksManagementSystem.Data.Models;
 using System.Numerics;
 using MarksManagementSystem.Helpers;
+using MarksManagementSystem.Pages.Account;
 
 namespace MarksManagementSystem.Pages
 {
@@ -15,8 +16,8 @@ namespace MarksManagementSystem.Pages
         private readonly ITutorRepository _tutorRepository;
         private readonly IPasswordCreator _passwordCreator;
         private string HashedInitialPassword { get; set; } = string.Empty;
-        private string CurrentPassword { get; set; } = string.Empty;
         public bool HasCoursesWithoutUnitLeader { get; set; } = new();
+
 
 
         public IndexModel(ICourseRepository courseRepository, ICourseTutorRepository courseTutorRepository, ITutorRepository tutorRepository, IPasswordCreator passwordCreator)
@@ -29,27 +30,17 @@ namespace MarksManagementSystem.Pages
 
         public void OnGet()
         {
-            var claims = HttpContext.User.Claims;
-            var userFirstName = claims.FirstOrDefault(c => c.Type == "FirstName")?.Value;
-            var userLastName = claims.FirstOrDefault(c => c.Type == "LastName")?.Value.ToLower();
-            var password = claims.FirstOrDefault(c => c.Type == "Password")?.Value.ToString();
-            var dob = claims.FirstOrDefault(c => c.Type == "DateOfBirth")?.Value.ToString();
-            var encodedSalt = claims.FirstOrDefault(c => c.Type == "Salt")?.Value.ToString();
-            if (encodedSalt == null) throw new ArgumentNullException(nameof(encodedSalt));
-            var salt = Convert.FromBase64String(encodedSalt);
+            var accoountClaims = new AccountClaims(HttpContext.User.Claims.ToList());
 
-
-            var startPassword = string.Concat(userFirstName.AsSpan(0, 1),
-                                              userLastName.AsSpan(0, 1),
-                                              dob,
+            var startPassword = string.Concat(accoountClaims.AccountFirstName.AsSpan(0, 1),
+                                              accoountClaims.AccountLastName.AsSpan(0, 1),
+                                              accoountClaims.AccountDateOfBirth,
                                               ".");
 
-            HashedInitialPassword = _passwordCreator.GenerateHashedPassword(salt, startPassword);
-            CurrentPassword = password ?? throw new ArgumentNullException(nameof(password));
-
+            HashedInitialPassword = _passwordCreator.GenerateHashedPassword(accoountClaims.AccountPasswordSalt, startPassword);
 
             ViewData["HashedInitialPassword"] = HashedInitialPassword;
-            ViewData["CurrentPassword"] = CurrentPassword;
+            ViewData["CurrentPassword"] = accoountClaims.AccountPassword;
         }
     }
 }
