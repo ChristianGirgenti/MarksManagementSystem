@@ -33,14 +33,6 @@ namespace MarksManagementSystem.Pages
             _passwordCreator = passwordCreator;
         }
 
-        public void OnGet()
-        {
-            var err = ModelState.ErrorCount;
-            
-        }
-
-
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -85,10 +77,14 @@ namespace MarksManagementSystem.Pages
                 //Login is success so create claims for the user
                 var claims = new List<Claim>
                                 {
-                                    new Claim(ClaimTypes.Name, tutor.TutorFirstName),
-                                    new Claim(ClaimTypes.Surname, tutor.TutorLastName),
-                                    new Claim(ClaimTypes.Email, tutor.TutorEmail),
-                                    new Claim(ClaimTypes.Role, tutor.IsAdmin ? "Admin" : "Tutor")
+                                    new Claim("TutorId", tutor.TutorId.ToString()),
+                                    new Claim("FirstName", tutor.TutorFirstName),
+                                    new Claim("LastName", tutor.TutorLastName),
+                                    new Claim("DateOfBirth", tutor.TutorDateOfBirth.ToString("ddMMyy")),
+                                    new Claim("Email", tutor.TutorEmail),
+                                    new Claim("Role", tutor.IsAdmin ? "Admin" : "Tutor"),
+                                    new Claim("Password", tutor.TutorPassword),
+                                    new Claim("Salt", Convert.ToBase64String(tutor.PasswordSalt))
                                 };
 
 
