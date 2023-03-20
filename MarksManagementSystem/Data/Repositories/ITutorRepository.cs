@@ -9,5 +9,7 @@ namespace MarksManagementSystem.Data.Repositories
         public Tutor GetById(int tutorId);
         public void Delete(int tutorId);
         public List<Tutor> GetAll();
+        public void UpdatePasswordByTutorId(int tutorId, string newPassword);
+
     }
 }

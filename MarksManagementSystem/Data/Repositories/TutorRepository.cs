@@ -47,5 +47,16 @@ namespace MarksManagementSystem.Data.Repositories
             marksManagementContext.Entry(tutor).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             marksManagementContext.SaveChanges();
         }
+
+        public void UpdatePasswordByTutorId(int tutorId, string newPassword)
+        {
+            if (tutorId <= 0) throw new ArgumentOutOfRangeException(nameof(tutorId));
+            if (string.IsNullOrEmpty(newPassword)) throw new ArgumentNullException(nameof(newPassword));
+            var tutor = marksManagementContext.Tutor.FirstOrDefault(t => t.TutorId == tutorId);
+            if (tutor == null) throw new ArgumentNullException(nameof(tutor));
+            tutor.TutorPassword = newPassword;
+            marksManagementContext.Entry(tutor).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            marksManagementContext.SaveChanges();
+        }
     }
 }

@@ -25,6 +25,12 @@
             {
                 <div class="error-message"> @Model.ErrorMessage</div>
             }
+            @if (TempData["SuccessUpdate"] != null)
+            {
+                <div class="update-success">
+                    @TempData["SuccessUpdate"]
+                </div>
+            }
         </div>
     </form>
 </div>

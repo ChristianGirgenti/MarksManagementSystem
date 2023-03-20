@@ -3,13 +3,10 @@ using MarksManagementSystem.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using System.Runtime.CompilerServices;
 using MarksManagementSystem.Helpers;
-using System.Dynamic;
 
 namespace MarksManagementSystem.Pages
 {
@@ -26,6 +23,7 @@ namespace MarksManagementSystem.Pages
 
         public string ErrorMessage { get; set; } = string.Empty;
 
+        public List<Claim> Claims { get; set; } = new();
 
         public LoginModel(MarksManagementContext context, IPasswordCreator passwordCreator)
         {
@@ -75,7 +73,33 @@ namespace MarksManagementSystem.Pages
             if (tutor.TutorPassword == hashedPassword)
             {
                 //Login is success so create claims for the user
-                var claims = new List<Claim>
+                BuildClaims(tutor);
+
+                var claimsIdentity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true
+                };
+                ClearTempData();
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+                return true;
+            }
+            return false;
+        }
+
+        public void ClearTempData()
+        {
+            if (TempData.ContainsKey("SuccessUpdate"))
+            {
+                TempData.Remove("SuccessUpdate");
+            }
+        }
+
+        public void BuildClaims(Tutor tutor)
+        {
+            Claims = new List<Claim>
                                 {
                                     new Claim("TutorId", tutor.TutorId.ToString()),
                                     new Claim("FirstName", tutor.TutorFirstName),
@@ -86,20 +110,6 @@ namespace MarksManagementSystem.Pages
                                     new Claim("Password", tutor.TutorPassword),
                                     new Claim("Salt", Convert.ToBase64String(tutor.PasswordSalt))
                                 };
-
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = true
-                };
-
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-                return true;
-            }
-            return false;
         }
     }
 }
