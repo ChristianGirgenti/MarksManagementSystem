@@ -17,9 +17,6 @@ namespace MarksManagementSystem.Pages
         private readonly IPasswordCreator _passwordCreator;
         private string HashedInitialPassword { get; set; } = string.Empty;
         public bool HasCoursesWithoutUnitLeader { get; set; } = new();
-
-
-
         public IndexModel(ICourseRepository courseRepository, ICourseTutorRepository courseTutorRepository, ITutorRepository tutorRepository, IPasswordCreator passwordCreator)
         {
             _courseRepository = courseRepository;
@@ -30,17 +27,17 @@ namespace MarksManagementSystem.Pages
 
         public void OnGet()
         {
-            var accoountClaims = new AccountClaims(HttpContext.User.Claims.ToList());
-
-            var startPassword = string.Concat(accoountClaims.AccountFirstName.AsSpan(0, 1),
-                                              accoountClaims.AccountLastName.AsSpan(0, 1),
-                                              accoountClaims.AccountDateOfBirth,
+            var accountClaims = new AccountClaims(HttpContext.User.Claims.ToList());
+            var lastNameLower = accountClaims.AccountLastName.ToLower();
+            var startPassword = string.Concat(accountClaims.AccountFirstName.AsSpan(0, 1),
+                                              lastNameLower.AsSpan(0, 1),                  
+                                              accountClaims.AccountDateOfBirth,
                                               ".");
 
-            HashedInitialPassword = _passwordCreator.GenerateHashedPassword(accoountClaims.AccountPasswordSalt, startPassword);
+            HashedInitialPassword = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, startPassword);
 
             ViewData["HashedInitialPassword"] = HashedInitialPassword;
-            ViewData["CurrentPassword"] = accoountClaims.AccountPassword;
+            ViewData["CurrentPassword"] = accountClaims.AccountPassword;
         }
     }
 }
