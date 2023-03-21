@@ -41,6 +41,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
+await EnsureDbCreated(app.Services, app.Logger);
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -59,3 +61,10 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+async Task EnsureDbCreated(IServiceProvider services, ILogger logger)
+{
+    using var db = services.CreateScope()
+        .ServiceProvider.GetRequiredService<MarksManagementContext>();
+    await db.Database.MigrateAsync();
+}
