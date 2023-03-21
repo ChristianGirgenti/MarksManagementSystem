@@ -2,7 +2,15 @@
   "dependencies": {
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:MarksManagementSystemAzure"
+      "connectionId": "ConnectionStrings:MarksManagementSystem"
+    },
+    "secrets1": {
+      "type": "secrets"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MarksManagementSystem",
+      "dynamicId": null
     }
   }
 }
