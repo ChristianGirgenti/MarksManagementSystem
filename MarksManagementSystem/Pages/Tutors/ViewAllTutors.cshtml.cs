@@ -1,11 +1,13 @@
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 
 namespace MarksManagementSystem.Pages.Tutors
 {
+    [Authorize(Policy = "Admin")]
     public class ViewAllTutorsModel : PageModel
     {
         private readonly ITutorRepository _tutorRepository;

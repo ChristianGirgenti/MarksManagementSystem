@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using MarksManagementSystem.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarksManagementSystem.Pages
 {
@@ -66,8 +67,8 @@ namespace MarksManagementSystem.Pages
         {
 
             var tutor = await _marksManagementContext.Tutor.FirstOrDefaultAsync(x => x.TutorEmail == Credential.Email);
-            
-            if (tutor == null) throw new ArgumentNullException(nameof(tutor));
+
+            if (tutor == null) return false;
             if (tutor.PasswordSalt == null) throw new ArgumentNullException(nameof(tutor.PasswordSalt));
             var hashedPassword = _passwordCreator.GenerateHashedPassword(tutor.PasswordSalt, Credential.Password);
             if (tutor.TutorPassword == hashedPassword)

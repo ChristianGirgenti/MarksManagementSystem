@@ -7,9 +7,11 @@ using Microsoft.Data.SqlClient;
 using MarksManagementSystem.Helpers;
 using MarksManagementSystem.ViewModel;
 using MarksManagementSystem.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarksManagementSystem.Pages.Courses
 {
+    [Authorize(Policy = "Admin")]
     public class AddCourseModel : PageModel
     {
         private readonly ICourseRepository courseRepository;

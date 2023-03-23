@@ -2,6 +2,7 @@ using MarksManagementSystem.Data.Models;
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Helpers;
 using MarksManagementSystem.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using Microsoft.Data.SqlClient;
 
 namespace MarksManagementSystem.Pages.Courses
 {
+    [Authorize(Policy = "Admin")]
     public class EditCourseModel : PageModel
     {
         private readonly ICourseRepository _courseRepository;

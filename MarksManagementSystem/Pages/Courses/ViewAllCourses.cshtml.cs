@@ -1,10 +1,12 @@
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MarksManagementSystem.Pages.Courses
 {
+    [Authorize(Policy = "Admin")]
     public class ViewAllCoursesModel : PageModel
     {
         private readonly ICourseRepository _courseRepository;

@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarksManagementSystem.Pages.Account
 {
+    [Authorize]
+
     public class ChangePasswordModel : PageModel
     {
         [Required]

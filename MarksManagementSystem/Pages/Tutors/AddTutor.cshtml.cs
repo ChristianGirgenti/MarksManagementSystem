@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarksManagementSystem.Pages.Tutors
 {
+    [Authorize(Policy = "Admin")]
     public class AddTutorModel : PageModel
     {
         private readonly ITutorRepository _tutorRepository;

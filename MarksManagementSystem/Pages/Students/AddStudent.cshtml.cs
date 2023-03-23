@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MarksManagementSystem.Pages.Students
 {
+    [Authorize(Policy = "Admin")]
     public class AddStudentModel : PageModel
     {
         [BindProperty]
