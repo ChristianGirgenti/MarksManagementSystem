@@ -45,14 +45,14 @@ namespace MarksManagementSystem.Pages
                 return Page();
             }
 
-            var isLoginSuccessfull = false;
+            bool isLoginSuccessfull;
             if (UserType == "tutor")
             {
                 isLoginSuccessfull = await LogInTutorIsSuccess();
             }
             else
             {
-                //Log In Student
+                isLoginSuccessfull = await LogInStudentIsSuccess();
             }
             
             if (!isLoginSuccessfull)
@@ -74,7 +74,35 @@ namespace MarksManagementSystem.Pages
             if (tutor.TutorPassword == hashedPassword)
             {
                 //Login is success so create claims for the user
-                BuildClaims(tutor);
+                BuildClaimsTutor(tutor);
+
+                var claimsIdentity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true
+                };
+                ClearTempData();
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+                return true;
+            }
+            return false;
+        }
+
+
+        private async Task<bool> LogInStudentIsSuccess()
+        {
+
+            var student = await _marksManagementContext.Student.FirstOrDefaultAsync(x => x.StudentEmail == Credential.Email);
+
+            if (student == null) return false;
+            if (student.PasswordSalt == null) throw new ArgumentNullException(nameof(student.PasswordSalt));
+            var hashedPassword = _passwordCreator.GenerateHashedPassword(student.PasswordSalt, Credential.Password);
+            if (student.StudentPassword == hashedPassword)
+            {
+                //Login is success so create claims for the user
+                BuildClaimsStudent(student);
 
                 var claimsIdentity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
@@ -98,7 +126,8 @@ namespace MarksManagementSystem.Pages
             }
         }
 
-        public void BuildClaims(Tutor tutor)
+
+        public void BuildClaimsTutor(Tutor tutor)
         {
             Claims = new List<Claim>
                                 {
@@ -110,6 +139,21 @@ namespace MarksManagementSystem.Pages
                                     new Claim("Role", tutor.IsAdmin ? "Admin" : "Tutor"),
                                     new Claim("Password", tutor.TutorPassword),
                                     new Claim("Salt", Convert.ToBase64String(tutor.PasswordSalt))
+                                };
+        }
+
+        public void BuildClaimsStudent(Student student)
+        {
+            Claims = new List<Claim>
+                                {
+                                    new Claim("StudentId", student.StudentId.ToString()),
+                                    new Claim("FirstName", student.StudentFirstName),
+                                    new Claim("LastName", student.StudentLastName),
+                                    new Claim("DateOfBirth", student.StudentDateOfBirth.ToString("ddMMyy")),
+                                    new Claim("Email", student.StudentEmail),
+                                    new Claim("Role", "Student"),
+                                    new Claim("Password", student.StudentPassword),
+                                    new Claim("Salt", Convert.ToBase64String(student.PasswordSalt))
                                 };
         }
     }
