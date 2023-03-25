@@ -8,12 +8,12 @@ namespace MarksManagementSystem.Data.Models
     {
         public int TutorId { get; set; }
 
-        [MaxLength(255, ErrorMessage = "The first name of the tutor can be max 255 characters")]
-        [Required(ErrorMessage = "Tutor First TutorFirstName can not be empty")]
+        [MaxLength(255, ErrorMessage = "Tutor first name can be max 255 characters")]
+        [Required(ErrorMessage = "Tutor first name can not be empty")]
         public string TutorFirstName { get; set; } = string.Empty;
 
-        [MaxLength(255, ErrorMessage = "The last name of the tutor can be max 255 characters")]
-        [Required(ErrorMessage = "Last name can not be empty")]
+        [MaxLength(255, ErrorMessage = "Tutor last name can be max 255 characters")]
+        [Required(ErrorMessage = "Tutor last name can not be empty")]
         public string TutorLastName { get; set; } = string.Empty;
 
         public string TutorEmail { get; set; } = string.Empty;

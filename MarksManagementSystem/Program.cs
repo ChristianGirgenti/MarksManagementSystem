@@ -13,7 +13,9 @@ builder.Services.AddDbContext<MarksManagementContext>(options =>
 
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICourseTutorRepository, CourseTutorRepository>();
+builder.Services.AddScoped<ICourseStudentRepository, CourseStudentRepository>();
 builder.Services.AddScoped<IPasswordCreator, PasswordCreator>();
 
 //Configure Authorization and Authentication

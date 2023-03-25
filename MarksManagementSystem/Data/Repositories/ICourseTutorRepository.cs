@@ -4,8 +4,8 @@ namespace MarksManagementSystem.Data.Repositories
 {
     public interface ICourseTutorRepository
     {
-        public void Add(CourseTutor course);
-        public void Update(CourseTutor course);
+        public void Add(CourseTutor courseTutor);
+        public void Update(CourseTutor courseTutor);
         public CourseTutor GetByIds(int courseId, int tutorId);
         public List<CourseTutor> GetAll();
         public void DeleteCourseUnitLeaderRelationshipByCourseId(int courseId);

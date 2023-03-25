@@ -12,19 +12,15 @@
             <div class="form-group">
                 <label class="input-label" asp-for="NewStudent.StudentFirstName">First Name: </label>
                 <input class="input-form" asp-for="NewStudent.StudentFirstName" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.StudentFirstName"></span>
+                <span class="error-message d-block" asp-validation-for="NewStudent.StudentFirstName"></span>
 
                 <label class="input-label" asp-for="NewStudent.StudentLastName">Last Name: </label>
                 <input class="input-form" asp-for="NewStudent.StudentLastName" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.StudentLastName"></span>
+                <span class="error-message d-block" asp-validation-for="NewStudent.StudentLastName"></span>
 
-                <label class="input-label" asp-for="NewStudent.StudentEmail">Email: </label>
-                <input type="email" class="input-form" asp-for="NewStudent.StudentEmail" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.StudentEmail"></span>
-
-                <label class="input-label" asp-for="NewStudent.StudentPassword">Password: </label>
-                <input type="password" class="input-form" asp-for="NewStudent.StudentPassword" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.StudentPassword"></span>
+                <label class="input-label" asp-for="NewStudent.StudentDateOfBirth">Date of Birth: </label>
+                <input class="input-form" type="date" asp-for="NewStudent.StudentDateOfBirth" value="@DateTime.Now.ToString()" />
+                <span class="error-message d-block mt-1" asp-validation-for="NewStudent.StudentDateOfBirth"></span>
             </div>
 
             <button class="btn btn-success">Add Student</button>
