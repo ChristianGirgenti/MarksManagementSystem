@@ -4,6 +4,26 @@
     ViewData["Title"] = "Home page";
 }
 
+
+@{
+    var hashedInitialPassword = ViewData["HashedInitialPassword"] as string;
+    var currentPassword = ViewData["CurrentPassword"] as string;
+    if (string.IsNullOrEmpty(hashedInitialPassword)) throw new ArgumentNullException(nameof(hashedInitialPassword));
+    if (string.IsNullOrEmpty(currentPassword)) throw new ArgumentNullException(nameof(currentPassword));
+
+
+    if (hashedInitialPassword == currentPassword)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Warning!</strong> You are still using the default password.
+            We recommend you to change it. Here is the link -> <a asp-page="/Account/ChangePassword">Change Password</a>
+        </div>
+    }
+}
+
+
+
+
 <div class="text-center">
    @* @{
         if (HttpContext.User.Claims.FirstOrDefault(x => x.Value == "Admin") != null && Model.HasCoursesWithoutUnitLeader)

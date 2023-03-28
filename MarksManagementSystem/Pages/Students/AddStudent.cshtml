@@ -10,21 +10,17 @@
     <div>
         <form method="post">
             <div class="form-group">
-                <label class="input-label" asp-for="NewStudent.Name">Name: </label>
-                <input class="input-form" asp-for="NewStudent.Name" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.Name"></span>
+                <label class="input-label" asp-for="NewStudent.StudentFirstName">First Name: </label>
+                <input class="input-form" asp-for="NewStudent.StudentFirstName" />
+                <span class="error-message d-block" asp-validation-for="NewStudent.StudentFirstName"></span>
 
-                <label class="input-label" asp-for="NewStudent.LastName">Last Name: </label>
-                <input class="input-form" asp-for="NewStudent.LastName" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.LastName"></span>
+                <label class="input-label" asp-for="NewStudent.StudentLastName">Last Name: </label>
+                <input class="input-form" asp-for="NewStudent.StudentLastName" />
+                <span class="error-message d-block" asp-validation-for="NewStudent.StudentLastName"></span>
 
-                <label class="input-label" asp-for="NewStudent.Email">Email: </label>
-                <input type="email" class="input-form" asp-for="NewStudent.Email" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.Email"></span>
-
-                <label class="input-label" asp-for="NewStudent.Password">Password: </label>
-                <input type="password" class="input-form" asp-for="NewStudent.Password" />
-                <span class="alert-danger d-block" asp-validation-for="NewStudent.Password"></span>
+                <label class="input-label" asp-for="NewStudent.StudentDateOfBirth">Date of Birth: </label>
+                <input class="input-form" type="date" asp-for="NewStudent.StudentDateOfBirth" value="@DateTime.Now.ToString()" />
+                <span class="error-message d-block mt-1" asp-validation-for="NewStudent.StudentDateOfBirth"></span>
             </div>
 
             <button class="btn btn-success">Add Student</button>

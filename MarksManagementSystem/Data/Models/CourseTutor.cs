@@ -4,7 +4,6 @@ namespace MarksManagementSystem.Data.Models
 {
     public class CourseTutor
     {
-        public int Id { get; set; } 
         public int CourseId { get; set; }
         public int TutorId { get;set; }
         public Course Course { get; set; } = new Course();

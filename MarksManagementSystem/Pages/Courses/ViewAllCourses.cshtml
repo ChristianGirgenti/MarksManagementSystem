@@ -1,6 +1,7 @@
 ﻿@page
 @model MarksManagementSystem.Pages.Courses.ViewAllCoursesModel
 @{
+    ViewData["Title"] = "View All Courses";
 }
 
 <h1>All Courses</h1>
@@ -27,12 +28,12 @@
                     <td>@course.UnitLeader</td>
                     <td>@course.OtherTutors</td>
                     <td>
-                        <form asp-page-handler="delete" method="post" asp-route-id="@course.CourseId">
+                        <form asp-page-handler="delete" method="post" asp-route-courseId="@course.CourseId">
                             <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
                         </form>
                     </td>
                     <td>
-                        <form asp-page-handler="edit" method="post" asp-route-Id="@course.CourseId">
+                        <form asp-page-handler="edit" method="post" asp-route-courseId="@course.CourseId">
                             <button type="submit" class="btn btn-primary">Edit</button>
                         </form>
                     </td>

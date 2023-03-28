@@ -21,37 +21,39 @@
                         <a asp-page="/Privacy" class="navbar-brand float-right">Marks Management System</a>
                         <div>
                         <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                            <li class="nav-item dropdown">
+                            @*<li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Students
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                                     <li><a class="dropdown-item">View All Students</a></li>
                                 </ul>
-                            </li>
-                                @{
-                                    var httpContext = Context.Request.HttpContext;
-                                    if (httpContext.User.Claims.FirstOrDefault(x=>x.Value == "Admin") != null)
-                                    {
-                                        <li id="adminList" runat="server" class="nav-item dropdown" display="none">
-                                            <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Admin
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                                <li><a asp-page="/Courses/AddCourse" class="dropdown-item">Add New Course</a></li>
-                                                <li><a asp-page="/Students/AddStudent" class="dropdown-item">Add Student</a></li>
-                                                <li><a asp-page="/Tutors/AddTutor" class="dropdown-item">Add Tutor</a></li>
-                                                <li><a asp-page="/Courses/ViewAllCourses" class="dropdown-item">View all courses</a></li>
-                                                <li><a asp-page="/Tutors/ViewAllTutors" class="dropdown-item">View all tutors</a></li>
-                                            </ul>
-                                        </li>
-                                    }
+                            </li>*@
+                            @{
+                                var httpContext = Context.Request.HttpContext;
+                                if (httpContext.User.Claims.FirstOrDefault(x=>x.Value == "Admin") != null)
+                                {
+                                    <li id="adminList" runat="server" class="nav-item dropdown" display="none">
+                                        <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Admin
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                            <li><a asp-page="/Courses/AddCourse" class="dropdown-item">Add New Course</a></li>
+                                            <li><a asp-page="/Students/AddStudent" class="dropdown-item">Add Student</a></li>
+                                            <li><a asp-page="/Tutors/AddTutor" class="dropdown-item">Add Tutor</a></li>
+                                            <li><a asp-page="/Courses/ViewAllCourses" class="dropdown-item">View All Courses</a></li>
+                                            <li><a asp-page="/Tutors/ViewAllTutors" class="dropdown-item">View All Tutors</a></li>
+                                            <li><a asp-page="/Students/ViewAllStudents" class="dropdown-item">View All Students</a></li>
+                                        </ul>
+                                    </li>
                                 }
+                            }
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     My Account
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                        <li><a asp-page="/Account/ChangePassword" class="dropdown-item">Change Password</a></li>
                                         <li><a asp-page="/Account/Logout" class="dropdown-item">Logout</a></li>
                                 </ul>
                             </li>

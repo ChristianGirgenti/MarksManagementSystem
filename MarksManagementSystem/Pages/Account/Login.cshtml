@@ -21,9 +21,15 @@
                 <label><input asp-for="UserType" type="radio" name="userType" value="student" runat="server"/>Student</label>
             </div>
             <button class="login-button" type="submit">Log In</button>
-            @if (Model.ErrorMessage != null)
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
             {
                 <div class="error-message"> @Model.ErrorMessage</div>
+            }
+            @if (TempData["SuccessUpdate"] != null)
+            {
+                <div class="update-success">
+                    @TempData["SuccessUpdate"]
+                </div>
             }
         </div>
     </form>

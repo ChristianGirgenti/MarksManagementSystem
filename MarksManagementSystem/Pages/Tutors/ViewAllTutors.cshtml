@@ -1,6 +1,7 @@
 ﻿@page
 @model MarksManagementSystem.Pages.Tutors.ViewAllTutorsModel
 @{
+    ViewData["Title"] = "View All Tutors";
 }
 
 <h1>All Tutors</h1>
@@ -11,11 +12,12 @@
         <tr>
             <th>Tutor Full Name</th>
             <th>Tutor Email</th>
+            <th>Tutor Date Of Birth</th>
             <th>Course Led</th>
             <th>Other Courses</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody> 
         @if (Model.AllTutorsViewModel != null)
         {
             foreach (var tutor in Model.AllTutorsViewModel)
@@ -23,10 +25,11 @@
                 <tr>
                     <td>@tutor.TutorFullName</td>
                     <td>@tutor.TutorEmail</td>
+                    <td>@tutor.TutorDateOfBirth</td>
                     <td>@tutor.CourseLed</td>
                     <td>@tutor.OtherCourses</td>
                     <td>
-                        <form asp-page-handler="delete" method="post" asp-route-id="@tutor.TutorId">
+                        <form asp-page-handler="delete" method="post" asp-route-tutorId="@tutor.TutorId">
                             <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
                         </form>
                     </td>

@@ -1,12 +1,12 @@
 using MarksManagementSystem.Data.Repositories;
-using MarksManagementSystem.Helpers;
 using MarksManagementSystem.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
 
 namespace MarksManagementSystem.Pages.Courses
 {
+    [Authorize(Policy = "Admin")]
     public class ViewAllCoursesModel : PageModel
     {
         private readonly ICourseRepository _courseRepository;
@@ -19,32 +19,33 @@ namespace MarksManagementSystem.Pages.Courses
         }
 
         public void OnGet()
-        {
+        { 
             AllCoursesWithTutor = _courseRepository.GetAll()
                 .Select(c => new ViewAllCoursesViewModel
                 {
-                    CourseId = c.Id,
-                    CourseName = c.Name,
-                    CourseCredits = c.Credits,
+                    CourseId = c.CourseId,
+                    CourseName = c.CourseName,
+                    CourseCredits = c.CourseCredits,
+
                     UnitLeader = _courseTutorRepository.GetAll()
-                        .Where(ct => ct.CourseId == c.Id && ct.IsUnitLeader == true)
+                        .Where(ct => ct.CourseId == c.CourseId && ct.IsUnitLeader == true)
                         .Select(ct => ct.Tutor.ToString())
                         .SingleOrDefault(),
 
                     OtherTutors = string.Join(", ", _courseTutorRepository.GetAll()
-                        .Where(ct => ct.CourseId == c.Id && ct.IsUnitLeader == false)     
+                        .Where(ct => ct.CourseId == c.CourseId && ct.IsUnitLeader == false)
                         .Select(ct => ct.Tutor.ToString())
                         .ToList())
                 })
                 .ToList();
         }
 
-        public IActionResult OnPostDelete(int id)
+        public IActionResult OnPostDelete(int courseId)
         {
-            if (id <= 0) throw new ArgumentNullException(nameof(id));
+            if (courseId <= 0) throw new ArgumentNullException(nameof(courseId));
             try
             {
-                _courseRepository.Delete(id);
+                _courseRepository.Delete(courseId);
                 TempData["SuccessMessage"] = "The course has been deleted successfully.";
                 return RedirectToPage("ViewAllCourses"); 
             }
@@ -55,10 +56,10 @@ namespace MarksManagementSystem.Pages.Courses
             }
         }
 
-        public IActionResult OnPostEdit(int Id)
+        public IActionResult OnPostEdit(int courseId)
         {
-            if (Id <= 0) throw new ArgumentNullException(nameof(Id));
-            return RedirectToPage("EditCourse", new { Id });
+            if (courseId <= 0) throw new ArgumentNullException(nameof(courseId));
+            return RedirectToPage("EditCourse", new { courseId });
         }
 
 
