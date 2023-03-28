@@ -12,7 +12,7 @@ namespace MarksManagementSystem.Pages.Tutors
     {
         private readonly ITutorRepository _tutorRepository;
         private readonly ICourseTutorRepository _courseTutorRepository;
-        public List<ViewAllTutorsViewModel>? AllTutorsViewModel { get; set; }
+        public List<ViewAllTutorsViewModel> AllTutorsViewModel { get; set; } = new List<ViewAllTutorsViewModel>();
 
         public ViewAllTutorsModel(ITutorRepository tutorRepository, ICourseTutorRepository courseTutorRepository)
         {
@@ -72,12 +72,6 @@ namespace MarksManagementSystem.Pages.Tutors
                     return RedirectToPage("ViewAllTutors");
                 }
             }     
-        }
-
-        public IActionResult OnPostEdit(int tutorId)
-        {
-            
-            return RedirectToPage("EditTutor", new { tutorId });
         }
     }
 }
