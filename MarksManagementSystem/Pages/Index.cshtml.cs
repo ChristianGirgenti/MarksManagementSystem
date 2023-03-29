@@ -33,6 +33,7 @@ namespace MarksManagementSystem.Pages
                                               lastNameLower.AsSpan(0, 1),                  
                                               accountClaims.AccountDateOfBirth,
                                               ".");
+            var userType = accountClaims.AccountUserType;
 
             HashedInitialPassword = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, startPassword);
 

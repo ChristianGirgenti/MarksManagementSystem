@@ -131,14 +131,15 @@ namespace MarksManagementSystem.Pages
         {
             Claims = new List<Claim>
                                 {
-                                    new Claim("TutorId", tutor.TutorId.ToString()),
+                                    new Claim("AccountId", tutor.TutorId.ToString()),
                                     new Claim("FirstName", tutor.TutorFirstName),
                                     new Claim("LastName", tutor.TutorLastName),
                                     new Claim("DateOfBirth", tutor.TutorDateOfBirth.ToString("ddMMyy")),
                                     new Claim("Email", tutor.TutorEmail),
-                                    new Claim("Role", tutor.IsAdmin ? "Admin" : "Tutor"),
+                                    new Claim("Role", tutor.IsAdmin ? "Admin" : "NoAdmin"),
                                     new Claim("Password", tutor.TutorPassword),
-                                    new Claim("Salt", Convert.ToBase64String(tutor.PasswordSalt))
+                                    new Claim("Salt", Convert.ToBase64String(tutor.PasswordSalt)),
+                                    new Claim("UserType", "Tutor")
                                 };
         }
 
@@ -146,14 +147,15 @@ namespace MarksManagementSystem.Pages
         {
             Claims = new List<Claim>
                                 {
-                                    new Claim("StudentId", student.StudentId.ToString()),
+                                    new Claim("AccountId", student.StudentId.ToString()),
                                     new Claim("FirstName", student.StudentFirstName),
                                     new Claim("LastName", student.StudentLastName),
                                     new Claim("DateOfBirth", student.StudentDateOfBirth.ToString("ddMMyy")),
                                     new Claim("Email", student.StudentEmail),
-                                    new Claim("Role", "Student"),
+                                    new Claim("Role", "NoAdmin"),
                                     new Claim("Password", student.StudentPassword),
-                                    new Claim("Salt", Convert.ToBase64String(student.PasswordSalt))
+                                    new Claim("Salt", Convert.ToBase64String(student.PasswordSalt)),
+                                    new Claim("UserType", "Student")
                                 };
         }
     }

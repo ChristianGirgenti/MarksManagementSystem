@@ -1,4 +1,3 @@
-using MarksManagementSystem.Data;
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -6,9 +5,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
-using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authorization;
+using MarksManagementSystem.Data.Models;
 
 namespace MarksManagementSystem.Pages.Account
 {
@@ -35,12 +34,14 @@ namespace MarksManagementSystem.Pages.Account
         public string NewPassword { get; set; } = string.Empty;
 
         private readonly IPasswordCreator _passwordCreator;
-
         private readonly ITutorRepository _tutorRepository;
-        public ChangePasswordModel(IPasswordCreator passwordCreator, ITutorRepository tutorRepository)
+        private readonly IStudentRepository _studentRepository;
+
+        public ChangePasswordModel(IPasswordCreator passwordCreator, ITutorRepository tutorRepository, IStudentRepository studentRepository)
         {
             _passwordCreator = passwordCreator;
             _tutorRepository = tutorRepository;
+            _studentRepository = studentRepository;
         }
 
         public async Task<IActionResult> OnPost()
@@ -57,7 +58,7 @@ namespace MarksManagementSystem.Pages.Account
                 var hashedCurrentPasswordForm = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, CurrentPassword);
                 if (hashedCurrentPasswordForm == accountClaims.AccountPassword)
                 {
-                    if (accountClaims.AccountIsTutor)
+                    if (accountClaims.AccountUserType.Equals("Tutor"))
                     {
                         try
                         {
@@ -74,7 +75,18 @@ namespace MarksManagementSystem.Pages.Account
                     }
                     else 
                     {
-
+                        try
+                        {
+                            var newHashedPassword = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, NewPassword);
+                            _studentRepository.UpdatePasswordByStudentId(Convert.ToInt32(accountClaims.AccountId), newHashedPassword);
+                            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                            TempData["SuccessUpdate"] = "Password has been changed successfully";
+                            return RedirectToPage("/Account/Login");
+                        }
+                        catch (Exception ex)
+                        {
+                            TempData["ErrorMessage"] = "An error occurred while changing the password: " + ex.Message;
+                        }
                     }
                 }
                 else
