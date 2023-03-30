@@ -8,5 +8,7 @@ namespace MarksManagementSystem.Data.Repositories
         public void Update(CourseStudent courseStudent);
         public CourseStudent GetByIds(int courseId, int studentId);
         public List<CourseStudent> GetAll();
+        public List<CourseStudent> GetAllByStudentId(int studentId);
+
     }
 }

@@ -45,5 +45,17 @@ namespace MarksManagementSystem.Data.Repositories
             marksManagementContext.Entry(courseStudent).State = EntityState.Modified;
             marksManagementContext.SaveChanges();
         }
+
+        public List<CourseStudent> GetAllByStudentId(int studentId)
+        {
+            if (studentId <= 0) throw new ArgumentOutOfRangeException(nameof(studentId));
+
+            var courseStudents = marksManagementContext.CourseStudent;
+            var courseStudentsByStudentId = courseStudents.Where(cs => cs.StudentId == studentId).ToList();
+
+            if (courseStudentsByStudentId == null) throw new ArgumentNullException(nameof(courseStudentsByStudentId));
+
+            return courseStudentsByStudentId;
+        }
     }
 }

@@ -5,12 +5,13 @@ namespace MarksManagementSystem.Data.Repositories
 {
     public class CourseTutorRepository : ICourseTutorRepository
     {
-        private readonly MarksManagementContext marksManagementContext;
+        private readonly MarksManagementContext marksManagementContext; 
 
         public CourseTutorRepository(MarksManagementContext context)
         {
             marksManagementContext = context;
         }
+
         public void Add(CourseTutor courseTutor)
         {
             if (courseTutor == null) throw new ArgumentNullException(nameof(courseTutor));
@@ -45,6 +46,21 @@ namespace MarksManagementSystem.Data.Repositories
                 .Include(ct => ct.Tutor)
                 .Include(ct => ct.Course)
                 .ToList();  
+        }
+
+        public List<CourseTutor> GetAllByTutorId(int tutorId)
+        {
+            if (tutorId <= 0) throw new ArgumentOutOfRangeException(nameof(tutorId));
+
+            var courseTutors = marksManagementContext.CourseTutor;
+            var courseTutorsByTutorId = courseTutors.Where(ct => ct.TutorId == tutorId)
+                .Include(ct => ct.Tutor)
+                .Include(ct => ct.Course)
+                .ToList();
+
+            if (courseTutorsByTutorId == null) throw new ArgumentNullException(nameof(courseTutorsByTutorId));
+
+            return courseTutorsByTutorId;
         }
 
         public CourseTutor GetByIds(int courseId, int tutorId)

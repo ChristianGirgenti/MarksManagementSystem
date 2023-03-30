@@ -10,5 +10,6 @@ namespace MarksManagementSystem.Data.Repositories
         public List<CourseTutor> GetAll();
         public void DeleteCourseUnitLeaderRelationshipByCourseId(int courseId);
         public void DeleteAllOtherTutorsInACourse(int courseId);
+        public List<CourseTutor> GetAllByTutorId(int tutorId);
     }
 }
