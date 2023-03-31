@@ -26,16 +26,8 @@ namespace MarksManagementSystem.Pages.Courses
                     CourseId = c.CourseId,
                     CourseName = c.CourseName,
                     CourseCredits = c.CourseCredits,
-
-                    UnitLeader = _courseTutorRepository.GetAll()
-                        .Where(ct => ct.CourseId == c.CourseId && ct.IsUnitLeader == true)
-                        .Select(ct => ct.Tutor.ToString())
-                        .SingleOrDefault(),
-
-                    OtherTutors = string.Join(", ", _courseTutorRepository.GetAll()
-                        .Where(ct => ct.CourseId == c.CourseId && ct.IsUnitLeader == false)
-                        .Select(ct => ct.Tutor.ToString())
-                        .ToList())
+                    UnitLeader = _courseTutorRepository.GetUnitLeaderOfCourse(c.CourseId).ToString(),
+                    OtherTutors = string.Join(", ", _courseTutorRepository.GetOtherTutorsOfCourseToString(c.CourseId))
                 })
                 .ToList();
         }

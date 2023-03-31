@@ -82,5 +82,20 @@ namespace MarksManagementSystem.Data.Repositories
             marksManagementContext.Entry(courseTutor).State = EntityState.Modified;
             marksManagementContext.SaveChanges();
         }
+
+        public Tutor GetUnitLeaderOfCourse(int courseId)
+        {
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            return marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == true)
+                .Select(ct => ct.Tutor).First();
+        }
+
+        public List<string> GetOtherTutorsOfCourseToString(int courseId)
+        {
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            return marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false).Select(ct => ct.Tutor.ToString()).ToList(); 
+        }
+
+
     }
 }

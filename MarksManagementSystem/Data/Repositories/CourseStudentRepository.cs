@@ -31,7 +31,10 @@ namespace MarksManagementSystem.Data.Repositories
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
 
             var courseStudents = marksManagementContext.CourseStudent;
-            var courseStudentsByCourseId = courseStudents.Where(cs => cs.CourseId == courseId).ToList();
+            var courseStudentsByCourseId = courseStudents.Where(cs => cs.CourseId == courseId)
+                .Include(cs => cs.Student)
+                .Include(cs => cs.Course)
+                .ToList();
 
             if (courseStudentsByCourseId == null) throw new ArgumentNullException(nameof(courseStudentsByCourseId));
 
@@ -82,6 +85,12 @@ namespace MarksManagementSystem.Data.Repositories
 
             marksManagementContext.CourseStudent.Remove(courseStudentRelationshipToRemove);
             marksManagementContext.SaveChanges();
+        }
+
+        public List<string> GetEnrolledCoursesNameByStudentId(int studentId)
+        {
+            if (studentId <= 0) throw new ArgumentOutOfRangeException(nameof(studentId));
+            return marksManagementContext.CourseStudent.Where(cs => cs.StudentId == studentId).Select(cs => cs.Course.CourseName).ToList();
         }
     }
 }

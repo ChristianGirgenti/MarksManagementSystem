@@ -37,6 +37,11 @@ builder.Services.AddAuthorization(options =>
     {
         policy.RequireClaim("Role", "Admin");
     });
+
+    options.AddPolicy("Tutor", policy =>
+    {
+        policy.RequireClaim("UserType", "Tutor");
+    });
 });
 
 

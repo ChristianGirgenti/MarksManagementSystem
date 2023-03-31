@@ -11,6 +11,7 @@ namespace MarksManagementSystem.Data.Repositories
         public List<CourseStudent> GetAllByStudentId(int studentId);
         public List<CourseStudent> GetAllByCourseId(int courseId);
         public void DeleteCourseStudentRelationshipByIds(int courseId, int studentId);
+        public List<string> GetEnrolledCoursesNameByStudentId(int studentId);
 
     }
 }

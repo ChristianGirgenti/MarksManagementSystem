@@ -11,5 +11,7 @@ namespace MarksManagementSystem.Data.Repositories
         public void DeleteCourseUnitLeaderRelationshipByCourseId(int courseId);
         public void DeleteAllOtherTutorsInACourse(int courseId);
         public List<CourseTutor> GetAllByTutorId(int tutorId);
+        public Tutor GetUnitLeaderOfCourse(int courseId);
+        public List<string> GetOtherTutorsOfCourseToString(int courseId);
     }
 }

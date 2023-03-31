@@ -27,11 +27,7 @@ namespace MarksManagementSystem.Pages.Students
                    StudentFullName = s.StudentFirstName + " " + s.StudentLastName,
                    StudentEmail = s.StudentEmail,
                    StudentDateOfBirth = s.StudentDateOfBirth.Date.ToString("d"),
-
-                   StudentEnrolledCourses = string.Join(", ", _courseStudentRepository.GetAll()
-                       .Where(cs => cs.StudentId == s.StudentId)
-                       .Select(cs => cs.Course.CourseName)
-                       .ToList())
+                   StudentEnrolledCourses = string.Join(", ", _courseStudentRepository.GetEnrolledCoursesNameByStudentId(s.StudentId))
                })
                .ToList();
         }

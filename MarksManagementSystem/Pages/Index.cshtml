@@ -71,7 +71,7 @@
                     <tr>
                         <th>Course Name</th>
                         <th>Credits</th>
-                        <th>Grade</th>
+                        <th>Mark</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,10 +82,7 @@
                             <tr class="table-row">
                                 <td class="name-selector">@course.Course.CourseName</td>
                                 <td>@course.Course.CourseCredits</td>
-                                @if (!(course.Mark < 0))
-                                {
-                                    <td>@course.Mark</td>
-                                }
+                                <td>@((Convert.ToInt32(course.Mark) > -1) ? course.Mark : "")</td>                              
                             </tr>
                         }
                     }
