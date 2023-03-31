@@ -63,7 +63,10 @@ namespace MarksManagementSystem.Data.Repositories
             if (studentId <= 0) throw new ArgumentOutOfRangeException(nameof(studentId));
 
             var courseStudents = marksManagementContext.CourseStudent;
-            var courseStudentsByStudentId = courseStudents.Where(cs => cs.StudentId == studentId).ToList();
+            var courseStudentsByStudentId = courseStudents.Where(cs => cs.StudentId == studentId)
+                .Include(cs => cs.Student)
+                .Include(cs => cs.Course)
+                .ToList();
 
             if (courseStudentsByStudentId == null) throw new ArgumentNullException(nameof(courseStudentsByStudentId));
 

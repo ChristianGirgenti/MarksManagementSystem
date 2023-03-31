@@ -38,7 +38,6 @@ namespace MarksManagementSystem.Pages.Students
         public void SetNewStudentValues(Student newStudent)
         {
             if (newStudent == null) throw new ArgumentNullException(nameof(newStudent));
-            newStudent.StudentEmail = newStudent.StudentEmail.ToLower();
             var nameLower = newStudent.StudentFirstName.ToLower();
             var lastNameLower = newStudent.StudentLastName.ToLower();
             newStudent.StudentFirstName = StringUtilities.Capitalise(nameLower);
@@ -50,6 +49,7 @@ namespace MarksManagementSystem.Pages.Students
             newStudent.StudentPassword = _passwordCreator.GenerateHashedPassword(salt, password);
 
             newStudent.StudentEmail = nameLower + "." + lastNameLower + "@myuniversity.co.uk";
+            newStudent.StudentEmail = newStudent.StudentEmail.Replace(" ","");
         }
 
         public void AddStudent(Student newStudent)

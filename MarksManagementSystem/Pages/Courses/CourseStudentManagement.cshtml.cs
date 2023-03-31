@@ -103,7 +103,8 @@ namespace MarksManagementSystem.Pages.Courses
                         Course = ThisCourse,
                         CourseId = CourseId,
                         Student = student,
-                        StudentId = student.StudentId
+                        StudentId = student.StudentId,
+                        Mark = -1
                     };
                     _courseStudentRepository.Add(courseStudent);
                 }

@@ -89,8 +89,7 @@ namespace MarksManagementSystem.Pages
 
         public void GetStudentCourses()
         {
-            //TO COMPLETE
-            StudentEnrolledCourses = new List<CourseStudent>();
+            StudentEnrolledCourses = _courseStudentRepository.GetAllByStudentId(Convert.ToInt32(AccountClaims.AccountId));
         }
 
 

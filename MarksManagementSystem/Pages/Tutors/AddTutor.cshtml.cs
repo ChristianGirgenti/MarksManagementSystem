@@ -40,7 +40,6 @@ namespace MarksManagementSystem.Pages.Tutors
         public void SetNewTutorValues(Tutor newTutor)
         {
             if (newTutor == null) throw new ArgumentNullException(nameof(newTutor));
-            newTutor.TutorEmail = newTutor.TutorEmail.ToLower();
             var nameLower = newTutor.TutorFirstName.ToLower();
             var lastNameLower = newTutor.TutorLastName.ToLower();
             newTutor.TutorFirstName = StringUtilities.Capitalise(nameLower);
@@ -52,6 +51,8 @@ namespace MarksManagementSystem.Pages.Tutors
             newTutor.TutorPassword = _passwordCreator.GenerateHashedPassword(salt, password);
            
             newTutor.TutorEmail = nameLower + "." + lastNameLower + "@myuniversity.co.uk";
+            newTutor.TutorEmail = newTutor.TutorEmail.Replace(" ", "");
+
         }
 
         public void AddTutor(Tutor newTutor)

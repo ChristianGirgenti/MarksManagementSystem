@@ -1,13 +1,12 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "My Courses";
 }
 
 <head>
     <script src="/js/table-filter.js"></script>
 </head>
-
 
 @{
     var hashedInitialPassword = ViewData["HashedInitialPassword"] as string;
@@ -24,6 +23,9 @@
         </div>
     }
 }
+
+<h1>@ViewData["Title"]</h1>
+<hr />
 
 <div class="text-center">
    
@@ -80,7 +82,10 @@
                             <tr class="table-row">
                                 <td class="name-selector">@course.Course.CourseName</td>
                                 <td>@course.Course.CourseCredits</td>
-                                <td>@course.Mark</td>
+                                @if (!(course.Mark < 0))
+                                {
+                                    <td>@course.Mark</td>
+                                }
                             </tr>
                         }
                     }
