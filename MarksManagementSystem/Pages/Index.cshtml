@@ -4,6 +4,10 @@
     ViewData["Title"] = "Home page";
 }
 
+<head>
+    <script src="/js/table-filter.js"></script>
+</head>
+
 
 @{
     var hashedInitialPassword = ViewData["HashedInitialPassword"] as string;
@@ -22,6 +26,9 @@
 }
 
 <div class="text-center">
+   
+    <input type="text" class="float-lg-start" id="nameFilter" placeholder="Filter by course name" />
+
     @{
         if (Model.AccountClaims.AccountUserType.Equals("Tutor"))
         {
@@ -39,8 +46,8 @@
                     {
                         foreach (var course in Model.TutorTaughtCourses)
                         {
-                            <tr>
-                                <td>@course.CourseName</td>
+                            <tr class="table-row">
+                                <td class="name-selector">@course.CourseName</td>
                                 <td>@course.CourseCredits</td>
                                 <td>@course.UnitLeader</td>
                                 <td>@course.OtherTutors</td>
@@ -70,8 +77,8 @@
                     {
                         foreach (var course in Model.StudentEnrolledCourses)
                         {
-                            <tr>
-                                <td>@course.Course.CourseName</td>
+                            <tr class="table-row">
+                                <td class="name-selector">@course.Course.CourseName</td>
                                 <td>@course.Course.CourseCredits</td>
                                 <td>@course.Mark</td>
                             </tr>
@@ -82,3 +89,7 @@
         }
     }
 </div>
+
+<script>
+    filterTable("#nameFilter", ".table-row", ".name-selector");
+</script>

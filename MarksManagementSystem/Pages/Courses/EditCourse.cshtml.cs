@@ -80,6 +80,12 @@ namespace MarksManagementSystem.Pages.Courses
             }
         }
 
+        public IActionResult OnPostRedirect(int courseId)
+        {
+            if (courseId <= 0) throw new ArgumentNullException(nameof(courseId));
+            return RedirectToPage("CourseStudentManagement", new { courseId });
+        }
+
         public void ShowTutorsInSelectionList(int unitLeaderId)
         {
             if (unitLeaderId <= 0) throw new ArgumentNullException(nameof(unitLeaderId));

@@ -9,6 +9,8 @@ namespace MarksManagementSystem.Data.Repositories
         public CourseStudent GetByIds(int courseId, int studentId);
         public List<CourseStudent> GetAll();
         public List<CourseStudent> GetAllByStudentId(int studentId);
+        public List<CourseStudent> GetAllByCourseId(int courseId);
+        public void DeleteCourseStudentRelationshipByIds(int courseId, int studentId);
 
     }
 }

@@ -26,6 +26,18 @@ namespace MarksManagementSystem.Data.Repositories
                 .ToList();
         }
 
+        public List<CourseStudent> GetAllByCourseId(int courseId)
+        {
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+
+            var courseStudents = marksManagementContext.CourseStudent;
+            var courseStudentsByCourseId = courseStudents.Where(cs => cs.CourseId == courseId).ToList();
+
+            if (courseStudentsByCourseId == null) throw new ArgumentNullException(nameof(courseStudentsByCourseId));
+
+            return courseStudentsByCourseId;
+        }
+
         public CourseStudent GetByIds(int courseId, int studentId)
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
@@ -56,6 +68,17 @@ namespace MarksManagementSystem.Data.Repositories
             if (courseStudentsByStudentId == null) throw new ArgumentNullException(nameof(courseStudentsByStudentId));
 
             return courseStudentsByStudentId;
+        }
+
+        public void DeleteCourseStudentRelationshipByIds(int courseId, int studentId)
+        {
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (studentId <= 0) throw new ArgumentOutOfRangeException(nameof(studentId));
+            var courseStudentRelationshipToRemove = marksManagementContext.CourseStudent.Where(cs => cs.CourseId == courseId && cs.StudentId == studentId).FirstOrDefault();
+            if (courseStudentRelationshipToRemove == null) throw new ArgumentNullException(nameof(courseStudentRelationshipToRemove));
+
+            marksManagementContext.CourseStudent.Remove(courseStudentRelationshipToRemove);
+            marksManagementContext.SaveChanges();
         }
     }
 }

@@ -4,49 +4,65 @@
     ViewData["Title"] = "View All Students";
 }
 
+<head>
+    <script src="/js/table-filter.js"></script>
+</head>
+
+
 <h1>All Students</h1>
 <hr />
 
-<table class="table table-boardered table-striped">
-    <thead>
-        <tr>
-            <th>Student Full Name</th>
-            <th>Student Email</th>
-            <th>Student Date Of Birth</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.AllStudentsViewModel != null)
-        {
-            foreach (var student in Model.AllStudentsViewModel)
-            {
-                <tr>
-                    <td>@student.StudentFullName</td>
-                    <td>@student.StudentEmail</td>
-                    <td>@student.StudentDateOfBirth</td>
+<div>
+    <input type="text" id="nameFilter" placeholder="Filter by student name" />
 
-                    <td>
-                        <form asp-page-handler="delete" method="post" asp-route-studentId="@student.StudentId">
-                            <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+    <table class="table table-boardered table-striped">
+        <thead>
+            <tr>
+                <th>Student Full Name</th>
+                <th>Student Email</th>
+                <th>Student Date Of Birth</th>
+                <th>Student Enrolled Courses</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.AllStudentsViewModel != null)
+            {
+                foreach (var student in Model.AllStudentsViewModel)
+                {
+                    <tr class="student-row">
+                        <td class="name-selector">@student.StudentFullName</td>
+                        <td>@student.StudentEmail</td>
+                        <td>@student.StudentDateOfBirth</td>
+                        <td>@student.StudentEnrolledCourses</td>
+
+                        <td>
+                            <form asp-page-handler="delete" method="post" asp-route-studentId="@student.StudentId">
+                                <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
             }
-        }
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-        }
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-        }
-    </tbody>
-</table>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+        </tbody>
+    </table>
+</div>
 
 
 <script>
     function confirmDelete() {
         return confirm('Are you sure you want to delete this student?');
     }
+</script>
+
+
+<script>
+    filterTable("#nameFilter", ".student-row", ".name-selector");
 </script>
