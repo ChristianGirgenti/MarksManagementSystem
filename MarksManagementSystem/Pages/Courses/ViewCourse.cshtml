@@ -3,12 +3,18 @@
 @{
 }
 
+<head>
+    <script src="/js/table-filter.js"></script>
+</head>
+
 <h1>@ViewData["Title"]</h1>
 <hr />
 
 <div>
     <div>
         <form method="post">
+            <input type="text" class="mb-2" id="nameFilter" placeholder="Filter by student name" />
+
             <table class="table table-boardered table-striped">
                 <thead>
                     <tr>
@@ -25,7 +31,7 @@
                         {
                             foreach (var student in Model.AllStudentsEnrolled)
                             {
-                                <tr class="course-row">
+                                <tr class="student-row">
                                     <td class="name-selector">@student.StudentFullName</td>
                                     <td>@student.StudentEmail</td>
                                     <td>@student.StudentDateOfBirth</td>
@@ -42,7 +48,7 @@
                         {
                             foreach (var student in Model.AllStudentsEnrolled)
                             {
-                                <tr class="course-row">
+                                <tr class="student-row">
                                     <td class="name-selector">@student.StudentFullName</td>
                                     <td>@student.StudentEmail</td>
                                     <td>@student.StudentDateOfBirth</td>
@@ -66,8 +72,12 @@
 
             @if (Model.IsUserLoggedInTheUnitLeader)
             {
-                <button>Save Marks</button>
+                <button class="btn btn-primary">Save Marks</button>
             }
         </form>
     </div>
 </div>
+
+<script>
+    filterTable("#nameFilter", ".student-row", ".name-selector");
+</script>
