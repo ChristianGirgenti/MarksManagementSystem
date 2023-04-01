@@ -13,30 +13,22 @@ namespace MarksManagementSystem.Pages
     [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly ICourseRepository _courseRepository;
         private readonly ICourseTutorRepository _courseTutorRepository;
         private readonly ICourseStudentRepository _courseStudentRepository;
-        private readonly ITutorRepository _tutorRepository;
         private readonly IPasswordCreator _passwordCreator;
         private string HashedInitialPassword { get; set; } = string.Empty;
-        public AccountClaims AccountClaims { get; set; } 
-        public List<ViewAllCoursesViewModel> TutorTaughtCourses { get; set; }
-        public List<CourseStudent> StudentEnrolledCourses { get; set; }
+        public AccountClaims AccountClaims { get; set; }
+        public List<ViewAllCoursesViewModel> TutorTaughtCourses { get; set; } = new List<ViewAllCoursesViewModel>();
+        public List<StudentIndexViewModel> StudentIndexViewModels { get; set; } = new List<StudentIndexViewModel>();
 
-
-        public List<CourseStudent> CourseStudents { get; set; }
 
         public IndexModel(
-            ICourseRepository courseRepository, 
             ICourseTutorRepository courseTutorRepository, 
-            ITutorRepository tutorRepository, 
             IPasswordCreator passwordCreator, 
             ICourseStudentRepository courseStudentRepository
             )
         {
-            _courseRepository = courseRepository;
             _courseTutorRepository = courseTutorRepository;
-            _tutorRepository = tutorRepository;
             _passwordCreator = passwordCreator;
             _courseStudentRepository = courseStudentRepository;
         }
@@ -89,7 +81,17 @@ namespace MarksManagementSystem.Pages
 
         public void GetStudentCourses()
         {
-            StudentEnrolledCourses = _courseStudentRepository.GetAllByStudentId(Convert.ToInt32(AccountClaims.AccountId));
+            StudentIndexViewModels = _courseStudentRepository.GetAllByStudentId(Convert.ToInt32(AccountClaims.AccountId))
+                .Select(c => new StudentIndexViewModel
+                {
+                    CourseName = c.Course.CourseName,
+                    CourseCredits = c.Course.CourseCredits.ToString(),
+                    Mark = c.Mark.ToString(),
+                    //The ShowMark field checks that every student in that course have a mark assigned. If any of them still hasn't got a mark
+                    //Keep the marks not visible to all the students.
+                    ShowMark = !(_courseStudentRepository.GetAllByCourseId(c.Course.CourseId).Any(m => m.Mark == -1))
+                })
+                .ToList();     
         }
 
 

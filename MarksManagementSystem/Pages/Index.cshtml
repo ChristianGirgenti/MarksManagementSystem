@@ -75,18 +75,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.StudentEnrolledCourses != null)
+                    @if (Model.StudentIndexViewModels != null)
                     {
-                        foreach (var course in Model.StudentEnrolledCourses)
+                        foreach (var course in Model.StudentIndexViewModels)
                         {
                             <tr class="table-row">
-                                <td class="name-selector">@course.Course.CourseName</td>
-                                <td>@course.Course.CourseCredits</td>
-                                <td>@((Convert.ToInt32(course.Mark) > -1) ? course.Mark : "")</td>                              
+                                <td class="name-selector">@course.CourseName</td>
+                                <td>@course.CourseCredits</td>
+                                <td>@((Convert.ToInt32(course.Mark) > -1) && course.ShowMark ? course.Mark : "")</td>                              
                             </tr>
                         }
                     }
-                </tbody>
             </table>
         }
     }

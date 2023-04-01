@@ -29,7 +29,12 @@
                                     <td class="name-selector">@student.StudentFullName</td>
                                     <td>@student.StudentEmail</td>
                                     <td>@student.StudentDateOfBirth</td>
-                                    <td><input type="text" name="mark" value="@((Convert.ToInt32(student.StudentMark) > -1) ? student.StudentMark : "")" /></td>
+                                    <td><input type="number" 
+                                               name="@("mark"+student.StudentId)" 
+                                               min="0"
+                                               max="100"
+                                               value="@((Convert.ToInt32(student.StudentMark) > -1) ? student.StudentMark : "")" />
+                                    </td>
                                 </tr>
                             }
                         }
@@ -61,7 +66,7 @@
 
             @if (Model.IsUserLoggedInTheUnitLeader)
             {
-                        <button>Save Marks</button>
+                <button>Save Marks</button>
             }
         </form>
     </div>
