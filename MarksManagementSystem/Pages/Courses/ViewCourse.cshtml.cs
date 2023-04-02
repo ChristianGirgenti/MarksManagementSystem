@@ -4,6 +4,7 @@ using MarksManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MarksManagementSystem.Services.Interfaces;
 
 namespace MarksManagementSystem.Pages.Courses
 {
@@ -11,10 +12,7 @@ namespace MarksManagementSystem.Pages.Courses
 
     public class ViewCourseModel : PageModel
     {
-        private readonly ICourseRepository _courseRepository;
-        private readonly ICourseTutorRepository _courseTutorRepository;
-        private readonly ICourseStudentRepository _courseStudentRepository;
-        private readonly IStudentRepository _studentRepository;
+        private readonly IViewCourseService _viewCourseService;
 
 
         [FromQuery(Name = "CourseId")]
@@ -27,27 +25,20 @@ namespace MarksManagementSystem.Pages.Courses
        
 
 
-        public ViewCourseModel(ICourseRepository courseRepository,
-            ICourseTutorRepository courseTutorRepository, 
-            ICourseStudentRepository courseStudentRepository, 
-            IStudentRepository studentRepository)
+        public ViewCourseModel(IViewCourseService viewCourseService)
         {
-            _courseRepository = courseRepository;
-            _courseStudentRepository = courseStudentRepository;
-            _courseTutorRepository = courseTutorRepository;
-            _studentRepository = studentRepository;
+            if (viewCourseService == null) throw new ArgumentNullException(nameof(viewCourseService));
+            _viewCourseService = viewCourseService;
         }
 
 
         public void OnGet()
         {
-            Course = _courseRepository.GetById(CourseId);
+            Course = _viewCourseService.GetCourseById(CourseId);
             ViewData["Title"] = Course.CourseName;
-
-            AllStudentsEnrolled = GetAllStudentEnrolled();
-
+            AllStudentsEnrolled = _viewCourseService.GetAllStudentEnrolled(CourseId);
             AccountClaims = new AccountClaims(HttpContext.User.Claims.ToList());
-            CourseUnitLeader = _courseTutorRepository.GetUnitLeaderOfCourse(CourseId);
+            CourseUnitLeader = _viewCourseService.GetUnitLeaderOfCourse(CourseId);
             if (Convert.ToInt32(AccountClaims.AccountId) == CourseUnitLeader.TutorId)
             {
                 IsUserLoggedInTheUnitLeader = true;
@@ -59,22 +50,13 @@ namespace MarksManagementSystem.Pages.Courses
             if (!ModelState.IsValid) return Page();
             try
             {
-                AllStudentsEnrolled = GetAllStudentEnrolled();
-                Course = _courseRepository.GetById(CourseId);
+                AllStudentsEnrolled = _viewCourseService.GetAllStudentEnrolled(CourseId);
+                Course = _viewCourseService.GetCourseById(CourseId);
 
                 foreach (var student in AllStudentsEnrolled)
                 {
-                    Student thisStudent = _studentRepository.GetById(Convert.ToInt32(student.StudentId));
-                    var courseStudent = _courseStudentRepository.GetByIds(Course.CourseId, thisStudent.StudentId);
-                    if (courseStudent != null)
-                    {
-                        if (string.IsNullOrEmpty(Request.Form["mark" + student.StudentId]))
-                            courseStudent.Mark = -1;
-                        else
-                            courseStudent.Mark = Convert.ToInt32(Request.Form["mark" + student.StudentId]);
-                        _courseStudentRepository.Update(courseStudent);
-
-                    }
+                    var mark = Request.Form["Mark" + student.StudentId];
+                    _viewCourseService.UpdateMarks(Course, mark, Convert.ToInt32(student.StudentId));
                 }
 
                 TempData["SuccessMessage"] = "Marks have been saved successfully";
@@ -86,20 +68,6 @@ namespace MarksManagementSystem.Pages.Courses
                 return RedirectToPage(new { courseId = CourseId });
             }
             
-        }
-
-        public List<ViewCourseViewModel> GetAllStudentEnrolled()
-        {
-            return _courseStudentRepository.GetAllByCourseId(CourseId)
-                .Select(s => new ViewCourseViewModel
-                {
-                    StudentId = s.StudentId.ToString(),
-                    StudentFullName = s.Student.StudentFirstName + " " + s.Student.StudentLastName,
-                    StudentEmail = s.Student.StudentEmail,
-                    StudentDateOfBirth = s.Student.StudentDateOfBirth.Date.ToString("d"),
-                    StudentMark = s.Mark.ToString()
-                })
-                .ToList();
         }
     }
 }

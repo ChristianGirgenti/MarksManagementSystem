@@ -3,14 +3,14 @@ using MarksManagementSystem.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MarksManagementSystem.Services.Interfaces;
+
 
 namespace MarksManagementSystem.Pages.Courses
 {
     public class CourseStudentManagementModel : PageModel
     {
-        private readonly ICourseRepository _courseRepository;
-        private readonly IStudentRepository _studentRepository;
-        private readonly ICourseStudentRepository _courseStudentRepository;
+        private readonly ICourseStudentManagementService _courseStudentManagementService;
 
         [FromQuery(Name = "CourseId")]
         public int CourseId { get; set; }
@@ -20,95 +20,34 @@ namespace MarksManagementSystem.Pages.Courses
 
 
 
-        public CourseStudentManagementModel(ICourseRepository courseRepository, IStudentRepository studentRepository, ICourseStudentRepository courseStudentRepository)
+        public CourseStudentManagementModel(ICourseStudentManagementService courseStudentManagementService)
         {
-            _courseRepository = courseRepository;
-            _studentRepository = studentRepository;
-            _courseStudentRepository = courseStudentRepository;
+            _courseStudentManagementService = courseStudentManagementService ?? throw new ArgumentNullException(nameof(courseStudentManagementService));
         }
 
 
         public void OnGet()
         {
-            ThisCourse = _courseRepository.GetById(CourseId);
+            ThisCourse = _courseStudentManagementService.GetCourseById(CourseId);
             ViewData["Title"] = "Manage Students For " + ThisCourse.CourseName;
-
-            PopulateStudentsList();
+            AllStudents = _courseStudentManagementService.PopulateStudentsList(CourseId);
         }
 
         public IActionResult OnPost()
         {
-            ThisCourse = _courseRepository.GetById(CourseId);
-            CurrentStudentsInTheCourse = _courseStudentRepository.GetAllByCourseId(CourseId);
+            ThisCourse = _courseStudentManagementService.GetCourseById(CourseId);
+            CurrentStudentsInTheCourse = _courseStudentManagementService.GetAllCurrentStudentsInTheCourse(CourseId);
             try
             {
-                ChangeCourseStudentsRelationship();
+                _courseStudentManagementService.ChangeCourseStudentsRelationship(Request.Form["Students"].ToList(), CurrentStudentsInTheCourse, ThisCourse);
                 TempData["SuccessMessage"] = "The students and course relationship have been update successfully.";
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "An error occurred while changing course and students relationship: " + ex.Message;
             }
-            PopulateStudentsList();
+            AllStudents = _courseStudentManagementService.PopulateStudentsList(CourseId);
             return RedirectToPage("ViewAllCourses");
-        }
-
-        public void PopulateStudentsList()
-        {
-            var allStudents = _studentRepository.GetAll();
-
-            var currentEnrolledStudents = _courseStudentRepository.GetAll()
-                .Where(cs => cs.CourseId == CourseId).Select(s => s.Student).ToList();
-
-            AllStudents = allStudents
-                .Select(s => new SelectListItem
-                {
-                    Value = s.StudentId.ToString(),
-                    Text = s.StudentFirstName + " " + s.StudentLastName,
-                    Selected = currentEnrolledStudents.Contains(s)
-                })
-                .OrderBy(s => s.Text)
-                .ToList();
-        }
-
-        public void ChangeCourseStudentsRelationship()
-        {
-            var studentIds = Request.Form["Students"].ToList();
-            if (studentIds != null) {
-                DeleteCourseStudentsRelationship(studentIds);
-                AddCourseStudentRelationship(studentIds);
-            }
-        }
-
-        public void DeleteCourseStudentsRelationship(List<string> studentIds)
-        {
-            foreach (var student in CurrentStudentsInTheCourse)
-            {
-                if (!studentIds.Contains(student.StudentId.ToString()))
-                {
-                    _courseStudentRepository.DeleteCourseStudentRelationshipByIds(CourseId, student.StudentId);
-                }
-            }
-        }
-
-        public void AddCourseStudentRelationship(List<string> studentIds)
-        {
-            foreach (var studentId in studentIds)
-            {
-                if (!CurrentStudentsInTheCourse.Where(cs => cs.StudentId == Convert.ToInt32(studentId)).Any())
-                {
-                    var student = _studentRepository.GetById(Convert.ToInt32(studentId));
-                    CourseStudent courseStudent = new()
-                    {
-                        Course = ThisCourse,
-                        CourseId = CourseId,
-                        Student = student,
-                        StudentId = student.StudentId,
-                        Mark = -1
-                    };
-                    _courseStudentRepository.Add(courseStudent);
-                }
-            }
         }
     }
 }

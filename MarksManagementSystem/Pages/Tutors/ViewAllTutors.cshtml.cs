@@ -1,50 +1,29 @@
-using MarksManagementSystem.Data.Repositories;
+using MarksManagementSystem.Services.Interfaces;
 using MarksManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
 
 namespace MarksManagementSystem.Pages.Tutors
 {
     [Authorize(Policy = "Admin")]
     public class ViewAllTutorsModel : PageModel
     {
-        private readonly ITutorRepository _tutorRepository;
-        private readonly ICourseTutorRepository _courseTutorRepository;
+        private readonly IViewAllTutorsService _viewAllTutorsService;
         public List<ViewAllTutorsViewModel> AllTutorsViewModel { get; set; } = new List<ViewAllTutorsViewModel>();
 
-        public ViewAllTutorsModel(ITutorRepository tutorRepository, ICourseTutorRepository courseTutorRepository)
+        public ViewAllTutorsModel(IViewAllTutorsService viewAllTutorsService)
         {
-            _tutorRepository = tutorRepository;
-            _courseTutorRepository = courseTutorRepository;
+            _viewAllTutorsService = viewAllTutorsService ?? throw new ArgumentNullException(nameof(viewAllTutorsService));
         }
         public void OnGet()
         {
-            AllTutorsViewModel = _tutorRepository.GetAll()
-               .Select(t => new ViewAllTutorsViewModel
-               {
-                   TutorId = t.TutorId,
-                   TutorFullName = t.TutorFirstName + " " + t.TutorLastName,
-                   TutorEmail = t.TutorEmail,
-                   TutorDateOfBirth = t.TutorDateOfBirth.Date.ToString("d"),
-                   CourseLed = _courseTutorRepository.GetAll()
-                       .Where(ct => ct.TutorId == t.TutorId && ct.IsUnitLeader)
-                       .Select(ct => ct.Course.CourseName)
-                       .SingleOrDefault(),
-
-                   OtherCourses = string.Join(", ", _courseTutorRepository.GetAll()
-                       .Where(ct => ct.TutorId == t.TutorId && ct.IsUnitLeader == false)
-                       .Select(ct => ct.Course.CourseName)
-                       .ToList())
-
-               })
-               .ToList();
+            AllTutorsViewModel = _viewAllTutorsService.GetAllTutorsViewModel();
         }
 
         public IActionResult OnPostDelete(int tutorId)
         {
-            if (_courseTutorRepository.GetAll().Where(ct => ct.TutorId == tutorId && ct.IsUnitLeader==true).Any())
+            if (_viewAllTutorsService.IsTutorUnitLeader(tutorId))
             {
                 {
                     TempData["ErrorMessage"] = "You cannot delete this tutor because is unit leader of a course. Remove the link between unit leader and course.";
@@ -55,9 +34,8 @@ namespace MarksManagementSystem.Pages.Tutors
             {
                 try
                 {
-                    if (_tutorRepository.GetById(tutorId).TutorEmail != (HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value))
+                    if (_viewAllTutorsService.DeleteTutor(tutorId, HttpContext.User.Claims))
                     {
-                        _tutorRepository.Delete(tutorId);
                         TempData["SuccessMessage"] = "The tutor has been deleted successfully.";
                         return RedirectToPage("ViewAllTutors");
                     }

@@ -1,6 +1,8 @@
 using MarksManagementSystem.Data;
 using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Helpers;
+using MarksManagementSystem.Services.Classes;
+using MarksManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +13,31 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MarksManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem")));
 
+// Dependency injection for repositories
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICourseTutorRepository, CourseTutorRepository>();
 builder.Services.AddScoped<ICourseStudentRepository, CourseStudentRepository>();
 builder.Services.AddScoped<IPasswordCreator, PasswordCreator>();
+
+// Dependency injection for services
+builder.Services.AddScoped<IViewAllTutorsService, ViewAllTutorsService>();
+builder.Services.AddScoped<IAddTutorService, AddTutorService>();
+builder.Services.AddScoped<IAddStudentService, AddStudentService>();
+builder.Services.AddScoped<IViewAllStudentsService, ViewAllStudentsService>();  
+builder.Services.AddScoped<IAddCourseService, AddCourseService>();
+builder.Services.AddScoped<ICourseStudentManagementService, CourseStudentManagementService>();
+builder.Services.AddScoped<IEditCourseService, EditCourseService>();
+builder.Services.AddScoped<IViewAllCoursesService, ViewAllCoursesService>();
+builder.Services.AddScoped<IViewCourseService, ViewCourseService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IChangePasswordService, ChangePasswordService>();
+
+
+
+
+
 
 //Configure Authorization and Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

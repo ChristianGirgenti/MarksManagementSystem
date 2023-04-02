@@ -1,4 +1,5 @@
 using MarksManagementSystem.Data.Repositories;
+using MarksManagementSystem.Services.Interfaces;
 using MarksManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,34 +10,24 @@ namespace MarksManagementSystem.Pages.Students
     [Authorize(Policy = "Admin")]
     public class ViewAllStudentsModel : PageModel
     {
-        private readonly IStudentRepository _studentRepository;
-        private readonly ICourseStudentRepository _courseStudentRepository;
+        private readonly IViewAllStudentsService _viewAllStudentsService;
+
         public List<ViewAllStudentsViewModel> AllStudentsViewModel { get; set; } = new List<ViewAllStudentsViewModel>();
 
-        public ViewAllStudentsModel(IStudentRepository studentRepository, ICourseStudentRepository courseStudentRepository)
+        public ViewAllStudentsModel(IViewAllStudentsService viewAllStudentsService)
         {
-            _studentRepository = studentRepository;
-            _courseStudentRepository = courseStudentRepository;
+            _viewAllStudentsService = viewAllStudentsService;
         }
         public void OnGet()
         {
-            AllStudentsViewModel = _studentRepository.GetAll()
-               .Select(s => new ViewAllStudentsViewModel
-               {
-                   StudentId = s.StudentId,
-                   StudentFullName = s.StudentFirstName + " " + s.StudentLastName,
-                   StudentEmail = s.StudentEmail,
-                   StudentDateOfBirth = s.StudentDateOfBirth.Date.ToString("d"),
-                   StudentEnrolledCourses = string.Join(", ", _courseStudentRepository.GetEnrolledCoursesNameByStudentId(s.StudentId))
-               })
-               .ToList();
+            AllStudentsViewModel = _viewAllStudentsService.GetAllStudentsViewModel();
         }
 
         public IActionResult OnPostDelete(int studentId)
         {
             try
             { 
-                _studentRepository.Delete(studentId);
+                _viewAllStudentsService.DeleteStudent(studentId);
                 TempData["SuccessMessage"] = "The student has been deleted successfully.";
                 return RedirectToPage("ViewAllStudents");
             }
