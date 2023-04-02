@@ -1,6 +1,7 @@
 ﻿using MarksManagementSystem.Data.Models;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 
-namespace MarksManagementSystem.Data.Repositories
+namespace MarksManagementSystem.Data.Repositories.Classes
 {
     public class StudentRepository : IStudentRepository
     {

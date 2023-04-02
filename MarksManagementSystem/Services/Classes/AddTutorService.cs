@@ -1,10 +1,10 @@
 ﻿using MarksManagementSystem.Data.Models;
-using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using MarksManagementSystem.Services.Interfaces;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 
 namespace MarksManagementSystem.Services.Classes
 {

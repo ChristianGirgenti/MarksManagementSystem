@@ -1,6 +1,6 @@
-﻿using MarksManagementSystem.Data.Repositories;
-using MarksManagementSystem.ViewModel;
+﻿using MarksManagementSystem.ViewModel;
 using MarksManagementSystem.Services.Interfaces;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 
 namespace MarksManagementSystem.Services.Classes
 {

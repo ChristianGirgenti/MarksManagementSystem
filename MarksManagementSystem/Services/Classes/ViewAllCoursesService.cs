@@ -1,4 +1,4 @@
-﻿using MarksManagementSystem.Data.Repositories;
+﻿using MarksManagementSystem.Data.Repositories.Interfaces;
 using MarksManagementSystem.Services.Interfaces;
 using MarksManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Mvc;

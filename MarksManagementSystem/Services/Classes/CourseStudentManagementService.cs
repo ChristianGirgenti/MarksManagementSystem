@@ -1,10 +1,7 @@
-﻿using Azure.Core;
-using MarksManagementSystem.Data.Models;
-using MarksManagementSystem.Data.Repositories;
+﻿using MarksManagementSystem.Data.Models;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 using MarksManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace MarksManagementSystem.Services.Classes
 {

@@ -1,6 +1,6 @@
 ﻿using MarksManagementSystem.Data.Models;
 
-namespace MarksManagementSystem.Data.Repositories
+namespace MarksManagementSystem.Data.Repositories.Interfaces
 {
     public interface ICourseTutorRepository
     {

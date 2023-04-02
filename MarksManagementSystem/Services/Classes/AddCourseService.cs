@@ -1,5 +1,5 @@
 ﻿using MarksManagementSystem.Data.Models;
-using MarksManagementSystem.Data.Repositories;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 using MarksManagementSystem.Helpers;
 using MarksManagementSystem.Services.Interfaces;
 using MarksManagementSystem.ViewModel;

@@ -1,11 +1,12 @@
 ﻿using MarksManagementSystem.Data.Models;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace MarksManagementSystem.Data.Repositories
+namespace MarksManagementSystem.Data.Repositories.Classes
 {
     public class CourseTutorRepository : ICourseTutorRepository
     {
-        private readonly MarksManagementContext marksManagementContext; 
+        private readonly MarksManagementContext marksManagementContext;
 
         public CourseTutorRepository(MarksManagementContext context)
         {
@@ -45,7 +46,7 @@ namespace MarksManagementSystem.Data.Repositories
             return marksManagementContext.CourseTutor
                 .Include(ct => ct.Tutor)
                 .Include(ct => ct.Course)
-                .ToList();  
+                .ToList();
         }
 
         public List<CourseTutor> GetAllByTutorId(int tutorId)
@@ -65,7 +66,7 @@ namespace MarksManagementSystem.Data.Repositories
 
         public CourseTutor GetByIds(int courseId, int tutorId)
         {
-            if (courseId <=0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             if (tutorId <= 0) throw new ArgumentOutOfRangeException(nameof(tutorId));
 
             var courseTutors = marksManagementContext.CourseTutor;
@@ -93,7 +94,7 @@ namespace MarksManagementSystem.Data.Repositories
         public List<string> GetOtherTutorsOfCourseToString(int courseId)
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
-            return marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false).Select(ct => ct.Tutor.ToString()).ToList(); 
+            return marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false).Select(ct => ct.Tutor.ToString()).ToList();
         }
 
 

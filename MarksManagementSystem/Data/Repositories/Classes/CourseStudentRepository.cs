@@ -1,7 +1,8 @@
 ﻿using MarksManagementSystem.Data.Models;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace MarksManagementSystem.Data.Repositories
+namespace MarksManagementSystem.Data.Repositories.Classes
 {
     public class CourseStudentRepository : ICourseStudentRepository
     {

@@ -1,6 +1,7 @@
 ﻿using MarksManagementSystem.Data.Models;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 
-namespace MarksManagementSystem.Data.Repositories
+namespace MarksManagementSystem.Data.Repositories.Classes
 {
     public class TutorRepository : ITutorRepository
     {
@@ -15,7 +16,7 @@ namespace MarksManagementSystem.Data.Repositories
         {
             if (tutor == null) throw new ArgumentNullException(nameof(tutor));
             marksManagementContext.Tutor.Add(tutor);
-            marksManagementContext.SaveChanges();   
+            marksManagementContext.SaveChanges();
         }
 
         public void Delete(int tutorId)
@@ -38,7 +39,7 @@ namespace MarksManagementSystem.Data.Repositories
             if (tutorId <= 0) throw new ArgumentOutOfRangeException(nameof(tutorId));
             var tutor = marksManagementContext.Tutor.FirstOrDefault(t => t.TutorId == tutorId);
             if (tutor == null) throw new ArgumentNullException(nameof(tutor));
-            return tutor; 
+            return tutor;
         }
 
         public void Update(Tutor tutor)

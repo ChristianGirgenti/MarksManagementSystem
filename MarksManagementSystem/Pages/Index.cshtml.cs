@@ -1,5 +1,4 @@
-﻿using MarksManagementSystem.Data.Repositories;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MarksManagementSystem.Data.Models;
 using System.Numerics;
@@ -7,6 +6,7 @@ using MarksManagementSystem.Helpers;
 using MarksManagementSystem.Pages.Account;
 using MarksManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using MarksManagementSystem.Data.Repositories.Interfaces;
 
 namespace MarksManagementSystem.Pages
 {
