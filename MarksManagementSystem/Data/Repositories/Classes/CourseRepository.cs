@@ -9,7 +9,7 @@ namespace MarksManagementSystem.Data.Repositories.Classes
 
         public CourseRepository(MarksManagementContext context)
         {
-            marksManagementContext = context;
+            marksManagementContext = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public void Add(Course course)
@@ -23,11 +23,10 @@ namespace MarksManagementSystem.Data.Repositories.Classes
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             var deleteCourse = marksManagementContext.Course.FirstOrDefault(c => c.CourseId == courseId);
-            if (deleteCourse == null) throw new ArgumentNullException(nameof(deleteCourse));
+            if (deleteCourse == null) throw new ArgumentNullException(nameof(courseId));
 
             marksManagementContext.Course.Remove(deleteCourse);
             marksManagementContext.SaveChanges();
-
         }
 
         public List<Course> GetAll()
