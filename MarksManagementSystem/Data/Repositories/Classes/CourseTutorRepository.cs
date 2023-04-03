@@ -10,7 +10,7 @@ namespace MarksManagementSystem.Data.Repositories.Classes
 
         public CourseTutorRepository(MarksManagementContext context)
         {
-            marksManagementContext = context;
+            marksManagementContext = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public void Add(CourseTutor courseTutor)
@@ -25,8 +25,6 @@ namespace MarksManagementSystem.Data.Repositories.Classes
 
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             var deleteAllOtherTutors = marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false);
-            if (deleteAllOtherTutors == null) throw new ArgumentNullException(nameof(courseId));
-
             marksManagementContext.CourseTutor.RemoveRange(deleteAllOtherTutors);
             marksManagementContext.SaveChanges();
         }
@@ -58,9 +56,6 @@ namespace MarksManagementSystem.Data.Repositories.Classes
                 .Include(ct => ct.Tutor)
                 .Include(ct => ct.Course)
                 .ToList();
-
-            if (courseTutorsByTutorId == null) throw new ArgumentNullException(nameof(courseTutorsByTutorId));
-
             return courseTutorsByTutorId;
         }
 

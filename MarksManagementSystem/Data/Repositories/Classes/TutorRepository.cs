@@ -9,7 +9,7 @@ namespace MarksManagementSystem.Data.Repositories.Classes
 
         public TutorRepository(MarksManagementContext context)
         {
-            marksManagementContext = context;
+            marksManagementContext = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public void Add(Tutor tutor)

@@ -10,7 +10,7 @@ namespace MarksManagementSystem.Data.Repositories.Classes
 
         public CourseStudentRepository(MarksManagementContext context)
         {
-            marksManagementContext = context;
+            marksManagementContext = context ?? throw new ArgumentNullException(nameof(context));
         }
         public void Add(CourseStudent courseStudent)
         {
@@ -36,8 +36,6 @@ namespace MarksManagementSystem.Data.Repositories.Classes
                 .Include(cs => cs.Student)
                 .Include(cs => cs.Course)
                 .ToList();
-
-            if (courseStudentsByCourseId == null) throw new ArgumentNullException(nameof(courseStudentsByCourseId));
 
             return courseStudentsByCourseId;
         }
@@ -71,9 +69,6 @@ namespace MarksManagementSystem.Data.Repositories.Classes
                 .Include(cs => cs.Student)
                 .Include(cs => cs.Course)
                 .ToList();
-
-            if (courseStudentsByStudentId == null) throw new ArgumentNullException(nameof(courseStudentsByStudentId));
-
             return courseStudentsByStudentId;
         }
 

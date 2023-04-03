@@ -37,7 +37,7 @@ namespace MarksManagementSystem.UnitTests.Repositories
         public sealed class Add : CourseRepositoryTests
         {
             [Fact]
-            public void GivenNullCourse_AddCourse_ShouldThrowArgumentNullException()
+            public void GivenNullCourse_Add_ShouldThrowArgumentNullException()
             {
 
                 FluentActions.Invoking(() => courseRepository.Add(null))
@@ -80,7 +80,7 @@ namespace MarksManagementSystem.UnitTests.Repositories
             [Fact]
             public void GivenANullCourseToDelete_Delete_ShouldThrowArgumentNullException()
             {
-                FluentActions.Invoking(() => courseRepository.Delete(1))
+                FluentActions.Invoking(() => courseRepository.Delete(5))
                     .Should()
                     .ThrowExactly<ArgumentNullException>()
                     .WithParameterName("courseId");
@@ -105,10 +105,10 @@ namespace MarksManagementSystem.UnitTests.Repositories
             [Fact]
             public void GivenANullCourseToReturn_GetById_ShouldThrowArgumentNullException()
             {
-                FluentActions.Invoking(() => courseRepository.GetById(1))
+                FluentActions.Invoking(() => courseRepository.GetById(5))
                     .Should()
                     .ThrowExactly<ArgumentNullException>()
-                    .WithParameterName("courseId");
+                    .WithParameterName("courseById");
 
             }
         }

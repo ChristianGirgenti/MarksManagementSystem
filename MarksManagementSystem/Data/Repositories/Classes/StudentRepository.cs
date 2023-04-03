@@ -9,7 +9,7 @@ namespace MarksManagementSystem.Data.Repositories.Classes
 
         public StudentRepository(MarksManagementContext context)
         {
-            marksManagementContext = context;
+            marksManagementContext = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public void Add(Student student)
