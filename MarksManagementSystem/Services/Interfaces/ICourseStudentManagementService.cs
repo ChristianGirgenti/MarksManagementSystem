@@ -9,8 +9,7 @@ namespace MarksManagementSystem.Services.Interfaces
         public Course GetCourseById(int courseId);
         public List<CourseStudent> GetAllCurrentStudentsInTheCourse(int courseId);
         public void ChangeCourseStudentsRelationship(List<string> studentIds, List<CourseStudent> currentStudentsInTheCourse, Course course);
-
-
-
+        public void DeleteCourseStudentsRelationship(List<string> studentIds, List<CourseStudent> currentStudentsInTheCourse, int courseId);
+        public void AddCourseStudentRelationship(List<string> studentIds, List<CourseStudent> currentStudentsInTheCourse, Course course);
     }
 }

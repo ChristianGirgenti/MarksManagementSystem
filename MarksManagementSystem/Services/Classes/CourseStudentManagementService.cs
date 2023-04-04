@@ -13,26 +13,26 @@ namespace MarksManagementSystem.Services.Classes
 
         public CourseStudentManagementService(ICourseRepository courseRepository, IStudentRepository studentRepository, ICourseStudentRepository courseStudentRepository)
         {
-            _courseRepository = courseRepository;
-            _studentRepository = studentRepository;
-            _courseStudentRepository = courseStudentRepository;
+            _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
+            _studentRepository = studentRepository ?? throw new ArgumentNullException(nameof(studentRepository));
+            _courseStudentRepository = courseStudentRepository ?? throw new ArgumentNullException(nameof(courseStudentRepository));
         }
 
         public Course GetCourseById(int courseId)
         {
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return _courseRepository.GetById(courseId);
         }
 
         public List<CourseStudent> GetAllCurrentStudentsInTheCourse(int courseId)
         {
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return _courseStudentRepository.GetAllByCourseId(courseId);
         }
 
         public List<SelectListItem> PopulateStudentsList(int courseId)
         {
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
 
             var allStudents = _studentRepository.GetAll();
 
@@ -56,14 +56,12 @@ namespace MarksManagementSystem.Services.Classes
             if (currentStudentsInTheCourse == null) throw new ArgumentNullException(nameof(currentStudentsInTheCourse));
             if (course == null) throw new ArgumentNullException(nameof(course));
 
-            if (studentIds != null)
-            {
-                DeleteCourseStudentsRelationship(studentIds, currentStudentsInTheCourse, course.CourseId);
-                AddCourseStudentRelationship(studentIds, currentStudentsInTheCourse, course);
-            }
+            DeleteCourseStudentsRelationship(studentIds, currentStudentsInTheCourse, course.CourseId);
+            AddCourseStudentRelationship(studentIds, currentStudentsInTheCourse, course);
+            
         }
 
-        private void DeleteCourseStudentsRelationship(List<string> studentIds, List<CourseStudent> currentStudentsInTheCourse, int courseId)
+        public void DeleteCourseStudentsRelationship(List<string> studentIds, List<CourseStudent> currentStudentsInTheCourse, int courseId)
         {
             if (studentIds == null) throw new ArgumentNullException(nameof(studentIds));
             if (currentStudentsInTheCourse == null) throw new ArgumentNullException(nameof(currentStudentsInTheCourse));
@@ -78,7 +76,7 @@ namespace MarksManagementSystem.Services.Classes
             }
         }
 
-        private void AddCourseStudentRelationship(List<string> studentIds, List<CourseStudent> currentStudentsInTheCourse, Course course)
+        public void AddCourseStudentRelationship(List<string> studentIds, List<CourseStudent> currentStudentsInTheCourse, Course course)
         {
             if (studentIds == null) throw new ArgumentNullException(nameof(studentIds));
             if (currentStudentsInTheCourse == null) throw new ArgumentNullException(nameof(currentStudentsInTheCourse));
