@@ -1,6 +1,5 @@
 ﻿using MarksManagementSystem.Data.Models;
 using MarksManagementSystem.Helpers;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using MarksManagementSystem.Services.Interfaces;
@@ -49,7 +48,7 @@ namespace MarksManagementSystem.Services.Classes
             }
         }
 
-        private void SetNewTutorValues(Tutor newTutor)
+        public void SetNewTutorValues(Tutor newTutor)
         {
             if (newTutor == null) throw new ArgumentNullException(nameof(newTutor));
             var nameLower = newTutor.TutorFirstName.ToLower();

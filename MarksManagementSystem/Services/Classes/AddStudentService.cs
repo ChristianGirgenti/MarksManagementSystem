@@ -48,7 +48,7 @@ namespace MarksManagementSystem.Services.Classes
             }
         }
 
-        private void SetNewStudentValues(Student newStudent)
+        public void SetNewStudentValues(Student newStudent)
         {
             if (newStudent == null) throw new ArgumentNullException(nameof(newStudent));
             var nameLower = newStudent.StudentFirstName.ToLower();

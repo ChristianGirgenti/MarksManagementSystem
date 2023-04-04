@@ -16,9 +16,9 @@ namespace MarksManagementSystem.Services.Classes
 
         public AddCourseService(ICourseRepository courseRepository, ITutorRepository tutorRepository, ICourseTutorRepository courseTutorRepository)
         {
-            _courseRepository = courseRepository;
-            _tutorRepository = tutorRepository;
-            _courseTutorRepository = courseTutorRepository;
+            _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
+            _tutorRepository = tutorRepository ?? throw new ArgumentNullException(nameof(tutorRepository));
+            _courseTutorRepository = courseTutorRepository ?? throw new ArgumentNullException(nameof(courseTutorRepository));
         }
 
         public List<SelectListItem> GetOtherTutorsInSelectionList()
@@ -36,7 +36,7 @@ namespace MarksManagementSystem.Services.Classes
             return nonUnitLeaders;
         }
 
-        private static void FormatNewCourseValues(Course newCourse)
+        public void FormatNewCourseValues(Course newCourse)
         {
             if (newCourse == null) throw new ArgumentNullException(nameof(newCourse));
             newCourse.CourseName = StringUtilities.Capitalise(newCourse.CourseName);

@@ -5,5 +5,7 @@ namespace MarksManagementSystem.Services.Interfaces
     public interface IAddTutorService
     {
         public void AddTutor(Tutor newTutor);
+        public void SetNewTutorValues(Tutor newTutor);
+
     }
 }

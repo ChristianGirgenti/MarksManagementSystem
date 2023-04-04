@@ -9,6 +9,6 @@ namespace MarksManagementSystem.Services.Interfaces
         public List<SelectListItem> GetOtherTutorsInSelectionList();
         public Course AddCourse(AddEditCourseViewModel newCourseViewModel);
         public void AddUnitLeaderLinkToCourse(AddEditCourseViewModel newCourseViewModel, Course newCourse);
-
+        public void FormatNewCourseValues(Course newCourse);
     }
 }

@@ -4,7 +4,6 @@ using MarksManagementSystem.Helpers;
 using MarksManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MarksManagementSystem.Services.Classes
 {
@@ -16,13 +15,17 @@ namespace MarksManagementSystem.Services.Classes
 
         public ChangePasswordService(IPasswordCreator passwordCreator, ITutorRepository tutorRepository, IStudentRepository studentRepository)
         {
-            _passwordCreator = passwordCreator;
-            _tutorRepository = tutorRepository;
-            _studentRepository = studentRepository;
+            _passwordCreator = passwordCreator ?? throw new ArgumentNullException(nameof(passwordCreator));
+            _tutorRepository = tutorRepository ?? throw new ArgumentNullException(nameof(tutorRepository));
+            _studentRepository = studentRepository ?? throw new ArgumentNullException(nameof(studentRepository));
         }
 
         public async Task ChangePassword(HttpContext context, string currentPassword, string newPassword)
         {
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (string.IsNullOrEmpty(currentPassword)) throw new ArgumentNullException(nameof(currentPassword));
+            if (string.IsNullOrEmpty(newPassword)) throw new ArgumentNullException(nameof(newPassword));
+
             var accountClaims = new AccountClaims(context.User.Claims.ToList());
             var hashedCurrentPasswordForm = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, currentPassword);
             if (hashedCurrentPasswordForm == accountClaims.AccountPassword)
