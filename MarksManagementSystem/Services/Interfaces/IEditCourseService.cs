@@ -14,5 +14,9 @@ namespace MarksManagementSystem.Services.Interfaces
         public AddEditCourseViewModel FormatNewCourseValues(AddEditCourseViewModel editCourseViewModel);
         public void ChangeTutorCourseRelationships(AddEditCourseViewModel editCourseViewModel, Course courseEdited, List<string> tutorIds);
         public Course EditCourse(int courseId, AddEditCourseViewModel editCourseViewModel);
+        public void AddOtherTutorsRelationship(List<string> otherTutors, Course courseEdited, AddEditCourseViewModel editCourseViewModel);
+        public void AddUnitLeaderRelationship(Tutor newUnitLeader, Course courseEdited);
+
+
     }
 }

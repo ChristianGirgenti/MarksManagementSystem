@@ -123,6 +123,8 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenAValidCourseId_PopulateStudentsList_ShouldCallStudentRepositoryGetAll_Once()
             {
+                mockStudentRepository.Setup(x => x.GetAll()).Returns(new List<Student>());
+                mockCourseStudentRepository.Setup(x => x.GetAll()).Returns(new List<CourseStudent>());
                 courseStudentManagementService.PopulateStudentsList(1);
                 mockStudentRepository.Verify(x => x.GetAll(), Times.Once());
 
@@ -131,6 +133,8 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenAValidCourseId_PopulateStudentsList_ShouldCallCourseStudentRepositoryGetAll_Once()
             {
+                mockStudentRepository.Setup(x => x.GetAll()).Returns(new List<Student>());
+                mockCourseStudentRepository.Setup(x => x.GetAll()).Returns(new List<CourseStudent>());
                 courseStudentManagementService.PopulateStudentsList(1);
                 mockCourseStudentRepository.Verify(x => x.GetAll(), Times.Once());
             }
@@ -194,7 +198,7 @@ namespace MarksManagementSystem.Tests.Services
             {
                 FluentActions.Invoking(() => courseStudentManagementService.DeleteCourseStudentsRelationship(new List<string>(), new List<CourseStudent>(), courseId))
                     .Should()
-                    .ThrowExactly<ArgumentNullException>()
+                    .ThrowExactly<ArgumentOutOfRangeException>()
                     .WithParameterName(nameof(courseId));
             }
 

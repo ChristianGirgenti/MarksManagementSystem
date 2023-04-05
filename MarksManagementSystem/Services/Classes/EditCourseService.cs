@@ -15,20 +15,20 @@ namespace MarksManagementSystem.Services.Classes
 
         public EditCourseService(ICourseRepository courseRepository, ITutorRepository tutorRepository, ICourseTutorRepository courseTutorRepository)
         {
-            _courseRepository = courseRepository;
-            _tutorRepository = tutorRepository;
-            _courseTutorRepository = courseTutorRepository;
+            _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
+            _tutorRepository = tutorRepository ?? throw new ArgumentNullException(nameof(tutorRepository));
+            _courseTutorRepository = courseTutorRepository ?? throw new ArgumentNullException(nameof(courseTutorRepository));
         }
 
         public Course GetCourseToEditById(int courseId)
         {
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return _courseRepository.GetById(courseId);
         }
 
         public List<CourseTutor> GetAllTheCourseTutors(int courseId)
         {
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return _courseTutorRepository.GetAll().Where(ct => ct.CourseId == courseId).ToList();
         }
 
@@ -40,11 +40,12 @@ namespace MarksManagementSystem.Services.Classes
 
         public List<SelectListItem> ShowPossibleUnitLeaderInSelectionList(int unitLeaderId)
         {
-            if (unitLeaderId <= 0) throw new ArgumentNullException(nameof(unitLeaderId));
+            if (unitLeaderId <= 0) throw new ArgumentOutOfRangeException(nameof(unitLeaderId));
 
-            IEnumerable<Tutor> unitLeaders = _courseTutorRepository.GetAll()
+            List<Tutor> unitLeaders = _courseTutorRepository.GetAll()
                 .Where(ct => ct.IsUnitLeader)
-                .Select(ct => ct.Tutor);
+                .Select(ct => ct.Tutor)
+                .ToList();
 
             List<SelectListItem> nonUnitLeaders = _tutorRepository.GetAll()
                 .Where(t => !unitLeaders.Contains(t))
@@ -91,7 +92,7 @@ namespace MarksManagementSystem.Services.Classes
 
         public Course EditCourse(int courseId, AddEditCourseViewModel editCourseViewModel)
         {
-            if (courseId <= 0) throw new ArgumentNullException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             if (editCourseViewModel == null) throw new ArgumentNullException(nameof(editCourseViewModel));
 
             var courseEdited = new Course
@@ -123,10 +124,11 @@ namespace MarksManagementSystem.Services.Classes
             AddOtherTutorsRelationship(editCourseViewModel.TutorIds, courseEdited, editCourseViewModel);
         }
 
-        private void AddOtherTutorsRelationship(List<string> otherTutors, Course courseEdited, AddEditCourseViewModel editCourseViewModel)
+        public void AddOtherTutorsRelationship(List<string> otherTutors, Course courseEdited, AddEditCourseViewModel editCourseViewModel)
         {
             if (otherTutors == null) throw new ArgumentNullException(nameof(otherTutors));
             if (courseEdited == null) throw new ArgumentNullException(nameof(courseEdited));
+            if (editCourseViewModel == null) throw new ArgumentNullException(nameof(editCourseViewModel));
 
             //If a tutor is selected to be both unitLeader and otherTutor, unit leader will have priority, ignoring the other tutor selection
             foreach (var tutorId in otherTutors)
@@ -147,23 +149,21 @@ namespace MarksManagementSystem.Services.Classes
             }
         }
 
-        private void AddUnitLeaderRelationship(Tutor newUnitLeader, Course courseEdited)
+        public void AddUnitLeaderRelationship(Tutor newUnitLeader, Course courseEdited)
         {
             if (newUnitLeader == null) throw new ArgumentNullException(nameof(newUnitLeader));
             if (courseEdited == null) throw new ArgumentNullException(nameof(courseEdited));
 
-            if (newUnitLeader != null)
+            var newCourseTutorRelationship = new CourseTutor()
             {
-                var newCourseTutorRelationship = new CourseTutor()
-                {
-                    CourseId = courseEdited.CourseId,
-                    TutorId = newUnitLeader.TutorId,
-                    Course = courseEdited,
-                    Tutor = newUnitLeader,
-                    IsUnitLeader = true
-                };
-                _courseTutorRepository.Add(newCourseTutorRelationship);
-            }
+                CourseId = courseEdited.CourseId,
+                TutorId = newUnitLeader.TutorId,
+                Course = courseEdited,
+                Tutor = newUnitLeader,
+                IsUnitLeader = true
+            };
+
+            _courseTutorRepository.Add(newCourseTutorRelationship);           
         }
     }
 }

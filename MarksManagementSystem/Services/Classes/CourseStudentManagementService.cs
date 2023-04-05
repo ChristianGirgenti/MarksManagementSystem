@@ -65,7 +65,7 @@ namespace MarksManagementSystem.Services.Classes
         {
             if (studentIds == null) throw new ArgumentNullException(nameof(studentIds));
             if (currentStudentsInTheCourse == null) throw new ArgumentNullException(nameof(currentStudentsInTheCourse));
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
 
             foreach (var student in currentStudentsInTheCourse)
             {
