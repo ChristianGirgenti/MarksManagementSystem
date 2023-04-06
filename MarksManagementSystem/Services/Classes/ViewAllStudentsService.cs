@@ -12,8 +12,8 @@ namespace MarksManagementSystem.Services.Classes
 
         public ViewAllStudentsService(IStudentRepository studentRepository, ICourseStudentRepository courseStudentRepository)
         {
-            _studentRepository = studentRepository;
-            _courseStudentRepository = courseStudentRepository;
+            _studentRepository = studentRepository ?? throw new ArgumentNullException(nameof(studentRepository));
+            _courseStudentRepository = courseStudentRepository ?? throw new ArgumentNullException(nameof(courseStudentRepository));
         }
 
         public List<ViewAllStudentsViewModel> GetAllStudentsViewModel()
@@ -32,7 +32,7 @@ namespace MarksManagementSystem.Services.Classes
 
         public void DeleteStudent(int studentId)
         {
-            if (studentId < 0) throw new ArgumentOutOfRangeException(nameof(studentId));
+            if (studentId <= 0) throw new ArgumentOutOfRangeException(nameof(studentId));
             _studentRepository.Delete(studentId);
         }
     }

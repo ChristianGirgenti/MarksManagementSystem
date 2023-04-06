@@ -4,9 +4,6 @@ using MarksManagementSystem.Data.Repositories.Interfaces;
 using MarksManagementSystem.Services.Classes;
 using MarksManagementSystem.Helpers;
 using Moq;
-using MarksManagementSystem.Data.Repositories.Classes;
-using MarksManagementSystem.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace MarksManagementSystem.Tests.Services
 {

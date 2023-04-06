@@ -1,8 +1,6 @@
-﻿using MarksManagementSystem.Data.Models;
-using MarksManagementSystem.Data.Repositories.Interfaces;
+﻿using MarksManagementSystem.Data.Repositories.Interfaces;
 using MarksManagementSystem.Services.Interfaces;
 using MarksManagementSystem.ViewModel;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace MarksManagementSystem.Services.Classes
@@ -14,8 +12,8 @@ namespace MarksManagementSystem.Services.Classes
 
         public ViewAllTutorsService(ITutorRepository tutorRepository, ICourseTutorRepository courseTutorRepository)
         {
-            _tutorRepository = tutorRepository;
-            _courseTutorRepository = courseTutorRepository;
+            _tutorRepository = tutorRepository ?? throw new ArgumentNullException(nameof(tutorRepository));
+            _courseTutorRepository = courseTutorRepository ?? throw new ArgumentNullException(nameof(courseTutorRepository));
         }
 
         public List<ViewAllTutorsViewModel> GetAllTutorsViewModel()
@@ -43,13 +41,15 @@ namespace MarksManagementSystem.Services.Classes
 
         public bool IsTutorUnitLeader(int tutorId)
         {
-            if (tutorId < 0) throw new ArgumentOutOfRangeException(nameof(tutorId));
+            if (tutorId <= 0) throw new ArgumentOutOfRangeException(nameof(tutorId));
             return _courseTutorRepository.GetAll().Where(ct => ct.TutorId == tutorId && ct.IsUnitLeader == true).Any();
         }
 
         public bool DeleteTutor(int tutorId, IEnumerable<Claim> claims)
         {
-            if (tutorId < 0) throw new ArgumentOutOfRangeException(nameof(tutorId));
+            if (tutorId <= 0) throw new ArgumentOutOfRangeException(nameof(tutorId));
+            if (claims == null) throw new ArgumentNullException(nameof(claims));
+
             if (_tutorRepository.GetById(tutorId).TutorEmail != (claims.FirstOrDefault(c => c.Type == "Email")?.Value))
             {
                 _tutorRepository.Delete(tutorId);

@@ -2,8 +2,6 @@
 using MarksManagementSystem.Data.Models;
 using MarksManagementSystem.Data.Repositories.Interfaces;
 using MarksManagementSystem.Services.Classes;
-using MarksManagementSystem.Services.Interfaces;
-using MarksManagementSystem.ViewModel;
 using Moq;
 
 namespace MarksManagementSystem.Tests.Services
@@ -269,7 +267,7 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenAListOfCurrentStudentsAndListOfStudentIdsDoesNotContainTheCurrentStudentId_AddCourseStudentsRelationship_CallsCourseStudentAdd_Once()
             {
-                List<string> studentIds = new List<string> { "1" };
+                List<string> studentIds = new() { "1" };
                 List<CourseStudent> currentStudents = new List<CourseStudent>()
                 {
                     new CourseStudent()
@@ -279,12 +277,12 @@ namespace MarksManagementSystem.Tests.Services
                         Mark = 50
                     }
                 };
-                Student student = new Student()
+                Student student = new()
                 {
                     StudentId = 1,
                 };
 
-                Course course = new Course()
+                Course course = new()
                 {
                     CourseId = 1,
                 };
@@ -300,8 +298,8 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenAListOfCurrentStudentsAndListOfStudentIdsContainsTheCurrentStudentId_AddCourseStudentsRelationship_NeverCallsCourseStudentAdd()
             {
-                List<string> studentIds = new List<string> { "1" };
-                List<CourseStudent> currentStudents = new List<CourseStudent>()
+                List<string> studentIds = new() { "1" };
+                List<CourseStudent> currentStudents = new()
                 {
                     new CourseStudent()
                     {
@@ -310,12 +308,12 @@ namespace MarksManagementSystem.Tests.Services
                         Mark = 50
                     }
                 };
-                Student student = new Student()
+                Student student = new()
                 {
                     StudentId = 1,
                 };
 
-                Course course = new Course()
+                Course course = new()
                 {
                     CourseId = 1,
                 };

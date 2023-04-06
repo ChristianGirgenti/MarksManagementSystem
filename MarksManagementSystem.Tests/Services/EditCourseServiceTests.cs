@@ -113,7 +113,7 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenValidAllCourseTutors_GetUnitLeaderId_ShouldReturnTheUnitLeaderId()
             {
-                CourseTutor courseTutor = new CourseTutor
+                CourseTutor courseTutor = new()
                 {
                     CourseId = 1,
                     TutorId = 1,
@@ -147,7 +147,7 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenValidUnitLeaderId_ShowPossibleUnitLeaderInSelectionList_ShouldReturnTheExpectedPossibleUnitLeaders()
             {
-                List<CourseTutor> unitLeader = new List<CourseTutor>()
+                List<CourseTutor> unitLeader = new()
                 {
                     new CourseTutor()
                     {
@@ -157,7 +157,7 @@ namespace MarksManagementSystem.Tests.Services
                     }
                 };
 
-                List<Tutor> tutors = new List<Tutor>()
+                List<Tutor> tutors = new()
                 {
                     new Tutor()
                     {
@@ -167,7 +167,7 @@ namespace MarksManagementSystem.Tests.Services
                     }
                 };
 
-                List<SelectListItem>? expected = new List<SelectListItem>()
+                List<SelectListItem>? expected = new()
                 {
                     new SelectListItem
                     {
@@ -217,7 +217,7 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenValidUnitLeaderIdAndValidCourseId_PopulateOtherTutors_ShouldReturnTheExpectedOtherTutors()
             {
-                List<CourseTutor> currentOtherTutors = new List<CourseTutor>()
+                List<CourseTutor> currentOtherTutors = new()
                 {
                     new CourseTutor()
                     {
@@ -227,7 +227,7 @@ namespace MarksManagementSystem.Tests.Services
                     }
                 };
 
-                List<Tutor> otherTutors = new List<Tutor>()
+                List<Tutor> otherTutors = new()
                 {
                     new Tutor()
                     {
@@ -243,7 +243,7 @@ namespace MarksManagementSystem.Tests.Services
                     }
                 };
 
-                List<SelectListItem>? expected = new List<SelectListItem>()
+                List<SelectListItem>? expected = new()
                 {
                     new SelectListItem
                     {

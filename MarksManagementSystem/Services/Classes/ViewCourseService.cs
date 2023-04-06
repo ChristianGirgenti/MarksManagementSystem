@@ -19,28 +19,28 @@ namespace MarksManagementSystem.Services.Classes
             ICourseStudentRepository courseStudentRepository,
             IStudentRepository studentRepository)
         {
-            _courseRepository = courseRepository;
-            _courseStudentRepository = courseStudentRepository;
-            _courseTutorRepository = courseTutorRepository;
-            _studentRepository = studentRepository;
+            _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
+            _courseStudentRepository = courseStudentRepository ?? throw new ArgumentNullException(nameof(courseStudentRepository));
+            _courseTutorRepository = courseTutorRepository ?? throw new ArgumentNullException(nameof(courseTutorRepository));
+            _studentRepository = studentRepository ?? throw new ArgumentNullException(nameof(studentRepository));
         }
 
         public Course GetCourseById(int courseId)
         {
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return _courseRepository.GetById(courseId);
         }
         
         public Tutor GetUnitLeaderOfCourse(int courseId)
         {
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return _courseTutorRepository.GetUnitLeaderOfCourse(courseId);
         }
 
         public void UpdateMarks(Course thisCourse, string? mark, int studentId)
         {
             if (thisCourse == null) throw new ArgumentNullException(nameof(thisCourse));
-            if (studentId < 0) throw new ArgumentOutOfRangeException(nameof(studentId));
+            if (studentId <= 0) throw new ArgumentOutOfRangeException(nameof(studentId));
 
             Student thisStudent = _studentRepository.GetById(Convert.ToInt32(studentId));
             var courseStudent = _courseStudentRepository.GetByIds(thisCourse.CourseId, thisStudent.StudentId);
@@ -56,7 +56,7 @@ namespace MarksManagementSystem.Services.Classes
 
         public List<ViewCourseViewModel> GetAllStudentEnrolled(int courseId)
         {
-            if (courseId < 0) throw new ArgumentOutOfRangeException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
 
             return _courseStudentRepository.GetAllByCourseId(courseId)
                 .Select(s => new ViewCourseViewModel

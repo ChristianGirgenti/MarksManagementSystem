@@ -1,7 +1,6 @@
 ﻿using MarksManagementSystem.Data.Repositories.Interfaces;
 using MarksManagementSystem.Services.Interfaces;
 using MarksManagementSystem.ViewModel;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MarksManagementSystem.Services.Classes
 {
@@ -32,7 +31,7 @@ namespace MarksManagementSystem.Services.Classes
 
         public void DeleteCourse(int courseId)
         {
-            if (courseId <= 0) throw new ArgumentNullException(nameof(courseId));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             _courseRepository.Delete(courseId);
         }
     }
