@@ -8,5 +8,7 @@ namespace MarksManagementSystem.Services.Interfaces
     {
         public Task<bool> LogInTutorIsSuccess(Credential credential, HttpContext httpContext);
         public Task<bool> LogInStudentIsSuccess(Credential credential, HttpContext context);
+        public void BuildClaimsTutor(Tutor tutor);
+        public void BuildClaimsStudent(Student student);
     }
 }

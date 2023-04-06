@@ -17,14 +17,14 @@ namespace MarksManagementSystem.Services.Classes
 
         public LoginService(MarksManagementContext context, IPasswordCreator passwordCreator)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (passwordCreator == null) throw new ArgumentNullException(nameof(passwordCreator));
-            _marksManagementContext = context;
-            _passwordCreator = passwordCreator;
+            _marksManagementContext = context ?? throw new ArgumentNullException(nameof(context));
+            _passwordCreator = passwordCreator ?? throw new ArgumentNullException(nameof(passwordCreator));
         }
 
         public async Task<bool> LogInTutorIsSuccess(Credential credential, HttpContext httpContext)
         {
+            if (credential == null) throw new ArgumentNullException(nameof(credential));
+            if (httpContext == null) throw new ArgumentNullException(nameof(httpContext));
 
             var tutor = await _marksManagementContext.Tutor.FirstOrDefaultAsync(x => x.TutorEmail == credential.Email);
 
@@ -74,7 +74,7 @@ namespace MarksManagementSystem.Services.Classes
             return false;
         }
 
-        private void BuildClaimsTutor(Tutor tutor)
+        public void BuildClaimsTutor(Tutor tutor)
         {
             if (tutor == null) throw new ArgumentNullException(nameof(tutor));
             Claims = new List<Claim>
@@ -91,7 +91,7 @@ namespace MarksManagementSystem.Services.Classes
                                 };
         }
 
-        private void BuildClaimsStudent(Student student)
+        public void BuildClaimsStudent(Student student)
         {
             if (student == null) throw new ArgumentNullException(nameof(student));
             Claims = new List<Claim>
