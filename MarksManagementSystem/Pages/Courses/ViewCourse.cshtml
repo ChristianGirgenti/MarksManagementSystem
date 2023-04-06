@@ -1,0 +1,83 @@
+﻿@page
+@model MarksManagementSystem.Pages.Courses.ViewCourseModel
+@{
+}
+
+<head>
+    <script src="/js/table-filter.js"></script>
+</head>
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div>
+    <div>
+        <form method="post">
+            <input type="text" class="mb-2" id="nameFilter" placeholder="Filter by student name" />
+
+            <table class="table table-boardered table-striped">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Student Email</th>
+                        <th>Student Date Of Birth</th>
+                        <th>Student Mark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.AllStudentsEnrolled != null)
+                    {
+                        @if (Model.IsUserLoggedInTheUnitLeader)
+                        {
+                            foreach (var student in Model.AllStudentsEnrolled)
+                            {
+                                <tr class="student-row">
+                                    <td class="name-selector">@student.StudentFullName</td>
+                                    <td>@student.StudentEmail</td>
+                                    <td>@student.StudentDateOfBirth</td>
+                                    <td><input type="number" 
+                                               name="@("mark"+student.StudentId)" 
+                                               min="0"
+                                               max="100"
+                                               value="@((Convert.ToInt32(student.StudentMark) > -1) ? student.StudentMark : "")" />
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            foreach (var student in Model.AllStudentsEnrolled)
+                            {
+                                <tr class="student-row">
+                                    <td class="name-selector">@student.StudentFullName</td>
+                                    <td>@student.StudentEmail</td>
+                                    <td>@student.StudentDateOfBirth</td>
+                                    <td>@(
+                                (Convert.ToInt32(student.StudentMark) > -1) ? student.StudentMark : ""
+                                )</td>
+                                </tr>
+                            }
+                        }
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success mt-2">@TempData["SuccessMessage"]</div>
+                    }
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger mt-2">@TempData["ErrorMessage"]</div>
+                    }
+                </tbody>
+            </table>
+
+            @if (Model.IsUserLoggedInTheUnitLeader)
+            {
+                <button class="btn btn-primary">Save Marks</button>
+            }
+        </form>
+    </div>
+</div>
+
+<script>
+    filterTable("#nameFilter", ".student-row", ".name-selector");
+</script>

@@ -169,7 +169,7 @@ namespace MarksManagementSystem.Migrations
                 {
                     b.HasOne("MarksManagementSystem.Data.Models.Course", "Course")
                         .WithMany("CourseStudents")
-                        .HasForeignKey("StudentId")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

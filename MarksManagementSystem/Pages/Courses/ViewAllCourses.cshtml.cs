@@ -1,4 +1,4 @@
-using MarksManagementSystem.Data.Repositories;
+using MarksManagementSystem.Services.Interfaces;
 using MarksManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,35 +9,17 @@ namespace MarksManagementSystem.Pages.Courses
     [Authorize(Policy = "Admin")]
     public class ViewAllCoursesModel : PageModel
     {
-        private readonly ICourseRepository _courseRepository;
-        private readonly ICourseTutorRepository _courseTutorRepository;
-        public List<ViewAllCoursesViewModel>? AllCoursesWithTutor { get; set; }
-        public ViewAllCoursesModel(ICourseRepository courseRepository, ICourseTutorRepository courseTutorRepository)
+        private readonly IViewAllCoursesService _viewAllCoursesService;
+        public List<ViewAllCoursesViewModel> AllCoursesWithTutor { get; set; } = new List<ViewAllCoursesViewModel>();
+        public ViewAllCoursesModel(IViewAllCoursesService viewAllCoursesService)
         {
-            _courseRepository = courseRepository;
-            _courseTutorRepository = courseTutorRepository; 
+            if (viewAllCoursesService == null) throw new ArgumentOutOfRangeException(nameof(viewAllCoursesService));
+            _viewAllCoursesService = viewAllCoursesService; 
         }
 
         public void OnGet()
         { 
-            AllCoursesWithTutor = _courseRepository.GetAll()
-                .Select(c => new ViewAllCoursesViewModel
-                {
-                    CourseId = c.CourseId,
-                    CourseName = c.CourseName,
-                    CourseCredits = c.CourseCredits,
-
-                    UnitLeader = _courseTutorRepository.GetAll()
-                        .Where(ct => ct.CourseId == c.CourseId && ct.IsUnitLeader == true)
-                        .Select(ct => ct.Tutor.ToString())
-                        .SingleOrDefault(),
-
-                    OtherTutors = string.Join(", ", _courseTutorRepository.GetAll()
-                        .Where(ct => ct.CourseId == c.CourseId && ct.IsUnitLeader == false)
-                        .Select(ct => ct.Tutor.ToString())
-                        .ToList())
-                })
-                .ToList();
+            AllCoursesWithTutor = _viewAllCoursesService.GetAllCoursesWithTutors();
         }
 
         public IActionResult OnPostDelete(int courseId)
@@ -45,7 +27,7 @@ namespace MarksManagementSystem.Pages.Courses
             if (courseId <= 0) throw new ArgumentNullException(nameof(courseId));
             try
             {
-                _courseRepository.Delete(courseId);
+                _viewAllCoursesService.DeleteCourse(courseId);
                 TempData["SuccessMessage"] = "The course has been deleted successfully.";
                 return RedirectToPage("ViewAllCourses"); 
             }

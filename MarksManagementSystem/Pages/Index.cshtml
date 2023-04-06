@@ -1,9 +1,12 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "My Courses";
 }
 
+<head>
+    <script src="/js/table-filter.js"></script>
+</head>
 
 @{
     var hashedInitialPassword = ViewData["HashedInitialPassword"] as string;
@@ -21,24 +24,73 @@
     }
 }
 
-
-
+<h1>@ViewData["Title"]</h1>
+<hr />
 
 <div class="text-center">
-   @* @{
-        if (HttpContext.User.Claims.FirstOrDefault(x => x.Value == "Admin") != null && Model.HasCoursesWithoutUnitLeader)
+   
+    <input type="text" class="float-lg-start" id="nameFilter" placeholder="Filter by course name" />
+
+    @{
+        if (Model.AccountClaims.AccountUserType.Equals("Tutor"))
         {
-            <div class="alert alert-danger">
-              <h4>Attention!</h4>
-              <p>The following courses do not have a unit leader assigned: </p>
-              <ul>
-                @foreach (var course in Model.CourseWithoutTutors)
-                {
-                     <li>@course.Name</li>   
-                }
-              </ul>
-              <p>It is recommended to assign a unit leader to every course.</p>
-            </div>
+            <table class="table table-boardered table-striped">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Credits</th>
+                        <th>Unit Leader</th>
+                        <th>Other Tutors</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.TutorTaughtCourses != null)
+                    {
+                        foreach (var course in Model.TutorTaughtCourses)
+                        {
+                            <tr class="table-row">
+                                <td class="name-selector">@course.CourseName</td>
+                                <td>@course.CourseCredits</td>
+                                <td>@course.UnitLeader</td>
+                                <td>@course.OtherTutors</td>
+                                <td>
+                                    <form asp-page-handler="edit" method="post" asp-route-courseId="@course.CourseId">
+                                        <button type="submit" class="btn btn-primary">View Course Students</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
         }
-    }*@
+        else
+        {
+            <table class="table table-boardered table-striped">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Credits</th>
+                        <th>Mark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.StudentIndexViewModels != null)
+                    {
+                        foreach (var course in Model.StudentIndexViewModels)
+                        {
+                            <tr class="table-row">
+                                <td class="name-selector">@course.CourseName</td>
+                                <td>@course.CourseCredits</td>
+                                <td>@((Convert.ToInt32(course.Mark) > -1) && course.ShowMark ? course.Mark : "")</td>                              
+                            </tr>
+                        }
+                    }
+            </table>
+        }
+    }
 </div>
+
+<script>
+    filterTable("#nameFilter", ".table-row", ".name-selector");
+</script>

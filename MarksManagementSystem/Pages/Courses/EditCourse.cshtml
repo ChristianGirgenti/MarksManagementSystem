@@ -15,49 +15,55 @@
     <div>
         <form method="post">
           
-            <div class="form-group">
+            <div>
             
-            <label class="input-label mr-5" asp-for="EditCourseViewModel.CourseName">Course Name: </label>
-            <input class="input-form" asp-for="EditCourseViewModel.CourseName" />
-            <span class="error-message d-block" asp-validation-for="EditCourseViewModel.CourseName"></span>
+                <label class="input-label mr-5" asp-for="EditCourseViewModel.CourseName">Course Name: </label>
+                <input class="input-form" asp-for="EditCourseViewModel.CourseName" />
+                <span class="error-message d-block" asp-validation-for="EditCourseViewModel.CourseName"></span>
 
-            <label class="input-label mr-5" asp-for="EditCourseViewModel.CourseCredits">Credits: </label>
-            <input class="input-form" asp-for="EditCourseViewModel.CourseCredits" />
-            <span class="error-message d-block" asp-validation-for="EditCourseViewModel.CourseCredits"></span>
+                <label class="input-label mr-5" asp-for="EditCourseViewModel.CourseCredits">Credits: </label>
+                <input class="input-form" asp-for="EditCourseViewModel.CourseCredits" />
+                <span class="error-message d-block" asp-validation-for="EditCourseViewModel.CourseCredits"></span>
 
-            <label class="input-label mr-5" asp-for="EditCourseViewModel.UnitLeaderId">Unit Leader: </label>
-            <select class="input-form" asp-items="Model.OptionsTutors" asp-for="EditCourseViewModel.UnitLeaderId"></select>
-            <span class="error-message d-block" asp-validation-for="EditCourseViewModel.UnitLeaderId"></span>
+                <label class="input-label mr-5" asp-for="EditCourseViewModel.UnitLeaderId">Unit Leader: </label>
+                <select class="input-form" asp-items="Model.PossibleUnitLeaders" asp-for="EditCourseViewModel.UnitLeaderId"></select>
+                <span class="error-message d-block" asp-validation-for="EditCourseViewModel.UnitLeaderId"></span>
 
-            <div class="other-tutors-components">
-                <label class="input-label mr-5" asp-for="EditCourseViewModel.TutorIds">Other Tutors:</label>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle other-tutors-button" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                        Select Tutors
-                    </button>
-                    <div class="dropdown-menu  dropdown-other-tutors-container" aria-labelledby="dropdownMenuButton">
-                        <table class="table other-tutors-table">
-                            @foreach (var tutor in Model.OtherTutors)
-                            {
-                                <tr>
-                                    <td>
-                                        <input id="@tutor.Value" type="checkbox" name="Tutors" value="@tutor.Value" checked="@tutor.Selected" />
-                                    </td>
-                                    <td>
-                                        <label for="@tutor.Value">@tutor.Text</label>
-                                    </td>
-                                </tr>
-                            }
-                        </table>
+                <div class="other-tutors-components">
+                    <label class="input-label mr-5" asp-for="EditCourseViewModel.TutorIds">Other Tutors:</label>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle other-tutors-button" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                            Select Tutors
+                        </button>
+                        <div class="dropdown-menu  dropdown-other-tutors-container" aria-labelledby="dropdownMenuButton">
+                            <table class="table other-tutors-table">
+                                @foreach (var tutor in Model.OtherTutors)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input id="@tutor.Value" type="checkbox" name="Tutors" value="@tutor.Value" checked="@tutor.Selected" />
+                                        </td>
+                                        <td>
+                                            <label for="@tutor.Value">@tutor.Text</label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
                     </div>
                 </div>
+                <span class="error-message d-block" asp-validation-for="EditCourseViewModel.TutorIds"></span>
             </div>
-            <span class="error-message d-block" asp-validation-for="EditCourseViewModel.TutorIds"></span>
+            <div class="d-flex">
+                <form asp-page-handler="edit" method="post">
+                    <button class="btn btn-success">Update Course</button>
+                </form>
 
+                <form asp-page-handler="redirect" method="post" asp-route-courseId="@Model.CourseToEditId">
+                    <button class="btn btn-success ms-2">Manage Students</button>
+                </form>
 
             </div>
-
-            <button class="btn btn-success">Update Course</button>
         </form>
     </div>
 </div>

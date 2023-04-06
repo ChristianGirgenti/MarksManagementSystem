@@ -4,52 +4,63 @@
     ViewData["Title"] = "View All Tutors";
 }
 
+<head>
+    <script src="/js/table-filter.js"></script>
+</head>
+
 <h1>All Tutors</h1>
 <hr />
+<div>
+    <input type="text" id="nameFilter" placeholder="Filter by tutor name" />
 
-<table class="table table-boardered table-striped">
-    <thead>
-        <tr>
-            <th>Tutor Full Name</th>
-            <th>Tutor Email</th>
-            <th>Tutor Date Of Birth</th>
-            <th>Course Led</th>
-            <th>Other Courses</th>
-        </tr>
-    </thead>
-    <tbody> 
-        @if (Model.AllTutorsViewModel != null)
-        {
-            foreach (var tutor in Model.AllTutorsViewModel)
+    <table class="table table-boardered table-striped">
+        <thead>
+            <tr>
+                <th>Tutor Full Name</th>
+                <th>Tutor Email</th>
+                <th>Tutor Date Of Birth</th>
+                <th>Course Led</th>
+                <th>Other Courses</th>
+            </tr>
+        </thead>
+        <tbody> 
+            @if (Model.AllTutorsViewModel != null)
             {
-                <tr>
-                    <td>@tutor.TutorFullName</td>
-                    <td>@tutor.TutorEmail</td>
-                    <td>@tutor.TutorDateOfBirth</td>
-                    <td>@tutor.CourseLed</td>
-                    <td>@tutor.OtherCourses</td>
-                    <td>
-                        <form asp-page-handler="delete" method="post" asp-route-tutorId="@tutor.TutorId">
-                            <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                foreach (var tutor in Model.AllTutorsViewModel)
+                {
+                    <tr class="tutor-row">
+                        <td class="name-selector">@tutor.TutorFullName</td>
+                        <td>@tutor.TutorEmail</td>
+                        <td>@tutor.TutorDateOfBirth</td>
+                        <td>@tutor.CourseLed</td>
+                        <td>@tutor.OtherCourses</td>
+                        <td>
+                            <form asp-page-handler="delete" method="post" asp-route-tutorId="@tutor.TutorId">
+                                <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
             }
-        }
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-        }
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-        }
-    </tbody>
-</table>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+        </tbody>
+    </table>
+</div>
 
 
 <script>
     function confirmDelete() {
         return confirm('Are you sure you want to delete this tutor?');
     }
+</script>
+
+<script>
+    filterTable("#nameFilter", ".tutor-row", ".name-selector");
 </script>

@@ -1,0 +1,47 @@
+﻿@page
+@model MarksManagementSystem.Pages.Courses.CourseStudentManagementModel
+@{
+}
+<head>
+    <script src="/js/table-filter.js"></script>
+</head>
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div>
+    <form method="post">
+        <input type="text" id="nameFilter" placeholder="Filter by student name" />
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Enrolled</th>
+                    <th>Student Name</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var student in Model.AllStudents)
+            {
+                <tr class="student-row">
+                    <td>
+                        <input id="@student.Value" type="checkbox" name="Students" value="@student.Value" checked="@student.Selected" />
+                    </td>
+                    <td>
+                        <label for="@student.Value" class="name-selector">@student.Text</label>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+        <div>
+            <form method="post">
+                <button type="submit" class="btn btn-primary">Enroll Students</button>
+            </form>
+        </div>
+    </form>
+
+<script>
+    filterTable("#nameFilter", ".student-row", ".name-selector");
+</script>

@@ -1,14 +1,9 @@
-using MarksManagementSystem.Data;
-using MarksManagementSystem.Data.Repositories;
-using MarksManagementSystem.Helpers;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using MarksManagementSystem.Data.Models;
+using MarksManagementSystem.Services.Interfaces;
 
 namespace MarksManagementSystem.Pages.Account
 {
@@ -34,13 +29,13 @@ namespace MarksManagementSystem.Pages.Account
         [BindProperty]
         public string NewPassword { get; set; } = string.Empty;
 
-        private readonly IPasswordCreator _passwordCreator;
+        private readonly IChangePasswordService _changePasswordService;
+    
 
-        private readonly ITutorRepository _tutorRepository;
-        public ChangePasswordModel(IPasswordCreator passwordCreator, ITutorRepository tutorRepository)
+        public ChangePasswordModel(IChangePasswordService changePasswordService)
         {
-            _passwordCreator = passwordCreator;
-            _tutorRepository = tutorRepository;
+            _changePasswordService = changePasswordService;
+
         }
 
         public async Task<IActionResult> OnPost()
@@ -52,39 +47,18 @@ namespace MarksManagementSystem.Pages.Account
             }
             else
             {
-                var accountClaims = new AccountClaims(HttpContext.User.Claims.ToList());
-
-                var hashedCurrentPasswordForm = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, CurrentPassword);
-                if (hashedCurrentPasswordForm == accountClaims.AccountPassword)
+                try
                 {
-                    if (accountClaims.AccountIsTutor)
-                    {
-                        try
-                        {
-                            var newHashedPassword = _passwordCreator.GenerateHashedPassword(accountClaims.AccountPasswordSalt, NewPassword);
-                            _tutorRepository.UpdatePasswordByTutorId(Convert.ToInt32(accountClaims.AccountId), newHashedPassword);
-                            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                            TempData["SuccessUpdate"] = "Password has been changed successfully";
-                            return RedirectToPage("/Account/Login");
-                        }
-                        catch (Exception ex)
-                        {
-                            TempData["ErrorMessage"] = "An error occurred while changing the password: " + ex.Message;
-                        }
-                    }
-                    else 
-                    {
-
-                    }
+                    await _changePasswordService.ChangePassword(this.HttpContext, CurrentPassword, NewPassword);
+                    TempData["SuccessUpdate"] = "Password has been changed successfully";
+                    return RedirectToPage("/Account/Login");
                 }
-                else
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError("NewPassword", "The current password insterted is wrong.");
+                    ModelState.AddModelError("NewPassword", ex.Message); 
                 }
-
             }
             return Page();
-
         }
 
     }

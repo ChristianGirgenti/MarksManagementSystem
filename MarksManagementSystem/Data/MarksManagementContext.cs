@@ -39,7 +39,7 @@ namespace MarksManagementSystem.Data
             modelBuilder.Entity<CourseStudent>()
                 .HasOne(cs => cs.Course)
                 .WithMany(c => c.CourseStudents)
-                .HasForeignKey(cs => cs.StudentId);
+                .HasForeignKey(cs => cs.CourseId);
 
             modelBuilder.Entity<CourseStudent>()
                 .HasOne(cs => cs.Student)
