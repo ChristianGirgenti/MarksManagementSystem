@@ -49,7 +49,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Forbidden/";
         options.Cookie.IsEssential = true;
         options.Cookie.SameSite = SameSiteMode.Strict;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
     });
 
