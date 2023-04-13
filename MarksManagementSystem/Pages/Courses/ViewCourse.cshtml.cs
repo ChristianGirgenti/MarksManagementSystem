@@ -22,6 +22,7 @@ namespace MarksManagementSystem.Pages.Courses
         public List<ViewCourseViewModel> AllStudentsEnrolled { get; set; } = new List<ViewCourseViewModel>();
         public AccountClaims AccountClaims;
         public bool IsUserLoggedInTheUnitLeader = false;
+        public bool IsSaveMarksButtonDisabled = false;
        
 
 
@@ -39,10 +40,8 @@ namespace MarksManagementSystem.Pages.Courses
             AllStudentsEnrolled = _viewCourseService.GetAllStudentEnrolled(CourseId);
             AccountClaims = new AccountClaims(HttpContext.User.Claims.ToList());
             CourseUnitLeader = _viewCourseService.GetUnitLeaderOfCourse(CourseId);
-            if (Convert.ToInt32(AccountClaims.AccountId) == CourseUnitLeader.TutorId)
-            {
-                IsUserLoggedInTheUnitLeader = true;
-            }
+            IsSaveMarksButtonDisabled = AllStudentsEnrolled.Count <= 0;
+            IsUserLoggedInTheUnitLeader = Convert.ToInt32(AccountClaims.AccountId) == CourseUnitLeader.TutorId;
         }
 
         public IActionResult OnPost()

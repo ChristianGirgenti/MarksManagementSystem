@@ -34,7 +34,7 @@ namespace MarksManagementSystem.Services.Classes
         public Tutor GetUnitLeaderOfCourse(int courseId)
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
-            return _courseTutorRepository.GetUnitLeaderOfCourse(courseId);
+            return _courseTutorRepository.GetUnitLeaderByCourseId(courseId);
         }
 
         public void UpdateMarks(Course thisCourse, string? mark, int studentId)

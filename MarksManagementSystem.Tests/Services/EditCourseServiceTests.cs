@@ -368,7 +368,7 @@ namespace MarksManagementSystem.Tests.Services
             {
                 mockTutorRepository.Setup(x => x.GetAll()).Returns(new List<Tutor>());
                 editCourseService.ChangeTutorCourseRelationships(new AddEditCourseViewModel(), new Course(), new List<string>());
-                mockCourseTutorRepository.Verify(x => x.DeleteCourseUnitLeaderRelationshipByCourseId(It.IsAny<int>()), Times.Once);
+                mockCourseTutorRepository.Verify(x => x.DeleteUnitLeaderRelationshipByCourseId(It.IsAny<int>()), Times.Once);
             }
 
             [Fact]
@@ -376,7 +376,7 @@ namespace MarksManagementSystem.Tests.Services
             {
                 mockTutorRepository.Setup(x => x.GetAll()).Returns(new List<Tutor>());
                 editCourseService.ChangeTutorCourseRelationships(new AddEditCourseViewModel(), new Course(), new List<string>());
-                mockCourseTutorRepository.Verify(x => x.DeleteAllOtherTutorsInACourse(It.IsAny<int>()), Times.Once);
+                mockCourseTutorRepository.Verify(x => x.DeleteAllOtherTutorsByCourseId(It.IsAny<int>()), Times.Once);
             }
 
             [Fact]

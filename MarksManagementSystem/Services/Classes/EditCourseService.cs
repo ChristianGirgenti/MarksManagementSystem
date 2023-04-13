@@ -112,8 +112,8 @@ namespace MarksManagementSystem.Services.Classes
             if (editCourseViewModel == null) throw new ArgumentNullException(nameof(editCourseViewModel));
             if (courseEdited == null) throw new ArgumentNullException(nameof(courseEdited));
 
-            _courseTutorRepository.DeleteCourseUnitLeaderRelationshipByCourseId(courseEdited.CourseId);
-            _courseTutorRepository.DeleteAllOtherTutorsInACourse(courseEdited.CourseId);
+            _courseTutorRepository.DeleteUnitLeaderRelationshipByCourseId(courseEdited.CourseId);
+            _courseTutorRepository.DeleteAllOtherTutorsByCourseId(courseEdited.CourseId);
 
             var newUnitLeader = _tutorRepository.GetAll().SingleOrDefault(t => t.TutorId == editCourseViewModel.UnitLeaderId);
             if (newUnitLeader != null)

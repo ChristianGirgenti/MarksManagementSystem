@@ -23,8 +23,8 @@ namespace MarksManagementSystem.Services.Classes
                     CourseId = c.CourseId,
                     CourseName = c.CourseName,
                     CourseCredits = c.CourseCredits,
-                    UnitLeader = _courseTutorRepository.GetUnitLeaderOfCourse(c.CourseId).ToString(),
-                    OtherTutors = string.Join(", ", _courseTutorRepository.GetOtherTutorsOfCourseToString(c.CourseId))
+                    UnitLeader = _courseTutorRepository.GetUnitLeaderByCourseId(c.CourseId).ToString(),
+                    OtherTutors = string.Join(", ", _courseTutorRepository.GetOtherTutorsToStringByCourseId(c.CourseId))
                 })
                 .ToList();
         }

@@ -49,8 +49,8 @@ namespace MarksManagementSystem.Tests.Services
             public void GetAllCoursesWithTutors_ShouldCallCourseRepositoryGetAll_Once()
             {
                 mockCourseRepository.Setup(x => x.GetAll()).Returns(new List<Course>() { new Course { CourseId = 1 } });
-                mockCourseTutorRepository.Setup(x => x.GetUnitLeaderOfCourse(1)).Returns(new Tutor() { TutorId = 1 });
-                mockCourseTutorRepository.Setup(x => x.GetOtherTutorsOfCourseToString(1)).Returns(new List<string>() { "Christian Girgenti" });
+                mockCourseTutorRepository.Setup(x => x.GetUnitLeaderByCourseId(1)).Returns(new Tutor() { TutorId = 1 });
+                mockCourseTutorRepository.Setup(x => x.GetOtherTutorsToStringByCourseId(1)).Returns(new List<string>() { "Christian Girgenti" });
                 viewAllCoursesService.GetAllCoursesWithTutors();
                 mockCourseRepository.Verify(x => x.GetAll(), Times.Once);
             }
@@ -59,20 +59,20 @@ namespace MarksManagementSystem.Tests.Services
             public void GetAllCoursesWithTutors_ShouldCallCourseTutorRepositoryGetUnitLeaderOfCourse_Once()
             {
                 mockCourseRepository.Setup(x => x.GetAll()).Returns(new List<Course>() { new Course { CourseId = 1 } });
-                mockCourseTutorRepository.Setup(x => x.GetUnitLeaderOfCourse(1)).Returns(new Tutor() { TutorId = 1 });
-                mockCourseTutorRepository.Setup(x => x.GetOtherTutorsOfCourseToString(1)).Returns(new List<string>() { "Christian Girgenti" });
+                mockCourseTutorRepository.Setup(x => x.GetUnitLeaderByCourseId(1)).Returns(new Tutor() { TutorId = 1 });
+                mockCourseTutorRepository.Setup(x => x.GetOtherTutorsToStringByCourseId(1)).Returns(new List<string>() { "Christian Girgenti" });
                 viewAllCoursesService.GetAllCoursesWithTutors();
-                mockCourseTutorRepository.Verify(x => x.GetUnitLeaderOfCourse(1), Times.Once);
+                mockCourseTutorRepository.Verify(x => x.GetUnitLeaderByCourseId(1), Times.Once);
             }
 
             [Fact]
             public void GetAllCoursesWithTutors_ShouldCallCourseTutorRepositoryGetOtherTutorsOfCourseToString_Once()
             {
                 mockCourseRepository.Setup(x => x.GetAll()).Returns(new List<Course>() { new Course { CourseId = 1 } });
-                mockCourseTutorRepository.Setup(x => x.GetUnitLeaderOfCourse(1)).Returns(new Tutor() { TutorId = 1 });
-                mockCourseTutorRepository.Setup(x => x.GetOtherTutorsOfCourseToString(1)).Returns(new List<string>() { "Christian Girgenti" });
+                mockCourseTutorRepository.Setup(x => x.GetUnitLeaderByCourseId(1)).Returns(new Tutor() { TutorId = 1 });
+                mockCourseTutorRepository.Setup(x => x.GetOtherTutorsToStringByCourseId(1)).Returns(new List<string>() { "Christian Girgenti" });
                 viewAllCoursesService.GetAllCoursesWithTutors();
-                mockCourseTutorRepository.Verify(x => x.GetOtherTutorsOfCourseToString(1), Times.Once);
+                mockCourseTutorRepository.Verify(x => x.GetOtherTutorsToStringByCourseId(1), Times.Once);
             }
         }
 

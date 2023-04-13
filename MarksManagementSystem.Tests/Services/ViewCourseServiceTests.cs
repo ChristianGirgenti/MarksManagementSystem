@@ -111,7 +111,7 @@ namespace MarksManagementSystem.Tests.Services
             public void GivenValidCourseId_GetUnitLeaderOfCourse_ShouldCallCourseTutorRepositoryGetUnitLeaderOfCourse_Once(int courseId)
             {
                 viewCourseService.GetUnitLeaderOfCourse(courseId);
-                mockCourseTutorRepository.Verify(x => x.GetUnitLeaderOfCourse(courseId), Times.Once);
+                mockCourseTutorRepository.Verify(x => x.GetUnitLeaderByCourseId(courseId), Times.Once);
             }
         }
 
