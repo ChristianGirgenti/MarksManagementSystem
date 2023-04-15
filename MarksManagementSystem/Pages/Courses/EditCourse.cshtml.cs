@@ -43,7 +43,7 @@ namespace MarksManagementSystem.Pages.Courses
                 UnitLeaderId = unitLeaderId
             };
 
-            PossibleUnitLeaders = _editCourseService.ShowPossibleUnitLeaderInSelectionList(EditCourseViewModel.UnitLeaderId);
+            PossibleUnitLeaders = _editCourseService.ShowPossibleUnitLeadersInSelectionList(EditCourseViewModel.UnitLeaderId);
             OtherTutors = _editCourseService.PopulateOtherTutors(unitLeaderId, CourseToEditId);
         }
 
@@ -56,7 +56,7 @@ namespace MarksManagementSystem.Pages.Courses
                 if (EditCourseViewModel == null) throw new ArgumentNullException(nameof(EditCourseViewModel));
                 EditCourseViewModel = _editCourseService.FormatNewCourseValues(EditCourseViewModel);
                 EditedCourse = _editCourseService.EditCourse(CourseToEditId, EditCourseViewModel);
-                _editCourseService.ChangeTutorCourseRelationships(EditCourseViewModel, EditedCourse, Request.Form["Tutors"].ToList());
+                _editCourseService.ChangeCourseTutorRelationships(EditCourseViewModel, EditedCourse, Request.Form["Tutors"].ToList());
                 return RedirectToPage("ViewAllCourses");
             }
             catch (Exception ex)
@@ -69,7 +69,7 @@ namespace MarksManagementSystem.Pages.Courses
                 {
                     ModelState.AddModelError("EditCourseViewModel.TutorIds", "Something went wrong while editing the course. Please try again.");
                 }
-                PossibleUnitLeaders = _editCourseService.ShowPossibleUnitLeaderInSelectionList(CourseToEditId);
+                PossibleUnitLeaders = _editCourseService.ShowPossibleUnitLeadersInSelectionList(CourseToEditId);
                 OtherTutors = _editCourseService.PopulateOtherTutors(EditCourseViewModel.UnitLeaderId, CourseToEditId);
                 return Page();
             }

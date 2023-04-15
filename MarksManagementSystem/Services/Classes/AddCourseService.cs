@@ -21,7 +21,7 @@ namespace MarksManagementSystem.Services.Classes
             _courseTutorRepository = courseTutorRepository ?? throw new ArgumentNullException(nameof(courseTutorRepository));
         }
 
-        public List<SelectListItem> GetOtherTutorsInSelectionList()
+        public List<SelectListItem> GetPossibleUnitLeadersInSelectionList()
         {
             var unitLeaders = _courseTutorRepository.GetAll()
                 .Where(ct => ct.IsUnitLeader)

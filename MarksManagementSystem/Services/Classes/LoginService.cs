@@ -33,7 +33,7 @@ namespace MarksManagementSystem.Services.Classes
             var hashedPassword = _passwordCreator.GenerateHashedPassword(tutor.PasswordSalt, credential.Password);
             if (tutor.TutorPassword == hashedPassword)
             {
-                //Login is success so create claims for the user
+                //Login is success so create claims for the tutor
                 BuildClaimsTutor(tutor);
 
                 var claimsIdentity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -59,6 +59,7 @@ namespace MarksManagementSystem.Services.Classes
             var hashedPassword = _passwordCreator.GenerateHashedPassword(student.PasswordSalt, credential.Password);
             if (student.StudentPassword == hashedPassword)
             {
+                //Login is success so create claims for the student
                 BuildClaimsStudent(student);
 
                 var claimsIdentity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);

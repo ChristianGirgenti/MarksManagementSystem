@@ -24,7 +24,8 @@ namespace MarksManagementSystem.Data.Repositories.Classes
         {
 
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
-            var deleteAllOtherTutors = marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false);
+            var deleteAllOtherTutors = marksManagementContext.CourseTutor
+                .Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false);
             marksManagementContext.CourseTutor.RemoveRange(deleteAllOtherTutors);
             marksManagementContext.SaveChanges();
         }
@@ -32,7 +33,8 @@ namespace MarksManagementSystem.Data.Repositories.Classes
         public void DeleteUnitLeaderRelationshipByCourseId(int courseId)
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
-            var unitLeaderRelationshipToRemove = marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == true).FirstOrDefault();
+            var unitLeaderRelationshipToRemove = marksManagementContext.CourseTutor
+                .Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == true).FirstOrDefault();
             if (unitLeaderRelationshipToRemove == null) throw new ArgumentNullException(nameof(unitLeaderRelationshipToRemove));
 
             marksManagementContext.CourseTutor.Remove(unitLeaderRelationshipToRemove);
@@ -89,7 +91,8 @@ namespace MarksManagementSystem.Data.Repositories.Classes
         public List<string> GetOtherTutorsToStringByCourseId(int courseId)
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
-            return marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false).Select(ct => ct.Tutor.ToString()).ToList();
+            return marksManagementContext.CourseTutor
+                .Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false).Select(ct => ct.Tutor.ToString()).ToList();
         }
 
 

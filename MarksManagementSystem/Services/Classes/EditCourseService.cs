@@ -35,10 +35,11 @@ namespace MarksManagementSystem.Services.Classes
         public int GetUnitLeaderId(List<CourseTutor> allCourseTutors, int courseId)
         {
             if (allCourseTutors == null) throw new ArgumentNullException(nameof(allCourseTutors));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return allCourseTutors.First(ct => ct.CourseId == courseId && ct.IsUnitLeader).TutorId;
         }
 
-        public List<SelectListItem> ShowPossibleUnitLeaderInSelectionList(int unitLeaderId)
+        public List<SelectListItem> ShowPossibleUnitLeadersInSelectionList(int unitLeaderId)
         {
             if (unitLeaderId <= 0) throw new ArgumentOutOfRangeException(nameof(unitLeaderId));
 
@@ -107,7 +108,7 @@ namespace MarksManagementSystem.Services.Classes
             return courseEdited;
         }
 
-        public void ChangeTutorCourseRelationships(AddEditCourseViewModel editCourseViewModel, Course courseEdited, List<string> tutorIds)
+        public void ChangeCourseTutorRelationships(AddEditCourseViewModel editCourseViewModel, Course courseEdited, List<string> tutorIds)
         {
             if (editCourseViewModel == null) throw new ArgumentNullException(nameof(editCourseViewModel));
             if (courseEdited == null) throw new ArgumentNullException(nameof(courseEdited));
