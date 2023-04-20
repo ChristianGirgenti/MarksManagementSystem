@@ -11,8 +11,8 @@ namespace MarksManagementSystem.Services.Classes
 
         public ViewAllCoursesService(ICourseRepository courseRepository, ICourseTutorRepository courseTutorRepository)
         {
-            _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository)); ;
-            _courseTutorRepository = courseTutorRepository ?? throw new ArgumentNullException(nameof(courseTutorRepository)); ;
+            _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
+            _courseTutorRepository = courseTutorRepository ?? throw new ArgumentNullException(nameof(courseTutorRepository));
         }
 
         public List<ViewAllCoursesViewModel> GetAllCoursesWithTutors()

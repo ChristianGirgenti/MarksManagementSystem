@@ -14,7 +14,10 @@ namespace MarksManagementSystem.Services.Classes
         private readonly ITutorRepository _tutorRepository;
         private readonly ICourseTutorRepository _courseTutorRepository;
 
-        public AddCourseService(ICourseRepository courseRepository, ITutorRepository tutorRepository, ICourseTutorRepository courseTutorRepository)
+        public AddCourseService(
+            ICourseRepository courseRepository, 
+            ITutorRepository tutorRepository, 
+            ICourseTutorRepository courseTutorRepository)
         {
             _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
             _tutorRepository = tutorRepository ?? throw new ArgumentNullException(nameof(tutorRepository));

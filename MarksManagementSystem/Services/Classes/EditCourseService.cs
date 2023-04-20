@@ -58,7 +58,9 @@ namespace MarksManagementSystem.Services.Classes
             var currentUnitLeader = unitLeaders.FirstOrDefault(uL => uL.TutorId == unitLeaderId);
 
             if (currentUnitLeader != null)
-                possibleUnitLeaderTutors.Insert(0, new SelectListItem { Value = currentUnitLeader.TutorId.ToString(), Text = currentUnitLeader.TutorFirstName + " " + currentUnitLeader.TutorLastName });
+                possibleUnitLeaderTutors.Insert(0, new SelectListItem { 
+                    Value = currentUnitLeader.TutorId.ToString(), 
+                    Text = currentUnitLeader.TutorFirstName + " " + currentUnitLeader.TutorLastName });
 
             return possibleUnitLeaderTutors;
         }

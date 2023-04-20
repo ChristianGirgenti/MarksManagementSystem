@@ -110,6 +110,18 @@ namespace MarksManagementSystem.Tests.Services
                     .WithParameterName("allCourseTutors");
             }
 
+            [Theory]
+            [InlineData(0)]
+            [InlineData(-1)]
+            [InlineData(-100)]
+            public void GivenALessThanOrEqualToZeroCourseId_GetUnitLeaderId_ShouldThrowArgumentOutOfRangeException(int courseId)
+            {
+                FluentActions.Invoking(() => editCourseService.GetUnitLeaderId(new List<CourseTutor>(), courseId))
+                    .Should()
+                    .ThrowExactly<ArgumentOutOfRangeException>()
+                    .WithParameterName(nameof(courseId));
+            }
+
             [Fact]
             public void GivenValidAllCourseTutors_GetUnitLeaderId_ShouldReturnTheUnitLeaderId()
             {
