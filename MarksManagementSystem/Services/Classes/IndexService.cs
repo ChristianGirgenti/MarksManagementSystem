@@ -12,7 +12,10 @@ namespace MarksManagementSystem.Services.Classes
         private readonly ICourseStudentRepository _courseStudentRepository;
         private readonly IPasswordCreator _passwordCreator;
 
-        public IndexService(ICourseTutorRepository courseTutorRepository, ICourseStudentRepository courseStudentRepository, IPasswordCreator passwordCreator)
+        public IndexService(
+            ICourseTutorRepository courseTutorRepository, 
+            ICourseStudentRepository courseStudentRepository, 
+            IPasswordCreator passwordCreator)
         {
             _courseTutorRepository = courseTutorRepository ?? throw new ArgumentNullException(nameof(courseTutorRepository));
             _courseStudentRepository = courseStudentRepository ?? throw new ArgumentNullException(nameof(courseStudentRepository));

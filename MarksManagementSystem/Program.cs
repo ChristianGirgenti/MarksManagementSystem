@@ -14,13 +14,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MarksManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem")));
 
+
+builder.Services.AddScoped<IPasswordCreator, PasswordCreator>();
+
 // Dependency injection for repositories
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICourseTutorRepository, CourseTutorRepository>();
 builder.Services.AddScoped<ICourseStudentRepository, CourseStudentRepository>();
-builder.Services.AddScoped<IPasswordCreator, PasswordCreator>();
 
 // Dependency injection for services
 builder.Services.AddScoped<IViewAllTutorsService, ViewAllTutorsService>();
