@@ -15,7 +15,6 @@ namespace MarksManagementSystem.Tests.Services
         public readonly Mock<ITutorRepository> mockTutorRepository;
         public readonly Mock<IStudentRepository> mockStudentRepository;
         public readonly Mock<HttpContext> mockHttpContext;
-        public readonly Mock<AccountClaims> mockAccountClaims;
 
         public readonly ChangePasswordService changePasswordService;
 
@@ -25,8 +24,6 @@ namespace MarksManagementSystem.Tests.Services
             mockTutorRepository = new Mock<ITutorRepository>();
             mockStudentRepository = new Mock<IStudentRepository>();
             mockHttpContext = new Mock<HttpContext>();
-            mockAccountClaims = new Mock<AccountClaims>();
-
 
             changePasswordService = new ChangePasswordService(mockPasswordCreator.Object, mockTutorRepository.Object, mockStudentRepository.Object);
         }

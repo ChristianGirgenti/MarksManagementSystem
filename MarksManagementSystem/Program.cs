@@ -34,6 +34,7 @@ builder.Services.AddScoped<IViewAllCoursesService, ViewAllCoursesService>();
 builder.Services.AddScoped<IViewCourseService, ViewCourseService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IChangePasswordService, ChangePasswordService>();
+builder.Services.AddScoped<IIndexService, IndexService>();
 
 //Configure Authorization and Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
