@@ -14,13 +14,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<MarksManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MarksManagementSystem")));
 
+
+builder.Services.AddScoped<IPasswordCreator, PasswordCreator>();
+
 // Dependency injection for repositories
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ITutorRepository, TutorRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICourseTutorRepository, CourseTutorRepository>();
 builder.Services.AddScoped<ICourseStudentRepository, CourseStudentRepository>();
-builder.Services.AddScoped<IPasswordCreator, PasswordCreator>();
 
 // Dependency injection for services
 builder.Services.AddScoped<IViewAllTutorsService, ViewAllTutorsService>();
@@ -34,11 +36,7 @@ builder.Services.AddScoped<IViewAllCoursesService, ViewAllCoursesService>();
 builder.Services.AddScoped<IViewCourseService, ViewCourseService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IChangePasswordService, ChangePasswordService>();
-
-
-
-
-
+builder.Services.AddScoped<IIndexService, IndexService>();
 
 //Configure Authorization and Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -49,7 +47,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Forbidden/";
         options.Cookie.IsEssential = true;
         options.Cookie.SameSite = SameSiteMode.Strict;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
     });
 

@@ -20,19 +20,21 @@ namespace MarksManagementSystem.Data.Repositories.Classes
             marksManagementContext.SaveChanges();
         }
 
-        public void DeleteAllOtherTutorsInACourse(int courseId)
+        public void DeleteAllOtherTutorsByCourseId(int courseId)
         {
 
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
-            var deleteAllOtherTutors = marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false);
+            var deleteAllOtherTutors = marksManagementContext.CourseTutor
+                .Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false);
             marksManagementContext.CourseTutor.RemoveRange(deleteAllOtherTutors);
             marksManagementContext.SaveChanges();
         }
 
-        public void DeleteCourseUnitLeaderRelationshipByCourseId(int courseId)
+        public void DeleteUnitLeaderRelationshipByCourseId(int courseId)
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
-            var unitLeaderRelationshipToRemove = marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == true).FirstOrDefault();
+            var unitLeaderRelationshipToRemove = marksManagementContext.CourseTutor
+                .Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == true).FirstOrDefault();
             if (unitLeaderRelationshipToRemove == null) throw new ArgumentNullException(nameof(unitLeaderRelationshipToRemove));
 
             marksManagementContext.CourseTutor.Remove(unitLeaderRelationshipToRemove);
@@ -79,17 +81,18 @@ namespace MarksManagementSystem.Data.Repositories.Classes
             marksManagementContext.SaveChanges();
         }
 
-        public Tutor GetUnitLeaderOfCourse(int courseId)
+        public Tutor GetUnitLeaderByCourseId(int courseId)
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == true)
                 .Select(ct => ct.Tutor).First();
         }
 
-        public List<string> GetOtherTutorsOfCourseToString(int courseId)
+        public List<string> GetOtherTutorsToStringByCourseId(int courseId)
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
-            return marksManagementContext.CourseTutor.Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false).Select(ct => ct.Tutor.ToString()).ToList();
+            return marksManagementContext.CourseTutor
+                .Where(ct => ct.CourseId == courseId && ct.IsUnitLeader == false).Select(ct => ct.Tutor.ToString()).ToList();
         }
 
 

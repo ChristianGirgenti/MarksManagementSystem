@@ -78,7 +78,7 @@ namespace MarksManagementSystem.Tests.Services
                 mockCourseTutorRepository.Setup(repo => repo.GetAll()).Returns(mockCourseTutorList);
                 mockTutorRepository.Setup(repo => repo.GetAll()).Returns(nonUnitLeaders.ToList());
 
-                var result = addCourseService.GetOtherTutorsInSelectionList();
+                var result = addCourseService.GetPossibleUnitLeadersInSelectionList();
 
                 foreach (var unitLeader in unitLeaders)
                 {

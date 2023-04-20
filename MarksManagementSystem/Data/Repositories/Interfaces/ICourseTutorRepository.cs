@@ -8,10 +8,10 @@ namespace MarksManagementSystem.Data.Repositories.Interfaces
         public void Update(CourseTutor courseTutor);
         public CourseTutor GetByIds(int courseId, int tutorId);
         public List<CourseTutor> GetAll();
-        public void DeleteCourseUnitLeaderRelationshipByCourseId(int courseId);
-        public void DeleteAllOtherTutorsInACourse(int courseId);
+        public void DeleteUnitLeaderRelationshipByCourseId(int courseId);
+        public void DeleteAllOtherTutorsByCourseId(int courseId);
         public List<CourseTutor> GetAllByTutorId(int tutorId);
-        public Tutor GetUnitLeaderOfCourse(int courseId);
-        public List<string> GetOtherTutorsOfCourseToString(int courseId);
+        public Tutor GetUnitLeaderByCourseId(int courseId);
+        public List<string> GetOtherTutorsToStringByCourseId(int courseId);
     }
 }

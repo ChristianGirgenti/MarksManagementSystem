@@ -110,6 +110,18 @@ namespace MarksManagementSystem.Tests.Services
                     .WithParameterName("allCourseTutors");
             }
 
+            [Theory]
+            [InlineData(0)]
+            [InlineData(-1)]
+            [InlineData(-100)]
+            public void GivenALessThanOrEqualToZeroCourseId_GetUnitLeaderId_ShouldThrowArgumentOutOfRangeException(int courseId)
+            {
+                FluentActions.Invoking(() => editCourseService.GetUnitLeaderId(new List<CourseTutor>(), courseId))
+                    .Should()
+                    .ThrowExactly<ArgumentOutOfRangeException>()
+                    .WithParameterName(nameof(courseId));
+            }
+
             [Fact]
             public void GivenValidAllCourseTutors_GetUnitLeaderId_ShouldReturnTheUnitLeaderId()
             {
@@ -138,7 +150,7 @@ namespace MarksManagementSystem.Tests.Services
             [InlineData(-100)]
             public void GivenALessThanOrEqualToZeroUnitLeaderId_ShowPossibleUnitLeaderInSelectionList_ShouldThrowArgumentOutOfRangeException(int unitLeaderId)
             {
-                FluentActions.Invoking(() => editCourseService.ShowPossibleUnitLeaderInSelectionList(unitLeaderId))
+                FluentActions.Invoking(() => editCourseService.ShowPossibleUnitLeadersInSelectionList(unitLeaderId))
                     .Should()
                     .ThrowExactly<ArgumentOutOfRangeException>()
                     .WithParameterName(nameof(unitLeaderId));
@@ -182,7 +194,7 @@ namespace MarksManagementSystem.Tests.Services
                 mockCourseTutorRepository.Setup(x => x.GetAll()).Returns(unitLeader);
                 mockTutorRepository.Setup(x => x.GetAll()).Returns(tutors);
 
-                var possibleUnitLeader = editCourseService.ShowPossibleUnitLeaderInSelectionList(1);
+                var possibleUnitLeader = editCourseService.ShowPossibleUnitLeadersInSelectionList(1);
                 Assert.Equal(expected.ElementAt(0).Value, possibleUnitLeader.ElementAt(0).Value);
                 Assert.Equal(expected.ElementAt(0).Text, possibleUnitLeader.ElementAt(0).Text);
             }
@@ -348,7 +360,7 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenANullAddEditCourseViewModel_ChangeTutorCourseRelationships_ShouldThrowArgumentNullException()
             {
-                FluentActions.Invoking(() => editCourseService.ChangeTutorCourseRelationships(null, new Course(), new List<string>()))
+                FluentActions.Invoking(() => editCourseService.ChangeCourseTutorRelationships(null, new Course(), new List<string>()))
                     .Should()
                     .ThrowExactly<ArgumentNullException>()
                     .WithParameterName("editCourseViewModel");
@@ -357,7 +369,7 @@ namespace MarksManagementSystem.Tests.Services
             [Fact]
             public void GivenANullCourseToEdit_ChangeTutorCourseRelationships_ShouldThrowArgumentNullException()
             {
-                FluentActions.Invoking(() => editCourseService.ChangeTutorCourseRelationships(new AddEditCourseViewModel(), null, new List<string>()))
+                FluentActions.Invoking(() => editCourseService.ChangeCourseTutorRelationships(new AddEditCourseViewModel(), null, new List<string>()))
                     .Should()
                     .ThrowExactly<ArgumentNullException>()
                     .WithParameterName("courseEdited");
@@ -367,23 +379,23 @@ namespace MarksManagementSystem.Tests.Services
             public void GivenValidParameters_ChangeTutorCourseRelationship_ShouldCall_CourseTutorRepositoryDeleteCourseUnitLeaderRelationshipByCourseId_Once()
             {
                 mockTutorRepository.Setup(x => x.GetAll()).Returns(new List<Tutor>());
-                editCourseService.ChangeTutorCourseRelationships(new AddEditCourseViewModel(), new Course(), new List<string>());
-                mockCourseTutorRepository.Verify(x => x.DeleteCourseUnitLeaderRelationshipByCourseId(It.IsAny<int>()), Times.Once);
+                editCourseService.ChangeCourseTutorRelationships(new AddEditCourseViewModel(), new Course(), new List<string>());
+                mockCourseTutorRepository.Verify(x => x.DeleteUnitLeaderRelationshipByCourseId(It.IsAny<int>()), Times.Once);
             }
 
             [Fact]
             public void GivenValidParameters_ChangeTutorCourseRelationship_ShouldCall_CourseTutorRepositoryDeleteAllOtherTutorsInACourse_Once()
             {
                 mockTutorRepository.Setup(x => x.GetAll()).Returns(new List<Tutor>());
-                editCourseService.ChangeTutorCourseRelationships(new AddEditCourseViewModel(), new Course(), new List<string>());
-                mockCourseTutorRepository.Verify(x => x.DeleteAllOtherTutorsInACourse(It.IsAny<int>()), Times.Once);
+                editCourseService.ChangeCourseTutorRelationships(new AddEditCourseViewModel(), new Course(), new List<string>());
+                mockCourseTutorRepository.Verify(x => x.DeleteAllOtherTutorsByCourseId(It.IsAny<int>()), Times.Once);
             }
 
             [Fact]
             public void GivenValidParameters_ChangeTutorCourseRelationship_ShouldCall_TutorRepositoryGetAll_Once()
             {
                 mockTutorRepository.Setup(x => x.GetAll()).Returns(new List<Tutor>());
-                editCourseService.ChangeTutorCourseRelationships(new AddEditCourseViewModel(), new Course(), new List<string>());
+                editCourseService.ChangeCourseTutorRelationships(new AddEditCourseViewModel(), new Course(), new List<string>());
                 mockTutorRepository.Verify(x => x.GetAll(), Times.Once);
             }
 

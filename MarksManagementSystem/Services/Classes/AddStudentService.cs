@@ -35,7 +35,8 @@ namespace MarksManagementSystem.Services.Classes
             {
                 //When a student with a same first name and last name of an already existing student is added,
                 //the system will add a random number between 1 and 99 to the email.
-                if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX || sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
+                if (ex.InnerException is SqlException sqlEx && 
+                    (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX ||  sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
                 {
                     Random random = new();
                     var randomNumber = random.Next(1, 100).ToString();
@@ -56,7 +57,10 @@ namespace MarksManagementSystem.Services.Classes
             newStudent.StudentFirstName = StringUtilities.Capitalise(nameLower);
             newStudent.StudentLastName = StringUtilities.Capitalise(lastNameLower);
 
-            var password = string.Concat(newStudent.StudentFirstName.AsSpan(0, 1), lastNameLower.AsSpan(0, 1), newStudent.StudentDateOfBirth.ToString("ddMMyy"), ".");
+            var password = string.Concat(newStudent.StudentFirstName.AsSpan(0, 1), 
+                lastNameLower.AsSpan(0, 1), 
+                newStudent.StudentDateOfBirth.ToString("ddMMyy"), ".");
+
             byte[] salt = RandomNumberGenerator.GetBytes(128 / 8); // divide by 8 to convert bits to bytes
             newStudent.PasswordSalt = salt;
             newStudent.StudentPassword = _passwordCreator.GenerateHashedPassword(salt, password);

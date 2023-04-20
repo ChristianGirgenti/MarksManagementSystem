@@ -30,7 +30,7 @@ namespace MarksManagementSystem.Pages.Courses
         
         public void OnGet()
         {
-            OptionsTutors = _addCourseService.GetOtherTutorsInSelectionList();
+            OptionsTutors = _addCourseService.GetPossibleUnitLeadersInSelectionList();
         }
 
         public IActionResult OnPost()
@@ -50,12 +50,12 @@ namespace MarksManagementSystem.Pages.Courses
                 if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX || sqlEx.Number == SQL_UNIQUE_CONSTRAINT_EX2))
                 {
                     ModelState.AddModelError("NewCourse.CourseName", "A course with the same name already exists.");
-                    OptionsTutors = _addCourseService.GetOtherTutorsInSelectionList();
+                    OptionsTutors = _addCourseService.GetPossibleUnitLeadersInSelectionList();
                 }
                 else
                 {
                     ModelState.AddModelError("NewCourse.UnitLeaderId", "Something went wrong while trying to add a new course. Try again.");
-                    OptionsTutors = _addCourseService.GetOtherTutorsInSelectionList();
+                    OptionsTutors = _addCourseService.GetPossibleUnitLeadersInSelectionList();
                 }
                 return Page();
             }  

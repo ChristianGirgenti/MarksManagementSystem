@@ -54,7 +54,7 @@ namespace MarksManagementSystem.UnitTests.Repositories
             public void GivenALessThanOrEqualToZeroCourseId_DeleteAllOtherTutorsInACourse_ShouldThrowArgumentOutOfRangeException(int courseId)
             {
 
-                FluentActions.Invoking(() => courseTutorRepository.DeleteAllOtherTutorsInACourse(courseId))
+                FluentActions.Invoking(() => courseTutorRepository.DeleteAllOtherTutorsByCourseId(courseId))
                     .Should()
                     .ThrowExactly<ArgumentOutOfRangeException>()
                     .WithParameterName(nameof(courseId));
@@ -70,7 +70,7 @@ namespace MarksManagementSystem.UnitTests.Repositories
             public void GivenALessThanOrEqualToZeroCourseId_DeleteCourseUnitLeaderRelationshipByCourseId_ShouldThrowArgumentOutOfRangeException(int courseId)
             {
 
-                FluentActions.Invoking(() => courseTutorRepository.DeleteCourseUnitLeaderRelationshipByCourseId(courseId))
+                FluentActions.Invoking(() => courseTutorRepository.DeleteUnitLeaderRelationshipByCourseId(courseId))
                     .Should()
                     .ThrowExactly<ArgumentOutOfRangeException>()
                     .WithParameterName(nameof(courseId));
@@ -79,7 +79,7 @@ namespace MarksManagementSystem.UnitTests.Repositories
             [Fact]
             public void GivenANullUnitLeaderRelationshipToRemove_DeleteCourseUnitLeaderRelationshipByCourseId_ShouldThrowArgumentNullException()
             {
-                FluentActions.Invoking(() => courseTutorRepository.DeleteCourseUnitLeaderRelationshipByCourseId(1))
+                FluentActions.Invoking(() => courseTutorRepository.DeleteUnitLeaderRelationshipByCourseId(1))
                     .Should()
                     .ThrowExactly<ArgumentNullException>()
                     .WithParameterName("unitLeaderRelationshipToRemove");
@@ -163,7 +163,7 @@ namespace MarksManagementSystem.UnitTests.Repositories
             public void GivenALessThanOrEqualToZeroCourseId_GetUnitLeaderOfCourse_ShouldThrowArgumentOutOfRangeException(int courseId)
             {
 
-                FluentActions.Invoking(() => courseTutorRepository.GetUnitLeaderOfCourse(courseId))
+                FluentActions.Invoking(() => courseTutorRepository.GetUnitLeaderByCourseId(courseId))
                     .Should()
                     .ThrowExactly<ArgumentOutOfRangeException>()
                     .WithParameterName(nameof(courseId));
@@ -180,7 +180,7 @@ namespace MarksManagementSystem.UnitTests.Repositories
             public void GivenALessThanOrEqualToZeroCourseId_GetOtherTutorOfCourseToString_ShouldThrowArgumentOutOfRangeException(int courseId)
             {
 
-                FluentActions.Invoking(() => courseTutorRepository.GetOtherTutorsOfCourseToString(courseId))
+                FluentActions.Invoking(() => courseTutorRepository.GetOtherTutorsToStringByCourseId(courseId))
                     .Should()
                     .ThrowExactly<ArgumentOutOfRangeException>()
                     .WithParameterName(nameof(courseId));

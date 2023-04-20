@@ -76,7 +76,8 @@ namespace MarksManagementSystem.Data.Repositories.Classes
         {
             if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             if (studentId <= 0) throw new ArgumentOutOfRangeException(nameof(studentId));
-            var courseStudentRelationshipToRemove = marksManagementContext.CourseStudent.Where(cs => cs.CourseId == courseId && cs.StudentId == studentId).FirstOrDefault();
+            var courseStudentRelationshipToRemove = marksManagementContext.CourseStudent
+                .Where(cs => cs.CourseId == courseId && cs.StudentId == studentId).FirstOrDefault();
             if (courseStudentRelationshipToRemove == null) throw new ArgumentNullException(nameof(courseStudentRelationshipToRemove));
 
             marksManagementContext.CourseStudent.Remove(courseStudentRelationshipToRemove);

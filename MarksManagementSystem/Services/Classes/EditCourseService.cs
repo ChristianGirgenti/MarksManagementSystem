@@ -35,10 +35,11 @@ namespace MarksManagementSystem.Services.Classes
         public int GetUnitLeaderId(List<CourseTutor> allCourseTutors, int courseId)
         {
             if (allCourseTutors == null) throw new ArgumentNullException(nameof(allCourseTutors));
+            if (courseId <= 0) throw new ArgumentOutOfRangeException(nameof(courseId));
             return allCourseTutors.First(ct => ct.CourseId == courseId && ct.IsUnitLeader).TutorId;
         }
 
-        public List<SelectListItem> ShowPossibleUnitLeaderInSelectionList(int unitLeaderId)
+        public List<SelectListItem> ShowPossibleUnitLeadersInSelectionList(int unitLeaderId)
         {
             if (unitLeaderId <= 0) throw new ArgumentOutOfRangeException(nameof(unitLeaderId));
 
@@ -57,7 +58,9 @@ namespace MarksManagementSystem.Services.Classes
             var currentUnitLeader = unitLeaders.FirstOrDefault(uL => uL.TutorId == unitLeaderId);
 
             if (currentUnitLeader != null)
-                possibleUnitLeaderTutors.Insert(0, new SelectListItem { Value = currentUnitLeader.TutorId.ToString(), Text = currentUnitLeader.TutorFirstName + " " + currentUnitLeader.TutorLastName });
+                possibleUnitLeaderTutors.Insert(0, new SelectListItem { 
+                    Value = currentUnitLeader.TutorId.ToString(), 
+                    Text = currentUnitLeader.TutorFirstName + " " + currentUnitLeader.TutorLastName });
 
             return possibleUnitLeaderTutors;
         }
@@ -107,13 +110,13 @@ namespace MarksManagementSystem.Services.Classes
             return courseEdited;
         }
 
-        public void ChangeTutorCourseRelationships(AddEditCourseViewModel editCourseViewModel, Course courseEdited, List<string> tutorIds)
+        public void ChangeCourseTutorRelationships(AddEditCourseViewModel editCourseViewModel, Course courseEdited, List<string> tutorIds)
         {
             if (editCourseViewModel == null) throw new ArgumentNullException(nameof(editCourseViewModel));
             if (courseEdited == null) throw new ArgumentNullException(nameof(courseEdited));
 
-            _courseTutorRepository.DeleteCourseUnitLeaderRelationshipByCourseId(courseEdited.CourseId);
-            _courseTutorRepository.DeleteAllOtherTutorsInACourse(courseEdited.CourseId);
+            _courseTutorRepository.DeleteUnitLeaderRelationshipByCourseId(courseEdited.CourseId);
+            _courseTutorRepository.DeleteAllOtherTutorsByCourseId(courseEdited.CourseId);
 
             var newUnitLeader = _tutorRepository.GetAll().SingleOrDefault(t => t.TutorId == editCourseViewModel.UnitLeaderId);
             if (newUnitLeader != null)
