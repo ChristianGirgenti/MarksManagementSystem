@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
-using MarksManagementSystem.Data.Models;
 using MarksManagementSystem.Services.Interfaces;
 
 namespace MarksManagementSystem.Pages.Account
