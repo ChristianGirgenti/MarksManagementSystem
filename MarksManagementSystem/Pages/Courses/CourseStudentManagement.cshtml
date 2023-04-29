@@ -9,10 +9,9 @@
 <h1>@ViewData["Title"]</h1>
 <hr />
 
-<div>
-    <form method="post">
-        <input type="text" id="nameFilter" placeholder="Filter by student name" />
-
+<form method="post">
+    <input type="text" id="nameFilter" placeholder="Filter by student name" />
+    <div style="overflow-x: auto">
         <table class="table">
             <thead>
                 <tr>
@@ -34,13 +33,13 @@
             }
             </tbody>
         </table>
-
-        <div>
-            <form method="post">
-                <button type="submit" class="btn btn-primary">Enrol Students</button>
-            </form>
-        </div>
-    </form>
+    </div>
+    <div>
+        <form method="post">
+            <button type="submit" class="btn btn-primary">Enrol Students</button>
+        </form>
+    </div>
+</form>
 
 <script>
     filterTable("#nameFilter", ".student-row", ".name-selector");

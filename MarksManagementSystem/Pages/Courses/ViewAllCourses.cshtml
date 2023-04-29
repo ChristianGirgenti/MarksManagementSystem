@@ -14,49 +14,50 @@
 
 <div>
     <input type="text" id="nameFilter" placeholder="Filter by course name" />
-
-    <table class="table table-boardered table-striped">
-        <thead>
-            <tr>
-                <th>Course Name</th>
-                <th>Credits</th>
-                <th>Unit Leader</th>
-                <th>Other Tutors</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.AllCoursesWithTutor != null)
-            {
-                foreach (var course in Model.AllCoursesWithTutor)
+    <div style="overflow-x: auto">
+        <table class="table table-boardered table-striped">
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Unit Leader</th>
+                    <th>Other Tutors</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.AllCoursesWithTutor != null)
                 {
-                    <tr class="course-row">
-                        <td class ="name-selector">@course.CourseName</td>
-                        <td>@course.CourseCredits</td>
-                        <td>@course.UnitLeader</td>
-                        <td>@course.OtherTutors</td>
-                        <td>
-                            <form asp-page-handler="delete" method="post" asp-route-courseId="@course.CourseId">
-                                <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form asp-page-handler="edit" method="post" asp-route-courseId="@course.CourseId">
-                                <button type="submit" class="btn btn-primary">Edit</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            } 
-            @if (TempData["SuccessMessage"] != null)
-            {
+                    foreach (var course in Model.AllCoursesWithTutor)
+                    {
+                        <tr class="course-row">
+                            <td class ="name-selector">@course.CourseName</td>
+                            <td>@course.CourseCredits</td>
+                            <td>@course.UnitLeader</td>
+                            <td>@course.OtherTutors</td>
+                            <td>
+                                <form asp-page-handler="delete" method="post" asp-route-courseId="@course.CourseId">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirmDelete();">Delete</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form asp-page-handler="edit" method="post" asp-route-courseId="@course.CourseId">
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                } 
+                @if (TempData["SuccessMessage"] != null)
+                {
                     <div class="alert alert-success mt-2">@TempData["SuccessMessage"]</div>
-            }
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger mt-2">@TempData["ErrorMessage"]</div>
-            }
-        </tbody>
-    </table>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger mt-2">@TempData["ErrorMessage"]</div>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
