@@ -140,7 +140,7 @@ namespace MarksManagementSystem.Tests.Services
                     CourseName = "Mathematics",
                     CourseCredits = 30,
                     UnitLeaderId = 1,
-                    TutorIds = new List<string>() { "2", "3"}
+                    TutorIds = new List<string>()
                 };
 
                 addCourseService.AddCourse(validNewCourseViewModel);
@@ -176,7 +176,7 @@ namespace MarksManagementSystem.Tests.Services
                     CourseName = "Mathematics",
                     CourseCredits = 30,
                     UnitLeaderId = 1,
-                    TutorIds = new List<string>() { "2", "3" }
+                    TutorIds = new List<string>()
                 };
 
                 var newCourse = new Course()
@@ -205,7 +205,7 @@ namespace MarksManagementSystem.Tests.Services
                     CourseName = "Mathematics",
                     CourseCredits = 30,
                     UnitLeaderId = 1,
-                    TutorIds = new List<string>() { "2", "3" }
+                    TutorIds = new List<string>()
                 };
 
                 var newCourse = new Course()

@@ -1,5 +1,4 @@
 using MarksManagementSystem.Data.Models;
-using MarksManagementSystem.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,7 +21,8 @@ namespace MarksManagementSystem.Pages.Courses
 
         public CourseStudentManagementModel(ICourseStudentManagementService courseStudentManagementService)
         {
-            _courseStudentManagementService = courseStudentManagementService ?? throw new ArgumentNullException(nameof(courseStudentManagementService));
+            _courseStudentManagementService = courseStudentManagementService ?? 
+                throw new ArgumentNullException(nameof(courseStudentManagementService));
         }
 
 
@@ -39,7 +39,11 @@ namespace MarksManagementSystem.Pages.Courses
             CurrentStudentsInTheCourse = _courseStudentManagementService.GetAllCurrentStudentsInTheCourse(CourseId);
             try
             {
-                _courseStudentManagementService.ChangeCourseStudentsRelationship(Request.Form["Students"].ToList(), CurrentStudentsInTheCourse, ThisCourse);
+                _courseStudentManagementService.ChangeCourseStudentsRelationship(
+                    Request.Form["Students"].ToList(), 
+                    CurrentStudentsInTheCourse, 
+                    ThisCourse);
+
                 TempData["SuccessMessage"] = "The students and course relationship have been update successfully.";
             }
             catch (Exception ex)

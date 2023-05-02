@@ -1,4 +1,3 @@
-using MarksManagementSystem.Data.Repositories;
 using MarksManagementSystem.Services.Interfaces;
 using MarksManagementSystem.ViewModel;
 using Microsoft.AspNetCore.Authorization;

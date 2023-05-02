@@ -14,61 +14,62 @@
     <div>
         <form method="post">
             <input type="text" class="mb-2" id="nameFilter" placeholder="Filter by student name" />
-
-            <table class="table table-boardered table-striped">
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Student Email</th>
-                        <th>Student Date Of Birth</th>
-                        <th>Student Mark</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.AllStudentsEnrolled != null)
-                    {
-                        @if (Model.IsUserLoggedInTheUnitLeader)
+            <div style="overflow-x: auto">
+                <table class="table table-boardered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Student Email</th>
+                            <th>Student Date Of Birth</th>
+                            <th>Student Mark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.AllStudentsEnrolled != null)
                         {
-                            foreach (var student in Model.AllStudentsEnrolled)
+                            @if (Model.IsUserLoggedInTheUnitLeader)
                             {
-                                <tr class="student-row">
-                                    <td class="name-selector">@student.StudentFullName</td>
-                                    <td>@student.StudentEmail</td>
-                                    <td>@student.StudentDateOfBirth</td>
-                                    <td><input type="number" 
-                                               name="@("mark"+student.StudentId)" 
-                                               min="0"
-                                               max="100"
-                                               value="@((Convert.ToInt32(student.StudentMark) > -1) ? student.StudentMark : "")" />
-                                    </td>
-                                </tr>
+                                foreach (var student in Model.AllStudentsEnrolled)
+                                {
+                                    <tr class="student-row">
+                                        <td class="name-selector">@student.StudentFullName</td>
+                                        <td>@student.StudentEmail</td>
+                                        <td>@student.StudentDateOfBirth</td>
+                                        <td><input type="number" 
+                                                   name="@("mark"+student.StudentId)" 
+                                                   min="0"
+                                                   max="100"
+                                                   value="@((Convert.ToInt32(student.StudentMark) > -1) ? student.StudentMark : "")" />
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var student in Model.AllStudentsEnrolled)
+                                {
+                                    <tr class="student-row">
+                                        <td class="name-selector">@student.StudentFullName</td>
+                                        <td>@student.StudentEmail</td>
+                                        <td>@student.StudentDateOfBirth</td>
+                                        <td>@(
+                                    (Convert.ToInt32(student.StudentMark) > -1) ? student.StudentMark : ""
+                                    )</td>
+                                    </tr>
+                                }
                             }
                         }
-                        else
+                        @if (TempData["SuccessMessage"] != null)
                         {
-                            foreach (var student in Model.AllStudentsEnrolled)
-                            {
-                                <tr class="student-row">
-                                    <td class="name-selector">@student.StudentFullName</td>
-                                    <td>@student.StudentEmail</td>
-                                    <td>@student.StudentDateOfBirth</td>
-                                    <td>@(
-                                (Convert.ToInt32(student.StudentMark) > -1) ? student.StudentMark : ""
-                                )</td>
-                                </tr>
-                            }
+                            <div class="alert alert-success mt-2">@TempData["SuccessMessage"]</div>
                         }
-                    }
-                    @if (TempData["SuccessMessage"] != null)
-                    {
-                        <div class="alert alert-success mt-2">@TempData["SuccessMessage"]</div>
-                    }
-                    @if (TempData["ErrorMessage"] != null)
-                    {
-                        <div class="alert alert-danger mt-2">@TempData["ErrorMessage"]</div>
-                    }
-                </tbody>
-            </table>
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger mt-2">@TempData["ErrorMessage"]</div>
+                        }
+                    </tbody>
+                </table>
+            </div>
 
             @if (Model.IsUserLoggedInTheUnitLeader)
             {
