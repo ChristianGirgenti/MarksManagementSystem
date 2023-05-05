@@ -25,12 +25,12 @@ namespace MarksManagementSystem.Pages
         {
             if (!ModelState.IsValid)
             {
-                if (UserType == null)
+                if (string.IsNullOrEmpty(UserType))
                 {
                     ErrorMessage = "You need to select what type of user you are to login";
                     return Page();
                 }
-                ErrorMessage = "Student email and password can not be empty";
+                ErrorMessage = "Email and password can not be empty";
                 return Page();
             }
 
